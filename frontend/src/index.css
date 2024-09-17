@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-placeholder::placeholder {
+    color: #000; /* Your custom color */
+  }
