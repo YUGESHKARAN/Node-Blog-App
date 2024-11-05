@@ -20,6 +20,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const loginRouter = require('./routes/login.Route') ;
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
 app.use("/blog/login",loginRouter) ;
 
 //Create folder[uploads] to store post images
