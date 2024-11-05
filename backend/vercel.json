@@ -4,12 +4,28 @@
       {
         "src": "app.js",
         "use": "@vercel/node"
+      },
+      {
+        "src": "routes/*.js",
+        "use": "@vercel/node"
       }
     ],
     "routes": [
       {
-        "src": "/(.*)",
+        "src": "/",
         "dest": "app.js"
+      },
+      {
+        "src": "/blog/login",
+        "dest": "routes/login.Route.js"
+      },
+      {
+        "src": "/blog/author",
+        "dest": "routes/authorDetail.Route.js"
+      },
+      {
+        "src": "/blog/posts",
+        "dest": "routes/postDetail.Route.js"
       }
     ]
   }
