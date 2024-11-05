@@ -42,7 +42,7 @@ function BlogContainer() {
   //  console.log("error",err) ;
   //     }
 
-  //   }
+  //  hd }
   // Function to get unique categories
   const getUniqueCategories = (posts) => {
     return posts
