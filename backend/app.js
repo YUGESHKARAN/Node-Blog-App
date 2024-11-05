@@ -4,16 +4,19 @@ const PORT = 3000;
 const cors = require("cors");
 const app = express();
 const path = require('path');
-const url =
+const connectToDatabase = require("./db");
+// const url =
 
-  "mongodb+srv://yugeshkaran01:GEMBkFW5Ny5wi4ox@blog.adtwl.mongodb.net/Blog-Data?retryWrites=true&w=majority&appName=blog"
+//   "mongodb+srv://yugeshkaran01:GEMBkFW5Ny5wi4ox@blog.adtwl.mongodb.net/Blog-Data?retryWrites=true&w=majority&appName=blog"
 
-mongoose.connect(url);
-const con = mongoose.connection;
+// mongoose.connect(url);
+// const con = mongoose.connection;
 
-con.on("open", () => {
-  console.log("MongoDb connected...");
-});
+// con.on("open", () => {
+//   console.log("MongoDb connected...");
+// });
+// Connect to MongoDB once
+connectToDatabase();
 
 app.use(cors());
 app.use(express.json());
