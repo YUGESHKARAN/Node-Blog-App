@@ -48,7 +48,7 @@ function RegisterPage() {
       try {
         // Send a POST request to the API using axios
         const response = await axios.post(
-          "http://localhost:3000/blog/author",
+          "https://blog-backend-two-flame.vercel.app/blog/author",
           {
             authorname:formData.username,
             email:formData.email,
@@ -92,9 +92,9 @@ function RegisterPage() {
   };
   return (
     <div className="text-blue-600 text-md font-semibold w-full h-screen bg-[#F8EFBA] flex justify-center items-center">
-    <div className="bg-white p-16 rounded-md">
+    <div className="bg-white w-11/12 md:w-fit p-16 rounded-md">
       <h2 className="text-center text-[#F97F51] text-xl">Register Page</h2>
-      <form onSubmit={handleSubmit} className=" w-96 mx-auto p-4">
+      <form onSubmit={handleSubmit} className=" md:w-96 w-full mx-auto md:p-4">
         {success && <p className="text-green-500">{success}</p>}
         {errors.apiError && <p className="text-red-500">{errors.apiError}</p>}
 
@@ -108,7 +108,7 @@ function RegisterPage() {
             name="username"
             value={formData.username}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded"
+            className="w-full px-3 py-2 md:text-base text-sm border border-gray-300 rounded"
             required
           />
           {errors.username && (
@@ -126,7 +126,7 @@ function RegisterPage() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded"
+            className="w-full px-3 py-2 border md:text-base text-sm border-gray-300 rounded"
             required
           />
           {errors.email && (
@@ -144,7 +144,7 @@ function RegisterPage() {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded"
+            className="w-full px-3 py-2 border md:text-base text-sm border-gray-300 rounded"
             required
           />
           {errors.password && (
@@ -155,14 +155,14 @@ function RegisterPage() {
 
         <button
           type="submit"
-          className="w-full bg-[#F97F51] hover:bg-[#cd6133] transition-all duration-200 text-white font-bold py-2 px-4 rounded"
+          className="w-full bg-[#F97F51] hover:bg-[#cd6133] md:text-base text-sm transition-all duration-200 text-white font-bold py-2 px-4 rounded"
         >
           Register
         </button>
       </form>
 
       {/* Link to login page */}
-      <p className="mt-4 text-gray-600">
+      <p className="mt-4 md:text-base text-xs text-gray-600">
         Already have an account?{" "}
         <Link to="/" className="text-[#ff793f] hover:underline">
           Login here

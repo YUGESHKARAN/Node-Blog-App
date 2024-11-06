@@ -21,7 +21,7 @@ function ProfilePage() {
   const deleteAuthor = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/blog/author/${email}`
+        `https://blog-backend-two-flame.vercel.app/blog/author/${email}`
       );
       console.log(response.data);
       toast.success("post deleted successfully");
@@ -35,7 +35,7 @@ function ProfilePage() {
     const fetchAuthor = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/blog/author/${email}`
+          `https://blog-backend-two-flame.vercel.app/blog/author/${email}`
         );
         // console.log("Author data", response.data)
         const authorData = response.data;
@@ -69,7 +69,7 @@ function ProfilePage() {
     try {
       // Send FormData object directly to the API
       const response = await axios.put(
-        `http://localhost:3000/blog/author/${email}`,
+        `https://blog-backend-two-flame.vercel.app/blog/author/${email}`,
         formData,
         {
           headers: {
@@ -96,10 +96,10 @@ function ProfilePage() {
   console.log("author data", author);
 
   return (
-    <div className="min-h-screen h-auto bg-[#F8EFBA] bg-opacity-50 backdrop-blur-md pb-10">
+    <div className="w-full min-h-screen  pb-10">
       <NavBar />
 
-      <div className="h-auto mt-5 p-10 bg-opacity-50 w-6/12 m-auto rounded-md border-2 border-black">
+      <div className="h-auto mt-5 md:p-10 bg-opacity-50 w-11/12 p-7 md:w-6/12 m-auto rounded-md border-2 border-black">
         <div className="flex w-full justify-end items-end">
           <button
             onClick={deleteAuthor}
@@ -110,7 +110,7 @@ function ProfilePage() {
         </div>
 
         <img
-          src={`http://localhost:3000${author.profile}`}
+          src={`https://blog-backend-two-flame.vercel.app${author.profile}`}
           alt=""
           className="rounded-full border-8 border-green-500  w-40 m-auto"
         />

@@ -32,7 +32,7 @@ function ViewPage() {
       const getSinglrPost = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:3000/blog/posts/${email}/${id}`
+            `https://blog-backend-two-flame.vercel.app/blog/posts/${email}/${id}`
           );
           const postData = response.data.data;
           console.log(response.data)
@@ -56,41 +56,41 @@ function ViewPage() {
     <div className="min-h-screen h-auto bg-[#F8EFBA] bg-opacity-50 backdrop-blur-md pb-10">
       <NavBar />
       
-      <div className="min-h-screen h-auto w-3/6 p-10  flex flex-col justify-center items-center  m-auto mt-10">
+      <div className="min-h-screen h-auto md:w-3/6 p-7 md:p-10  flex flex-col justify-center items-center  m-auto mt-10">
       
       <div className="'w-fit bg-white flex flex-col p-4 h-auto   items-center">
           <div className="flex justify-between w-full items-center">
             <div className="flex justify-between gap-2 items-center">
-              <img src={`http://localhost:3000${singlePostData.profile}`} className="w-8 rounded-md" />
+              <img src={`https://blog-backend-two-flame.vercel.app${singlePostData.profile}`} className="md:w-8 w-5 rounded-md" />
               <h3 className="flex flex-col items-center justify-center ">
-                <p className="text-md  w-full font-bold">
+                <p className="md:text-md  text-sm w-full font-bold">
                   {singlePostData.authorname}
                 </p>
-                <p className="text-sm w-full  font-semibold text-gray-500">
+                <p className="md:text-sm w-full text-xs  font-semibold text-gray-500">
                   {singlePostData.timestamp?singlePostData.timestamp.slice(0,10):'null'}
                 </p>
               </h3>
             </div>  
             <div className="flex justify-start ">
       <button
-          className="bg-[#30336b] px-3 py-1 text-white"
+          className="bg-[#30336b] px-3 py-1 mg:text-base text-xs text-white"
           onClick={() => navigate('/home')}
         >
           back
         </button>
       </div>
           </div>
-          <h3 className="w-full  mb-2 mt-2 text-left text-3xl font-bold">
+          <h3 className="w-full  mb-2 mt-2 text-left text-lg md:text-3xl font-bold">
                 {singlePostData.title}
             </h3>
 
           <img
-            src={`http://localhost:3000${singlePostData.image}`}
+            src={`https://blog-backend-two-flame.vercel.app${singlePostData.image}`}
             className="w-full h-fit"
             alt=""
           />
 
-          <p className="w-full text-justify text-gray-600 text-md">
+          <p className="w-full text-justify leading-relaxed text-gray-600 text-md">
             {singlePostData.description}
           </p>
         </div>

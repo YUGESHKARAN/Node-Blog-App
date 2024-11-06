@@ -22,15 +22,15 @@ function LoginPage() {
 
     try {
       // Send a POST request to the updated API endpoint
-      const response = await axios.post("http://localhost:3000/blog/login", formData);
-
+      const response = await axios.post("https://blog-backend-two-flame.vercel.app/blog/login", formData);
+      // console.log("response",response.data.message)
       if (response.status === 200) {
         setSuccess("Login successful!");
         login(); // Assuming the useAuth() function updates the auth context
         localStorage.setItem("username", response.data.author.authorname);
         localStorage.setItem("email", response.data.author.email);
-        // localStorage.setItem("role", "author"); // Assuming role is predefined
-
+        localStorage.setItem("message",response.data.message); // Assuming role is predefined
+        
         navigate("/home"); // Redirect to the homepage
       }
     } catch (error) {
@@ -42,7 +42,7 @@ function LoginPage() {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`http://localhost:3000/blog/author/${email}`, {
+      const response = await axios.put(`https://blog-backend-two-flame.vercel.app/blog/author/${email}`, {
         password: newPassword,
       });
 
@@ -67,9 +67,9 @@ function LoginPage() {
 
   return (
     <div className="text-blue-600 text-md font-semibold w-full h-screen  bg-[#F8EFBA] flex justify-center items-center">
-      <div className="bg-white p-16 rounded-md">
+      <div className="bg-white w-11/12 md:w-fit p-16 rounded-md">
         <h2 className="text-center text-[#F97F51] text-xl">{title}</h2>
-        <form className="w-96 mx-auto p-4">
+        <form className="md:w-96 w-full mx-auto md:p-4">
           {success && <p className="text-green-500">{success}</p>}
           {errors.apiError && <p className="text-red-500">{errors.apiError}</p>}
 
@@ -83,7 +83,7 @@ function LoginPage() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded"
+              className="w-full px-3 py-2 md:text-base text-sm border border-gray-300 rounded"
               placeholder="Enter Email"
               required
             />
@@ -99,7 +99,7 @@ function LoginPage() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded"
+              className="w-full px-3 py-2 md:text-base text-sm border border-gray-300 rounded"
               placeholder="Enter Password"
               required
             />
@@ -111,7 +111,7 @@ function LoginPage() {
             className={`${
               forgotPassword
                 ? "hidden"
-                : "w-full bg-[#F97F51] hover:bg-[#cd6133] transition-all duration-200 text-white font-bold py-2 px-4 rounded"
+                : "w-full bg-[#F97F51] hover:bg-[#cd6133] md:text-base text-sm transition-all duration-200 text-white font-bold py-2 px-4 rounded"
             }`}
           >
             Login
@@ -122,7 +122,7 @@ function LoginPage() {
             type="submit"
             className={`${
               forgotPassword
-                ? "w-full bg-[#F97F51] hover:bg-[#cd6133] transition-all duration-200 text-white font-bold py-2 px-4 rounded"
+                ? "w-full bg-[#F97F51] hover:bg-[#cd6133] md:text-base text-sm transition-all duration-200 text-white font-bold py-2 px-4 rounded"
                 : "hidden"
             }`}
           >
@@ -136,12 +136,12 @@ function LoginPage() {
             setPasswordLabel("New Password");
             setTitle("Forgot Password");
           }}
-          className="mt-4 flex px-4 justify-start gap-2 text-gray-600 cursor-pointer"
+          className="mt-4 flex px-4 justify-start md:text-base text-xs gap-2 text-gray-600 cursor-pointer"
         >
-          Forgot Password? <span className="text-[#ff793f] hover:underline">Click here</span>
+          Forgot Password? <span className="text-[#ff793f] md:text-base text-xs hover:underline">Click here</span>
         </p>
 
-        <p className="mt-4 px-4 text-gray-600">
+        <p className="mt-4 px-4 md:text-base text-xs text-gray-600">
           Don't have an account?{" "}
           <Link to="/register" className="text-[#ff793f] hover:underline">
             Register here

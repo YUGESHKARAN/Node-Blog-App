@@ -12,7 +12,7 @@ function HomePage() {
 
 
   return (
-    <div className="  h-auto bg-[#F8EFBA] bg-opacity-50 backdrop-blur-md pb-10">
+    <div className="w-full min-h-screen  pb-10">
       <NavBar/>
 
       <div className="text-2xl mb-10 font-semibold text-center mt-5">Hello <span className="text-[#ff793f]">{username.toLocaleUpperCase()}</span> <br />welcome to the blog browser!</div>

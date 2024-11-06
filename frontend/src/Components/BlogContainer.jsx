@@ -18,7 +18,7 @@ function BlogContainer() {
   const getData = async () => {
     // const email = localStorage.getItem("email");
     try {
-      const response = await axios.get(`http://localhost:3000/blog/posts/`);
+      const response = await axios.get(`https://blog-backend-two-flame.vercel.app/blog/posts/`);
       console.log("data", response.data);
       setPosts(response.data.posts);
     } catch (err) {
@@ -34,7 +34,7 @@ function BlogContainer() {
   //   const handleCategory = async (category) =>{
 
   //    try{
-  //     const response = await axios.get(`http://localhost:3000/blog/posts/${category}`);
+  //     const response = await axios.get(`https://blog-backend-two-flame.vercel.app/blog/posts/${category}`);
   //     console.log("selected category data", response.data)
   //     setCategoryArray(response.data) ;
   //    }
@@ -54,7 +54,7 @@ function BlogContainer() {
   console.log("category selected", postCategory);
   // console.log('select check',categoryArray)
   return (
-    <div className="flex w-11/12 gap-16 flex-wrap justify-center min-h-screen h-auto m-auto">
+    <div className="flex  w-11/12 gap-16 flex-wrap justify-center h-screen m-auto">
       <div
         className={`${
           postCategory === ""
@@ -78,6 +78,7 @@ function BlogContainer() {
             // handleCategory(selectedCategory);
           }}
           id=""
+          className="border "
         >
           <option value="">Selecet Category</option>
           <option value="">All</option>
@@ -94,13 +95,13 @@ function BlogContainer() {
          
             <div
               key={index}
-              className="w-3/12   flex flex-col shadow-xl h-96  gap-0  bg-white p-4 rounded-xl"
+              className="lg:w-3/12 md:w-1/3  flex flex-col shadow-xl h-96  gap-0  bg-white p-4 rounded-xl"
             >
             
               <img
                 src={
                   data.image 
-                    ? `http://localhost:3000${data.image}`
+                    ? `https://blog-backend-two-flame.vercel.app${data.image}`
                     : blog1
                 }
                 className="w-fit rounded-xl m-auto mt-0"
@@ -112,7 +113,7 @@ function BlogContainer() {
 
               <div className="flex justify-between items-center">
                 <div className="flex justify-between gap-2 items-center">
-                  <img src={`http://localhost:3000${data.profie}`} className="w-8 rounded-md" />
+                  <img src={`https://blog-backend-two-flame.vercel.app${data.profie}`} className="w-8 rounded-md" />
                   <h3 className="flex flex-col items-center justify-center ">
                     <p className="text-sm  w-full font-semibold">
                       {data.authorname}
@@ -161,12 +162,12 @@ function BlogContainer() {
             .map((data, index) => (
               <div
                 key={index}
-                className="w-3/12   flex flex-col shadow-xl h-96  gap-0  bg-white p-4 rounded-xl"
+                className="lg:w-3/12 md:w-1/3  flex flex-col shadow-xl h-96  gap-0  bg-white p-4 rounded-xl"
               >
                 <img
                   src={
                     data.image && data.image.length > 10
-                      ? `http://localhost:3000${data.image}`
+                      ? `https://blog-backend-two-flame.vercel.app${data.image}`
                       : blog1
                   }
                   className="w-fit rounded-xl m-auto mt-0"
