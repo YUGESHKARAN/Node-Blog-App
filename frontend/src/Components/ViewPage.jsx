@@ -53,7 +53,7 @@ function ViewPage() {
 
     // console.log("passed id",PostId)
   return (
-    <div className="min-h-screen h-auto bg-[#F8EFBA] bg-opacity-50 backdrop-blur-md pb-10">
+    <div className="w-full min-h-screen  pb-10">
       <NavBar />
       
       <div className="min-h-screen h-auto md:w-3/6 p-7 md:p-10  flex flex-col justify-center items-center  m-auto mt-10">
