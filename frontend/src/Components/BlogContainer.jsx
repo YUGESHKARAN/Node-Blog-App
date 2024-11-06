@@ -95,7 +95,7 @@ function BlogContainer() {
          
             <div
               key={index}
-              className="lg:w-3/12 md:w-1/3  flex flex-col shadow-xl h-96  gap-0  bg-white p-4 rounded-xl"
+              className="lg:w-3/12 md:w-1/3  flex flex-col shadow-xl h-auto md:h-96  gap-0  bg-white p-4 rounded-xl"
             >
             
               <img
@@ -162,7 +162,7 @@ function BlogContainer() {
             .map((data, index) => (
               <div
                 key={index}
-                className="lg:w-3/12 md:w-1/3  flex flex-col shadow-xl h-96  gap-0  bg-white p-4 rounded-xl"
+                className="lg:w-3/12 md:w-1/3  flex flex-col shadow-xl  h-auto md:h-96  gap-0  bg-white p-4 rounded-xl"
               >
                 <img
                   src={
