@@ -42,7 +42,7 @@ function ViewEditPost() {
     try {
       // Send FormData object directly to the API
       const response = await axios.put(
-        `http://localhost:3000/blog/posts/${email}/${PostId}`,
+        `https://blog-backend-two-flame.vercel.app/blog/posts/${email}/${PostId}`,
         formData,
         {
           headers: {
@@ -72,7 +72,7 @@ function ViewEditPost() {
 
   const deletePost = async() => {
     try{
-      const response = axios.delete(`http://localhost:3000/blog/posts/${email}/${PostId}`);
+      const response = axios.delete(`https://blog-backend-two-flame.vercel.app/blog/posts/${email}/${PostId}`);
       console.log("deleted response",response);
       toast.success('post deleted successfully') ;
       navigate("/home"); // Redirect to the homepage
@@ -87,7 +87,7 @@ function ViewEditPost() {
     const getSinglrPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/blog/posts/${email}/${PostId}`
+          `https://blog-backend-two-flame.vercel.app/blog/posts/${email}/${PostId}`
         );
         const postData = response.data.data;
         setSinglePostData(postData);
@@ -104,46 +104,46 @@ function ViewEditPost() {
 
   console.log("single post data", singlePostData);
   return (
-    <div className="min-h-screen h-auto bg-[#F8EFBA] bg-opacity-50 backdrop-blur-md pb-10">
+    <div className="w-full min-h-screen  pb-10">
       <NavBar />
       <div className="h-screen w-11/12  flex flex-col justify-center items-center  m-auto mt-10">
-        <div className={`${edit?'hidden':'w-6/12 bg-white flex flex-col p-4 h-auto   items-center'}`}>
+        <div className={`${edit?'hidden':'md:w-6/12 w-11/12 bg-white flex flex-col p-4 h-auto   items-center'}`}>
           <div className="flex justify-between w-full items-center">
             <div className="flex justify-between gap-2 items-center">
-              <img src={avatar1} className="w-8 rounded-md" />
+              <img src={avatar1} className="md:w-8 w-5 rounded-md" />
               <h3 className="flex flex-col items-center justify-center ">
-                <p className="text-md  w-full font-bold">
+                <p className="md:text-md text-sm w-full font-bold">
                   {singlePostData.authorname}
                 </p>
-                <p className="text-sm font-semibold text-gray-500">
+                <p className="md:text-sm text-xs font-semibold text-gray-500">
                   {timeStamp.slice(0, 10)}
                 </p>
               </h3>
             </div>
             <div className="flex gap-3 items-center">
               <p onClick={()=>setEdit(true)}
-               className="bg-blue-600 px-2 py-1 text-white font-semibold text-sm cursor-pointer  hover:bg-blue-400 rounded-md">Edit</p>
+               className="bg-blue-600 px-2 py-1 text-white font-semibold text-xs   md:text-sm cursor-pointer  hover:bg-blue-400 rounded-md">Edit</p>
 
               <p
                onClick={deletePost} 
-               className="px-2 py-1 text-white font-semibold  rounded-md flex bg-red-600 cursor-pointer hover:bg-red-400 transition-all  text-gray-600 text-sm font-bold">
+               className="px-2 py-1 text-white font-semibold  rounded-md flex bg-red-600 cursor-pointer hover:bg-red-400 transition-all  text-gray-600 text-xs   md:text-sm font-bold">
                 Delete
               </p>
             </div>
 
           
           </div>
-          <h3 className="w-full  mb-2 mt-2 text-left text-3xl font-bold">
+          <h3 className="w-full  mb-2 mt-2 text-left text-lg md:text-3xl font-bold">
                 {singlePostData.title}
             </h3>
 
           <img
-            src={`http://localhost:3000${singlePostData.image}`}
+            src={`https://blog-backend-two-flame.vercel.app${singlePostData.image}`}
             className="w-full h-fit"
             alt=""
           />
 
-          <p className="w-full text-justify text-gray-600 text-md">
+          <p className="w-full text-justify leading-relaxed text-gray-600 text-md">
             {singlePostData.description}
           </p>
         </div>
@@ -153,7 +153,7 @@ function ViewEditPost() {
           action=""
           className={`${
         edit
-              ? "flex flex-col rounded-md items-center justify-center p-5 w-6/12 gap-1 m-auto  border-2 border-black"
+              ? "flex flex-col rounded-md items-center justify-center p-5 w-11/12 md:w-6/12 gap-1 m-auto  border-2 border-black"
               : "hidden"
           }`}
         >
@@ -191,7 +191,7 @@ function ViewEditPost() {
               current Post
             </label>{" "}
             <br />
-           <img src={`http://localhost:3000${singlePostData.image}`} className="w-40" alt="" />
+           <img src={`https://blog-backend-two-flame.vercel.app${singlePostData.image}`} className="w-40" alt="" />
           </div>
 
           <div className="w-11/12 mt-5">
@@ -228,7 +228,7 @@ function ViewEditPost() {
 
           <button
             type="submit"
-            className="px-3 py-1 bg-[#40407a] text-[#f7f1e3] rounded-md"
+            className="px-3 mt-5 md:mt-0 py-1 bg-[#40407a] text-[#f7f1e3] rounded-md"
           >
             EDIT POST{" "}
           </button>
