@@ -9,6 +9,7 @@ import { IoEye } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 
 import { Link } from "react-router-dom";
+import Footer from "./Footer";
 function BlogContainer() {
   const username = localStorage.getItem("username");
   const email = localStorage.getItem("email");
@@ -18,7 +19,7 @@ function BlogContainer() {
   const getData = async () => {
     // const email = localStorage.getItem("email");
     try {
-      const response = await axios.get(`https://blog-backend-two-flame.vercel.app/blog/posts/`);
+      const response = await axios.get(`http://localhost:3000/blog/posts/`);
       console.log("data", response.data);
       setPosts(response.data.posts);
     } catch (err) {
@@ -43,6 +44,7 @@ function BlogContainer() {
   //     }
 
   //  hd }
+   
   // Function to get unique categories
   const getUniqueCategories = (posts) => {
     return posts
@@ -54,7 +56,7 @@ function BlogContainer() {
   console.log("category selected", postCategory);
   // console.log('select check',categoryArray)
   return (
-    <div className="flex  w-11/12 gap-16 flex-wrap justify-center h-screen m-auto">
+    <div className="flex  w-11/12 gap-16 flex-wrap   justify-center h-auto m-auto">
       <div
         className={`${
           postCategory === ""
@@ -64,7 +66,7 @@ function BlogContainer() {
       >
         <button
           className={`${
-            postCategory === "" ? "hidden" : "bg-[#30336b] px-3 py-1 text-white"
+            postCategory === "" ? "hidden" : "bg-[#F8EFBA] px-3 py-1 mg:text-base text-sm font-semibold text-[#182C61]"
           }`}
           onClick={() => setPostCategory("")}
         >
@@ -78,9 +80,9 @@ function BlogContainer() {
             // handleCategory(selectedCategory);
           }}
           id=""
-          className="border "
+          className="border text-sm md:text-base rounded-lg border-gray-600 cursor-pointer"
         >
-          <option value="">Selecet Category</option>
+          <option value="">Filter Category</option>
           <option value="">All</option>
           {getUniqueCategories(posts).map((category, index) => (
             <option key={index} value={category}>
@@ -95,43 +97,41 @@ function BlogContainer() {
          
             <div
               key={index}
-              className="lg:w-3/12 md:w-1/3  flex flex-col shadow-xl h-auto md:h-96  gap-0  bg-white p-4 rounded-xl"
+              className="lg:w-3/12 md:w-1/3 bg-[#091533] md:pb-2  flex flex-col shadow-xl h-auto md:h-fit  gap-0  p-4 rounded-xl"
             >
             
               <img
                 src={
                   data.image 
-                    ? `https://blog-backend-two-flame.vercel.app${data.image}`
+                    ?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
                     : blog1
                 }
                 className="w-fit rounded-xl m-auto mt-0"
               />
               <div className="min-h-28  h-auto">
-                <h2 className="text-xl font-bold ">{data.title}</h2>
-                <p className="text-xs text-gray-600">{data.description.slice(0,100)} ...</p>
+                <h2 className="text-xl text-white font-bold ">{data.title}</h2>
+                <p className="text-xs text-gray-300 mt-2">{data.description.slice(0,100)} ...</p>
               </div>
 
               <div className="flex justify-between items-center">
                 <div className="flex justify-between gap-2 items-center">
-                  <img src={`https://blog-backend-two-flame.vercel.app${data.profie}`} className="w-8 rounded-md" />
+                  <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`} className="w-8 rounded-md" />
                   <h3 className="flex flex-col items-center justify-center ">
-                    <p className="text-sm  w-full font-semibold">
+                    <p className="text-sm text-white w-full font-semibold">
                       {data.authorname}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-400">
                       {data.timestamp.slice(0, 10)}
                     </p>
                   </h3>
                 </div>
                <div className="flex gap-3 items-center">
 
-                <p className="flex items-center justify-center gap-2 w-full">
-               
-                
-
+                <div className="flex items-center justify-center gap-2 w-full">
+      
                   <p className="cursor-pointer">
                   <Link to={`/viewpage/${data.authoremail}/${data._id}`}>
-                      <IoEye />
+                      <IoEye className="text-[#F8EFBA]" />
                   </Link>
                   </p>
 
@@ -142,10 +142,10 @@ function BlogContainer() {
                       state: { PostId: data._id },
                     }}
                   >
-                  <MdEdit />
+                  <MdEdit className="text-[#ffb8b8]" />
                 </Link>
                 </p>
-                </p>
+                </div>
 
                <p 
                onClick={()=>setPostCategory(data.category)} 
@@ -162,29 +162,29 @@ function BlogContainer() {
             .map((data, index) => (
               <div
                 key={index}
-                className="lg:w-3/12 md:w-1/3  flex flex-col shadow-xl  h-auto md:h-96  gap-0  bg-white p-4 rounded-xl"
+                className="lg:w-3/12 md:w-1/3  bg-[#091533] flex flex-col shadow-xl  h-auto md:h-96  gap-0  p-4 rounded-xl"
               >
                 <img
                   src={
-                    data.image && data.image.length > 10
-                      ? `https://blog-backend-two-flame.vercel.app${data.image}`
+                    data.image
+                      ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
                       : blog1
                   }
                   className="w-fit rounded-xl m-auto mt-0"
                 />
                 <div className="min-h-28  h-auto">
-                  <h2 className="text-xl font-bold ">{data.title}</h2>
-                  <p className="text-xs text-gray-600">{data.description.slice(0,100)} ...</p>
+                  <h2 className="text-xl text-white font-bold ">{data.title}</h2>
+                  <p className="text-xs text-gray-300">{data.description.slice(0,100)} ...</p>
                 </div>
 
                 <div className="flex justify-between items-center">
                   <div className="flex justify-between gap-2 items-center">
                     <img src={avatar1} className="w-8 rounded-md" />
                     <h3 className="flex flex-col items-center justify-center ">
-                      <p className="text-sm w-full font-semibold">
+                      <p className="text-sm text-white w-full font-semibold">
                         {data.authorname}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-400">
                         {data.timestamp.slice(0, 10)}
                       </p>
                     </h3>
@@ -192,12 +192,10 @@ function BlogContainer() {
 
                   <div className="flex gap-3 items-center">
                   <p className="flex items-center justify-center gap-2 w-full">
-               
-                
 
                <p className="cursor-pointer">
                <Link to={`/viewpage/${data.authoremail}/${data._id}`}>
-                   <IoEye />
+                   <IoEye  className="text-[#F8EFBA]" />
                </Link>
                </p>
 
@@ -208,7 +206,7 @@ function BlogContainer() {
                    state: { PostId: data._id },
                  }}
                >
-               <MdEdit />
+               <MdEdit  className="text-[#ffb8b8]"/>
              </Link>
              </p>
              </p>
@@ -222,6 +220,8 @@ function BlogContainer() {
                 </div>
               </div>
             ))}
+
+
     </div>
   );
 }

@@ -1,7 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 .custom-placeholder::placeholder {
     color: #000; /* Your custom color */
+    
+  }
+
+
+  body{
+    /* background:#737373; */
+    background:#aaa69d;
+    /* color: #a1a964; */
   }

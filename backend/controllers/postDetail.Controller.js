@@ -1,6 +1,27 @@
 const Author = require("../models/blogAuthorSchema");
 const path = require('path');
 
+// s3 integration
+const { S3Client,PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+require('dotenv').config()
+
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+const accessKey = process.env.ACCESS_KEY;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
+
+
+const s3 = new S3Client({
+  credentials:{
+    accessKeyId:accessKey,
+    secretAccessKey:secretAccessKey,
+  },
+  region:bucketRegion
+})
+
+
+
 const getAllPosts = async (req, res) => {
   try {
     const authors = await Author.find({}); // fetch all authors
@@ -10,7 +31,19 @@ const getAllPosts = async (req, res) => {
       authoremail: author.email,
       profie:author.profile||'',
     }))); // extract posts alone
-    res.status(200).json({ message: "All posts", posts: allPosts });
+
+       // Calculate category counts
+     const categoryCounts = authors.flatMap((author) =>
+      author.posts.map((post) => post.category)
+    ).reduce((counts, category) => {
+      counts[category] = (counts[category] || 0) + 1;
+      return counts;
+    }, {});
+    
+
+    const count = Object.keys(categoryCounts).length
+
+    res.status(200).json({ message: "All posts", posts: allPosts,count});
   } catch (err) {
     res.send(500).json({ message: "server error" });
   }
@@ -32,6 +65,7 @@ const getCategoryPosts = async (req, res) => {
           authorname: author.authorname,
           authoremail: author.email,
           profile:author.profile || '',
+          
         }))
     );
     res
@@ -46,15 +80,27 @@ const addPosts = async (req, res) => {
 
   const { title, description, category } = req.body;
 
-  const image = req.file ? `/uploads/${req.file.filename}` : ''; // Image path as URL
+  const image = req.file ? req.file.originalname : ''; // Image path as URL
   
   try {
     const author = await Author.findOne({ email: req.params.email });
     if (!author) {
       return res.status(404).json({ message: "author not found" });
     }
+     // S3 Integration
+     const params = {
+      Bucket:bucketName,
+      Key:req.file.originalname,
+      Body:req.file.buffer,
+      ContentType:req.file.mimetype
+    }
+
+    const command = new PutObjectCommand(params)
+    await s3.send(command)
+    console.log("post data",req.file)
 
     author.posts.push({ title, image, description, category, });
+     
     data = await author.save();
     res.status(201).json({ message: "post added successfully", data });
   } catch (err) {
@@ -65,7 +111,7 @@ const addPosts = async (req, res) => {
 const updatePost = async (req, res) => {
   const { email, postId } = req.params;
   const { title, description, category } = req.body;
-  const image = req.file ? `/uploads/${req.file.filename}` : '';
+  const image = req.file ? req.file.originalname : '';
   try {
     const author = await Author.findOne({ email });
 
@@ -80,6 +126,18 @@ const updatePost = async (req, res) => {
     }
 
     Object.assign(post, { title, image, description, category });
+
+    // s3 Integration
+    const params = {
+      Bucket:bucketName,
+      Key:req.file.originalname,
+      Body:req.file.buffer,
+      ContentType:req.file.mimetype
+    }
+
+    const command = new PutObjectCommand(params)
+    await s3.send(command)
+    console.log("Updated data",req.file)
 
     const updatedAuthor = await author.save();
 
@@ -106,13 +164,27 @@ const deletePost = async (req, res) => {
     const postIndex = author.posts.findIndex(
       (post) => post._id.toString() === postId
     );
+    const postToDelete  = author.posts[postIndex].image;
+    console.log('post to delete',postToDelete)
 
-    if (postIndex === -1) {
-      return res.status(404).json({ message: "Post not found" });
-    }
+    // if (postIndex === -1) {
+    //   return res.status(404).json({ message: "Post not found" });
+    // }
 
+    // const postToDelete  = author.posts[postIndex]
+    
+       // S3 Integration
+       const params = {
+        Bucket:bucketName,
+        Key:postToDelete
+      }
+   
+      const command = new DeleteObjectCommand(params)
+      await s3.send(command)
+      console.log(postToDelete)
+ 
     // Remove the post from the posts array
-    author.posts.splice(postIndex, 1);
+     author.posts.splice(postIndex, 1);
 
     // Save the updated author document
     const updatedAuthor = await author.save();

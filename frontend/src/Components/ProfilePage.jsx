@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { HiOutlineUserCircle } from "react-icons/hi";
+import Footer from "./Footer";
 function ProfilePage() {
   const { logout } = useAuth();
   const email = localStorage.getItem("email");
@@ -43,6 +45,7 @@ function ProfilePage() {
         setAuthorName(authorData.authorname);
         setAuthorEmail(authorData.email);
         setAuthor(response.data);
+        setImage(response.data.profile)
       } catch (err) {
         console.error(err);
       }
@@ -65,11 +68,12 @@ function ProfilePage() {
     if (image) {
       formData.append("profile", image);
     }
+    
 
     try {
       // Send FormData object directly to the API
       const response = await axios.put(
-        `https://blog-backend-two-flame.vercel.app/blog/author/${email}`,
+        `http://localhost:3000/blog/author/${email}`,
         formData,
         {
           headers: {
@@ -94,9 +98,10 @@ function ProfilePage() {
   };
 
   console.log("author data", author);
+  console.log("author profile", image);
 
   return (
-    <div className="w-full min-h-screen  pb-10">
+    <div className="w-full h-auto ">
       <NavBar />
 
       <div className="h-auto mt-5 md:p-10 bg-opacity-50 w-11/12 p-7 md:w-6/12 m-auto rounded-md border-2 border-black">
@@ -109,15 +114,21 @@ function ProfilePage() {
           </button>
         </div>
 
+       {author.profile?
         <img
-          src={`https://blog-backend-two-flame.vercel.app${author.profile}`}
-          alt=""
-          className="rounded-full border-8 border-green-500  w-40 m-auto"
-        />
+        src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${author.profile}`}
+        alt=""
+        className="rounded-full border-8 border-green-500  w-40 m-auto"
+      />:
+      <div className="w-full  text-center items-center">
+      <HiOutlineUserCircle className="text-center text-[#786fa6] shadow-xl bg-white rounded-3xl border-4 border-green-500 mx-auto text-9xl"/>
+      </div>
+
+      }
         <form
           action=""
           onSubmit={handleSubmit}
-          className="mt-10 flex flex-col items-start"
+          className="mt-0 flex flex-col items-start"
         >
           <input
             type="text"
@@ -145,6 +156,8 @@ function ProfilePage() {
         </form>
       </div>
       <ToastContainer />
+
+      <Footer/>
     </div>
   );
 }

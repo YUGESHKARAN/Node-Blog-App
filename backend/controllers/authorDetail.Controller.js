@@ -1,5 +1,24 @@
 const Author = require("../models/blogAuthorSchema");
 
+// s3 integration
+const { S3Client,PutObjectCommand } = require("@aws-sdk/client-s3");
+require('dotenv').config()
+
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+const accessKey = process.env.ACCESS_KEY;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
+
+
+const s3 = new S3Client({
+  credentials:{
+    accessKeyId:accessKey,
+    secretAccessKey:secretAccessKey,
+  },
+  region:bucketRegion
+})
+
 const getAllAuthor = async (req, res) => {
   try {
     const authors = await Author.find({});
@@ -50,7 +69,7 @@ const addAuthor = async (req, res) => {
 
 const updateAuthor = async (req, res) => {
   const { authorname, email } = req.body;
-  const profile = req.file ? `/uploads/${req.file.filename}` : '';
+  const profile = req.file ? req.file.originalname : '';
   try {
     const author = await Author.findOne({ email: req.params.email });
 
@@ -58,12 +77,23 @@ const updateAuthor = async (req, res) => {
       return res.status(404).json({ message: "Author not found" });
     }
 
-    
+      // S3 Integration
+      const params = {
+        Bucket:bucketName,
+        Key:req.file.originalname,
+        Body:req.file.buffer,
+        ContentType:req.file.mimetype
+      }
+  
+      const command = new PutObjectCommand(params)
+      await s3.send(command)
+      console.log("profile data",req.file)
+
     // Object.assign(post, { title, image, description, category });
     Object.assign(author, {authorname,email,profile});
-
     data = await author.save();
     res.status(201).json({ message: "author updated successfully", data });
+
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }

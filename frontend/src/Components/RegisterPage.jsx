@@ -91,9 +91,9 @@ function RegisterPage() {
     });
   };
   return (
-    <div className="text-blue-600 text-md font-semibold w-full h-screen bg-[#F8EFBA] flex justify-center items-center">
+    <div className="text-blue-600 text-md font-semibold w-full h-screen bg-[#130f40] flex justify-center items-center">
     <div className="bg-white w-11/12 md:w-fit p-16 rounded-md">
-      <h2 className="text-center text-[#F97F51] text-xl">Register Page</h2>
+      <h2 className="text-center text-[#130f40] text-xl">Register Page</h2>
       <form onSubmit={handleSubmit} className=" md:w-96 w-full mx-auto md:p-4">
         {success && <p className="text-green-500">{success}</p>}
         {errors.apiError && <p className="text-red-500">{errors.apiError}</p>}
@@ -155,7 +155,7 @@ function RegisterPage() {
 
         <button
           type="submit"
-          className="w-full bg-[#F97F51] hover:bg-[#cd6133] md:text-base text-sm transition-all duration-200 text-white font-bold py-2 px-4 rounded"
+          className="w-full bg-[#130f40] hover:bg-[#30336b] md:text-base text-sm transition-all duration-200 text-white font-bold py-2 px-4 rounded"
         >
           Register
         </button>
@@ -164,7 +164,7 @@ function RegisterPage() {
       {/* Link to login page */}
       <p className="mt-4 md:text-base text-xs text-gray-600">
         Already have an account?{" "}
-        <Link to="/" className="text-[#ff793f] hover:underline">
+        <Link to="/" className="text-[#130f40] hover:underline">
           Login here
         </Link>
       </p>

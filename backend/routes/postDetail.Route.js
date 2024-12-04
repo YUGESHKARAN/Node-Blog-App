@@ -22,18 +22,20 @@ router.get("/:category", getCategoryPosts);
 
 
 // Multer setup for file upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Set the upload folder
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname); // Get the file extension
-    cb(null, uniqueSuffix+ file.originalname + ext); // Include original extension
-  }
-});
-
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads/'); // Set the upload folder
+//   },
+//   filename: (req, file, cb) => {
+//     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+//     const ext = path.extname(file.originalname); // Get the file extension
+//     cb(null, uniqueSuffix+ file.originalname + ext); // Include original extension
+//   }
+// });
+// Configure memory storage
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
+
 
 
 router.post("/:email",upload.single('image'), addPosts);

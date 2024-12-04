@@ -8,6 +8,7 @@ import NavBar from "./NavBar";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
+import Footer from "./Footer";
 function ViewEditPost() {
   // const username = localStorage.getItem("username");
   const email = localStorage.getItem("email");
@@ -42,7 +43,7 @@ function ViewEditPost() {
     try {
       // Send FormData object directly to the API
       const response = await axios.put(
-        `https://blog-backend-two-flame.vercel.app/blog/posts/${email}/${PostId}`,
+        `http://localhost:3000/blog/posts/${email}/${PostId}`,
         formData,
         {
           headers: {
@@ -51,7 +52,7 @@ function ViewEditPost() {
         }
         
       );
-      toast.success('post Edited successfully') ;
+      toast.success('post Edited successfully');
       if (response.status === 200) {
         console.log("Post edited successfully:", response.data);
         setTitle("");
@@ -72,7 +73,7 @@ function ViewEditPost() {
 
   const deletePost = async() => {
     try{
-      const response = axios.delete(`https://blog-backend-two-flame.vercel.app/blog/posts/${email}/${PostId}`);
+      const response = axios.delete(`http://localhost:3000/blog/posts/${email}/${PostId}`);
       console.log("deleted response",response);
       toast.success('post deleted successfully') ;
       navigate("/home"); // Redirect to the homepage
@@ -87,7 +88,7 @@ function ViewEditPost() {
     const getSinglrPost = async () => {
       try {
         const response = await axios.get(
-          `https://blog-backend-two-flame.vercel.app/blog/posts/${email}/${PostId}`
+          `http://localhost:3000/blog/posts/${email}/${PostId}`
         );
         const postData = response.data.data;
         setSinglePostData(postData);
@@ -104,15 +105,15 @@ function ViewEditPost() {
 
   console.log("single post data", singlePostData);
   return (
-    <div className="w-full min-h-screen  pb-10">
+    <div className="w-full h-auto">
       <NavBar />
-      <div className="h-screen w-11/12  flex flex-col justify-center items-center  m-auto mt-10">
-        <div className={`${edit?'hidden':'md:w-6/12 w-11/12 bg-white flex flex-col p-4 h-auto   items-center'}`}>
-          <div className="flex justify-between w-full items-center">
+      <div className="h-auto w-11/12  flex flex-col justify-center items-center  m-auto mt-10">
+        <div className={`${edit?'hidden':'md:w-6/12 w-11/12 bg-[#091533] flex flex-col p-4 h-auto   items-center'}`}>
+          <div className="flex  justify-between w-full items-center">
             <div className="flex justify-between gap-2 items-center">
               <img src={avatar1} className="md:w-8 w-5 rounded-md" />
               <h3 className="flex flex-col items-center justify-center ">
-                <p className="md:text-md text-sm w-full font-bold">
+                <p className="md:text-md text-white text-sm w-full font-bold">
                   {singlePostData.authorname}
                 </p>
                 <p className="md:text-sm text-xs font-semibold text-gray-500">
@@ -133,17 +134,17 @@ function ViewEditPost() {
 
           
           </div>
-          <h3 className="w-full  mb-2 mt-2 text-left text-lg md:text-3xl font-bold">
+          <h3 className="w-full text-white  mb-2 mt-2 text-left text-lg md:text-3xl font-bold">
                 {singlePostData.title}
             </h3>
 
           <img
-            src={`https://blog-backend-two-flame.vercel.app${singlePostData.image}`}
+            src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`}
             className="w-full h-fit"
             alt=""
           />
 
-          <p className="w-full text-justify leading-relaxed text-gray-600 text-md">
+          <p className="w-full text-justify leading-relaxed text-gray-300 text-md">
             {singlePostData.description}
           </p>
         </div>
@@ -191,7 +192,7 @@ function ViewEditPost() {
               current Post
             </label>{" "}
             <br />
-           <img src={`https://blog-backend-two-flame.vercel.app${singlePostData.image}`} className="w-40" alt="" />
+           <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`} className="w-40" alt="" />
           </div>
 
           <div className="w-11/12 mt-5">
@@ -228,13 +229,14 @@ function ViewEditPost() {
 
           <button
             type="submit"
-            className="px-3 mt-5 md:mt-0 py-1 bg-[#40407a] text-[#f7f1e3] rounded-md"
+            className="px-3 mt-5 md:mt-0 py-1 bg-[#40407a] text-sm md:text-base text-[#f7f1e3] rounded-md"
           >
             EDIT POST{" "}
           </button>
         </form>
       </div>
       <ToastContainer />
+      <Footer/>
     </div>
   );
 }

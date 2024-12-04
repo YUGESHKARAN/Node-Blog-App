@@ -3,6 +3,26 @@ const cors = require("cors");
 const path = require("path");
 const connectToDatabase = require("./db"); // Import database connection
 
+// s3 integration
+const { S3Client,PutObjectCommand } = require("@aws-sdk/client-s3");
+require('dotenv').config()
+
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+const accessKey = process.env.ACCESS_KEY;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
+
+
+const s3 = new S3Client({
+  credentials:{
+    accessKeyId:accessKey,
+    secretAccessKey:secretAccessKey,
+  },
+  region:bucketRegion
+})
+
+
 const PORT = process.env.PORT || 3000; // Use environment port or default to 3000
 const app = express();
 

@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 import { useLocation, useParams } from 'react-router-dom';
+import Footer from "./Footer";
 
 function ViewPage() {
     // const { logout } = useAuth();
@@ -32,7 +33,7 @@ function ViewPage() {
       const getSinglrPost = async () => {
         try {
           const response = await axios.get(
-            `https://blog-backend-two-flame.vercel.app/blog/posts/${email}/${id}`
+            `http://localhost:3000/blog/posts/${email}/${id}`
           );
           const postData = response.data.data;
           console.log(response.data)
@@ -53,48 +54,55 @@ function ViewPage() {
 
     // console.log("passed id",PostId)
   return (
-    <div className="w-full min-h-screen  pb-10">
+    <div className="w-full h-auto bg-gray-500  ">
       <NavBar />
       
-      <div className="min-h-screen h-auto md:w-3/6 p-7 md:p-10  flex flex-col justify-center items-center  m-auto mt-10">
+      <div className="md:min-h-screen h-auto md:w-3/6 p-2  md:p-7 md:p-10  flex flex-col justify-center items-center  m-auto md:mt-10">
       
-      <div className="'w-fit bg-white flex flex-col p-4 h-auto   items-center">
+      <div className="'w-fit  flex bg-[#091533] flex-col p-4 h-auto   items-center">
           <div className="flex justify-between w-full items-center">
             <div className="flex justify-between gap-2 items-center">
-              <img src={`https://blog-backend-two-flame.vercel.app${singlePostData.profile}`} className="md:w-8 w-5 rounded-md" />
+              <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`} className="md:w-8 w-5 rounded-md" />
               <h3 className="flex flex-col items-center justify-center ">
-                <p className="md:text-md  text-sm w-full font-bold">
+                <p className="md:text-md text-white text-sm w-full font-bold">
                   {singlePostData.authorname}
                 </p>
-                <p className="md:text-sm w-full text-xs  font-semibold text-gray-500">
+                <p className="md:text-sm w-full text-xs  font-semibold text-gray-400">
                   {singlePostData.timestamp?singlePostData.timestamp.slice(0,10):'null'}
                 </p>
               </h3>
             </div>  
             <div className="flex justify-start ">
       <button
-          className="bg-[#30336b] px-3 py-1 mg:text-base text-xs text-white"
+          className="bg-[#F8EFBA] px-3 py-1 mg:text-base text-xs text-[#182C61]"
           onClick={() => navigate('/home')}
         >
           back
         </button>
       </div>
           </div>
-          <h3 className="w-full  mb-2 mt-2 text-left text-lg md:text-3xl font-bold">
+          <h3 className="w-full text-white  mb-2 mt-2 text-left text-lg md:text-3xl font-bold">
                 {singlePostData.title}
             </h3>
 
           <img
-            src={`https://blog-backend-two-flame.vercel.app${singlePostData.image}`}
+            // src={`https://blog-backend-two-flame.vercel.app${singlePostData.image}`}
+            src={
+              singlePostData.image 
+                ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`
+                : blog1
+            }
             className="w-full h-fit"
             alt=""
           />
 
-          <p className="w-full text-justify leading-relaxed text-gray-600 text-md">
+          <p className="w-full text-justify leading-relaxed text-gray-300 text-md">
             {singlePostData.description}
           </p>
         </div>
         </div>
+
+        <Footer/>
     </div>
   )
 }

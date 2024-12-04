@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
+import Footer from './Footer';
 function AddPost() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -28,7 +29,7 @@ function AddPost() {
 
 
     try {
-      const response = await axios.post(`https://blog-backend-two-flame.vercel.app/blog/posts/${email}`,formData, {
+      const response = await axios.post(`http://localhost:3000/blog/posts/${email}`,formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
@@ -54,11 +55,11 @@ function AddPost() {
 
 
   return (
-    <div className='w-full min-h-screen bg-[#f0ecd7] pb-10'>
+    <div className='w-full h-auto  '>
       <NavBar />
-      <h1 className='text-center font-semibold text-2xl mt-10'>Add Post</h1>
+      <h1 className='text-center font-semibold text-lg md:text-2xl mt-10'>+ Add a Post</h1>
 
-      <form onSubmit={handleSubmit} className='flex flex-col rounded-md items-center justify-center p-5 w-8/12 gap-5 m-auto  border-2 border-black'>
+      <form onSubmit={handleSubmit} className='flex flex-col rounded-md items-center justify-center p-5 w-11/12 md:w-8/12 gap-5 m-auto  border-2 border-black'>
         <div className='w-11/12 mt-5'>
           <label htmlFor="title" className='text-md  font-semibold '>Title</label> <br />
           <input
@@ -98,12 +99,19 @@ function AddPost() {
             <option value="Education">Education</option>
             <option value="Food">Food</option>
             <option value="Technology">Technology</option>
+            <option value="Job">Job</option>
             <option value="Agriculture">Agriculture</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Hospitality">Hospitality</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Intrenship">Intrenship</option>
           </select>
         </div>
-        <button type='submit' className='px-3 py-1 bg-[#192a56] hover:bg-[#273c75] transition-all duration-800 text-[#f7f1e3] rounded-md'>ADD POST </button>
+        <button type='submit' className='px-3 py-1 bg-[#192a56] hover:bg-[#273c75] transition-all text-sm md:text-base duration-800 text-[#f7f1e3] rounded-md'>ADD POST </button>
       </form>
       <ToastContainer />
+
+      <Footer/>
     </div>
   );
 }

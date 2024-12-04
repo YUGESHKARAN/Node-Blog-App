@@ -66,9 +66,9 @@ function LoginPage() {
   };
 
   return (
-    <div className="text-blue-600 text-md font-semibold w-full h-screen  bg-[#F8EFBA] flex justify-center items-center">
+    <div className="text-blue-600 text-md font-semibold w-full h-screen  bg-[#130f40] flex justify-center items-center">
       <div className="bg-white w-11/12 md:w-fit p-16 rounded-md">
-        <h2 className="text-center text-[#F97F51] text-xl">{title}</h2>
+        <h2 className="text-center text-[#130f40] text-xl">{title}</h2>
         <form className="md:w-96 w-full mx-auto md:p-4">
           {success && <p className="text-green-500">{success}</p>}
           {errors.apiError && <p className="text-red-500">{errors.apiError}</p>}
@@ -111,7 +111,7 @@ function LoginPage() {
             className={`${
               forgotPassword
                 ? "hidden"
-                : "w-full bg-[#F97F51] hover:bg-[#cd6133] md:text-base text-sm transition-all duration-200 text-white font-bold py-2 px-4 rounded"
+                : "w-full bg-[#130f40] hover:bg-[#30336b] md:text-base text-sm transition-all duration-200 text-white font-bold py-2 px-4 rounded"
             }`}
           >
             Login
@@ -122,7 +122,7 @@ function LoginPage() {
             type="submit"
             className={`${
               forgotPassword
-                ? "w-full bg-[#F97F51] hover:bg-[#cd6133] md:text-base text-sm transition-all duration-200 text-white font-bold py-2 px-4 rounded"
+                ? "w-full bg-[#130f40] hover:bg-[#30336b] md:text-base text-sm transition-all duration-200 text-white font-bold py-2 px-4 rounded"
                 : "hidden"
             }`}
           >
@@ -138,12 +138,12 @@ function LoginPage() {
           }}
           className="mt-4 flex px-4 justify-start md:text-base text-xs gap-2 text-gray-600 cursor-pointer"
         >
-          Forgot Password? <span className="text-[#ff793f] md:text-base text-xs hover:underline">Click here</span>
+          Forgot Password? <span className="text-[#130f40] md:text-base text-xs hover:underline">Click here</span>
         </p>
 
         <p className="mt-4 px-4 md:text-base text-xs text-gray-600">
           Don't have an account?{" "}
-          <Link to="/register" className="text-[#ff793f] hover:underline">
+          <Link to="/register" className="text-[#130f40] hover:underline">
             Register here
           </Link>
         </p>
