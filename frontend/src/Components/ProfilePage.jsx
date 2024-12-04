@@ -23,7 +23,7 @@ function ProfilePage() {
   const deleteAuthor = async () => {
     try {
       const response = await axios.delete(
-        `https://blog-backend-two-flame.vercel.app/blog/author/${email}`
+        `https://node-blog-app-seven.vercel.app/blog/author/${email}`
       );
       console.log(response.data);
       toast.success("post deleted successfully");
@@ -37,7 +37,7 @@ function ProfilePage() {
     const fetchAuthor = async () => {
       try {
         const response = await axios.get(
-          `https://blog-backend-two-flame.vercel.app/blog/author/${email}`
+          `https://node-blog-app-seven.vercel.app/blog/author/${email}`
         );
         // console.log("Author data", response.data)
         const authorData = response.data;

@@ -19,7 +19,7 @@ function BlogContainer() {
   const getData = async () => {
     // const email = localStorage.getItem("email");
     try {
-      const response = await axios.get(`http://localhost:3000/blog/posts/`);
+      const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/posts/`);
       console.log("data", response.data);
       setPosts(response.data.posts);
     } catch (err) {

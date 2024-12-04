@@ -16,7 +16,7 @@ function HomePage() {
 
   const getAuthors = async()=>{
     try{
-      const response = await axios.get('http://localhost:3000/blog/author')
+      const response = await axios.get('https://node-blog-app-seven.vercel.app/blog/author')
       setAuthors(response.data);
       console.log("authors",response.data);
     }
@@ -34,7 +34,7 @@ function HomePage() {
   const getData = async () => {
     // const email = localStorage.getItem("email");
     try {
-      const response = await axios.get(`http://localhost:3000/blog/posts/`);
+      const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/posts/`);
       console.log("data", response.data);
       setCategoryCount(response.data.count)
       setPosts(response.data.posts);

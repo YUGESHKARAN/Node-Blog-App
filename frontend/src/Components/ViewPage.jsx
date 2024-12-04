@@ -33,7 +33,7 @@ function ViewPage() {
       const getSinglrPost = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:3000/blog/posts/${email}/${id}`
+            `hhttps://node-blog-app-seven.vercel.app/blog/posts/${email}/${id}`
           );
           const postData = response.data.data;
           console.log(response.data)

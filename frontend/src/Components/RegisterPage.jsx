@@ -48,7 +48,7 @@ function RegisterPage() {
       try {
         // Send a POST request to the API using axios
         const response = await axios.post(
-          "https://blog-backend-two-flame.vercel.app/blog/author",
+          "https://node-blog-app-seven.vercel.app/blog/author",
           {
             authorname:formData.username,
             email:formData.email,

@@ -29,7 +29,7 @@ function AddPost() {
 
 
     try {
-      const response = await axios.post(`http://localhost:3000/blog/posts/${email}`,formData, {
+      const response = await axios.post(`https://node-blog-app-seven.vercel.app/blog/posts/${email}`,formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }

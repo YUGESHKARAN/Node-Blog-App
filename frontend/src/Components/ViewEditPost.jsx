@@ -43,7 +43,7 @@ function ViewEditPost() {
     try {
       // Send FormData object directly to the API
       const response = await axios.put(
-        `http://localhost:3000/blog/posts/${email}/${PostId}`,
+        `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`,
         formData,
         {
           headers: {
@@ -73,7 +73,7 @@ function ViewEditPost() {
 
   const deletePost = async() => {
     try{
-      const response = axios.delete(`http://localhost:3000/blog/posts/${email}/${PostId}`);
+      const response = axios.delete(`https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`);
       console.log("deleted response",response);
       toast.success('post deleted successfully') ;
       navigate("/home"); // Redirect to the homepage
@@ -88,7 +88,7 @@ function ViewEditPost() {
     const getSinglrPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/blog/posts/${email}/${PostId}`
+          `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`
         );
         const postData = response.data.data;
         setSinglePostData(postData);

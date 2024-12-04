@@ -22,7 +22,7 @@ function LoginPage() {
 
     try {
       // Send a POST request to the updated API endpoint
-      const response = await axios.post("https://blog-backend-two-flame.vercel.app/blog/login", formData);
+      const response = await axios.post("https://node-blog-app-seven.vercel.app/blog/login", formData);
       // console.log("response",response.data.message)
       if (response.status === 200) {
         setSuccess("Login successful!");
@@ -42,7 +42,7 @@ function LoginPage() {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`https://blog-backend-two-flame.vercel.app/blog/author/${email}`, {
+      const response = await axios.put(`https://node-blog-app-seven.vercel.app/blog/author/${email}`, {
         password: newPassword,
       });
 
