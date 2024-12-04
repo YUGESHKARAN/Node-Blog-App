@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const serverless = require('serverless-http');
 const connectToDatabase = require("./db"); // Import database connection
 
 // s3 integration
@@ -53,14 +54,17 @@ app.get("/", (req, res) => {
 });
 
 // Set a timeout for requests
-app.use((req, res, next) => {
-  req.setTimeout(5000, () => {
-    res.status(504).send("Request timed out.");
-  });
-  next();
-});
+// app.use((req, res, next) => {
+//   req.setTimeout(5000, () => {
+//     res.status(504).send("Request timed out.");
+//   });
+//   next();
+// });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server connected on port ${PORT}`);
-});
+// // Start the server
+// app.listen(PORT, () => {
+//   console.log(`Server connected on port ${PORT}`);
+// });
+
+module.exports = app;
+module.exports.handler = serverless(app); // Wrap Express app
