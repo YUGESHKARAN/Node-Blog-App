@@ -54,12 +54,12 @@ app.get("/", (req, res) => {
 });
 
 // Set a timeout for requests
-// app.use((req, res, next) => {
-//   req.setTimeout(5000, () => {
-//     res.status(504).send("Request timed out.");
-//   });
-//   next();
-// });
+app.use((req, res, next) => {
+  req.setTimeout(5000, () => {
+    res.status(504).send("Request timed out.");
+  });
+  next();
+});
 
 // // Start the server
 // app.listen(PORT, () => {
