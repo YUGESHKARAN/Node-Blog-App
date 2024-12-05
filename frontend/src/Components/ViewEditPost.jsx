@@ -105,7 +105,7 @@ function ViewEditPost() {
 
   console.log("single post data", singlePostData);
   return (
-    <div className="relative w-full min-h-screen">
+    <div className="relative w-full h-auto min-h-[900px]">
       <NavBar />
       <div className="h-auto w-11/12  flex flex-col justify-center items-center  m-auto mt-10">
         <div className={`${edit?'hidden':'md:w-6/12 w-11/12 bg-[#091533] flex flex-col p-4 h-auto   items-center'}`}>
@@ -236,7 +236,7 @@ function ViewEditPost() {
         </form>
       </div>
       <ToastContainer />
-      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full">
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full">
       <Footer/>
 
       </div>
