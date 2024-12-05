@@ -94,10 +94,14 @@ function HomePage() {
 
 
         </div>
-        
-      <BlogContainer/>
 
+        <div className="min-h-screen h-auto">
+          <BlogContainer/>
+        </div>
+        
       <Footer/>
+
+      
 
     </div>
   )

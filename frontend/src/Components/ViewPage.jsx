@@ -54,7 +54,7 @@ function ViewPage() {
 
     // console.log("passed id",PostId)
   return (
-    <div className="w-full h-auto bg-gray-500  ">
+    <div className="w-full min-h-screen reltive bg-gray-500  ">
       <NavBar />
       
       <div className="md:min-h-screen h-auto md:w-3/6 p-2  md:p-7 md:p-10  flex flex-col justify-center items-center  m-auto md:mt-10">
@@ -102,7 +102,10 @@ function ViewPage() {
         </div>
         </div>
 
-        <Footer/>
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full">
+      <Footer/>
+
+      </div>
     </div>
   )
 }

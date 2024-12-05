@@ -58,7 +58,7 @@ function AddPost() {
     <div className='w-full h-auto  '>
       <NavBar />
 
-    <div className='h-screen pt-10'>
+    <div className='h-auto  relative pt-10'>
     <h1 className='text-center font-semibold text-lg md:text-2xl mb-10'>+ Add a Post</h1>
 
 
@@ -116,8 +116,10 @@ function AddPost() {
 
     </div>
 
-
+    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full">
       <Footer/>
+
+      </div>
     </div>
   );
 }

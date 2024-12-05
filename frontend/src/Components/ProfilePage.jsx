@@ -101,10 +101,10 @@ function ProfilePage() {
   console.log("author profile", image);
 
   return (
-    <div className="w-full h-auto ">
+    <div className="w-full  h-screen relative ">
       <NavBar />
 
-    <div className="h-screen pt-20">
+    <div className="h-auto pt-20 ">
       
       <div className="h-auto mt-5 md:p-10 bg-opacity-50 w-11/12 p-7 md:w-6/12 m-auto rounded-md border-2 border-black">
         <div className="flex w-full justify-end items-end">
@@ -156,13 +156,17 @@ function ProfilePage() {
 
           <button className="mt-10 bg-[#9c88ff] px-3 py-2 text-md text-white rounded-md">Update My Details</button>
         </form>
+       
       </div>
-
+      
+      
     </div>
+    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full">
+      <Footer/>
 
+      </div>
       <ToastContainer />
 
-      <Footer/>
     </div>
   );
 }
