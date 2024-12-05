@@ -104,7 +104,7 @@ function ProfilePage() {
     <div className="w-full h-auto ">
       <NavBar />
 
-    <div className="h-screen pt-32">
+    <div className="h-screen pt-20">
       
       <div className="h-auto mt-5 md:p-10 bg-opacity-50 w-11/12 p-7 md:w-6/12 m-auto rounded-md border-2 border-black">
         <div className="flex w-full justify-end items-end">

@@ -58,7 +58,7 @@ function AddPost() {
     <div className='w-full h-auto  '>
       <NavBar />
 
-    <div className='h-screen pt-20'>
+    <div className='h-screen pt-10'>
     <h1 className='text-center font-semibold text-lg md:text-2xl mb-10'>+ Add a Post</h1>
 
 
