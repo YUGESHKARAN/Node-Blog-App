@@ -97,7 +97,7 @@ function BlogContainer() {
          
             <div
               key={index}
-              className="lg:w-3/12 md:w-1/3 bg-[#091533] md:pb-2  flex flex-col shadow-xl h-auto md:h-fit  gap-0  p-4 rounded-xl"
+              className="lg:w-3/12 md:w-1/3 bg-[#091533] md:pb-2  flex flex-col shadow-xl  h-auto md:h-fit  gap-0  p-4 rounded-xl"
             >
             
               <img

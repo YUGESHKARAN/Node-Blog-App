@@ -57,9 +57,12 @@ function AddPost() {
   return (
     <div className='w-full h-auto  '>
       <NavBar />
-      <h1 className='text-center font-semibold text-lg md:text-2xl mt-10'>+ Add a Post</h1>
 
-      <form onSubmit={handleSubmit} className='flex flex-col rounded-md items-center justify-center p-5 w-11/12 md:w-8/12 gap-5 m-auto  border-2 border-black'>
+    <div className='h-screen pt-20'>
+    <h1 className='text-center font-semibold text-lg md:text-2xl mb-10'>+ Add a Post</h1>
+
+
+      <form onSubmit={handleSubmit} className='flex flex-col  rounded-md items-center justify-center p-5 w-11/12 md:w-8/12 gap-5 m-auto  border-2 border-black'>
         <div className='w-11/12 mt-5'>
           <label htmlFor="title" className='text-md  font-semibold '>Title</label> <br />
           <input
@@ -110,6 +113,9 @@ function AddPost() {
         <button type='submit' className='px-3 py-1 bg-[#192a56] hover:bg-[#273c75] transition-all text-sm md:text-base duration-800 text-[#f7f1e3] rounded-md'>ADD POST </button>
       </form>
       <ToastContainer />
+
+    </div>
+
 
       <Footer/>
     </div>

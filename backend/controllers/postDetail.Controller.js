@@ -1,6 +1,8 @@
 const Author = require("../models/blogAuthorSchema");
 const path = require('path');
 
+const sharp = require('sharp');
+
 // s3 integration
 const { S3Client,PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 require('dotenv').config()
@@ -87,11 +89,14 @@ const addPosts = async (req, res) => {
     if (!author) {
       return res.status(404).json({ message: "author not found" });
     }
+
+    // resizeing the image
+    const buffer = await sharp(req.file.buffer).resize({width:672,height:462,fit:'contain'}).toBuffer()
      // S3 Integration
      const params = {
       Bucket:bucketName,
       Key:req.file.originalname,
-      Body:req.file.buffer,
+      Body:buffer,
       ContentType:req.file.mimetype
     }
 
