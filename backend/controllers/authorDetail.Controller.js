@@ -77,30 +77,25 @@ const updateAuthor = async (req, res) => {
       return res.status(404).json({ message: "Author not found" });
     }
 
-     
-      if(req.file)
-      {
-         // S3 Integration
+      // S3 Integration
       const params = {
         Bucket:bucketName,
-        Key:profile,
+        Key:req.file.originalname,
         Body:req.file.buffer,
         ContentType:req.file.mimetype
       }
   
       const command = new PutObjectCommand(params)
+      if(req.file)
+      {
         await s3.send(command)
-
-        // Update the author's profile image
-      author.profile = req.file.originalname;
+        Object.assign(author, {authorname,email,profile});
       }
       console.log("profile data",req.file)
 
-   // Update other fields (authorname and email)
-    author.authorname = authorname || author.authorname; // Use existing value if not provided
-    author.email = email || author.email;
-
-   const data = await author.save();
+    // Object.assign(post, { title, image, description, category });
+    Object.assign(author, {authorname,email});
+    data = await author.save();
     res.status(201).json({ message: "author updated successfully", data });
 
   } catch (err) {
