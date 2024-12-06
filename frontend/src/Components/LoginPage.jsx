@@ -42,7 +42,7 @@ function LoginPage() {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`https://node-blog-app-seven.vercel.app/blog/author/${email}`, {
+      const response = await axios.put(`https://node-blog-app-seven.vercel.app/blog/author/password/${email}`, {
         password: newPassword,
       });
 

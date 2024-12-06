@@ -103,6 +103,37 @@ const updateAuthor = async (req, res) => {
   }
 };
 
+
+const updateAPassword = async (req, res) => {
+  const { password } = req.body;
+  const { email } = req.params;  // Email is passed via the URL parameters
+
+  try {
+    // Find the author by email
+    const author = await Author.findOne({ email });
+
+    if (!author) {
+      return res.status(404).json({ message: "Author not found" });
+    }
+
+    // Update the author's password
+    author.password = password;
+
+    // Save the updated author object
+    const data = await author.save();
+
+    // Return a success message with status 200
+    res.status(200).json({ message: "Password updated successfully", data });
+
+  } catch (err) {
+    // Handle server errors
+    console.error("Error updating password:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+
 const deleteAuthor = async (req, res) => {
   const { email } = req.params;
   try {
@@ -120,5 +151,6 @@ module.exports = {
   getAllAuthor,
   getSingleAuthor,
   updateAuthor,
+  updateAPassword,
   deleteAuthor,
 };
