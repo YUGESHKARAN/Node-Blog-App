@@ -101,10 +101,10 @@ function ProfilePage() {
   console.log("author profile", image);
 
   return (
-    <div className="w-full  h-screen relative ">
+    <div className="w-full  min-h-screen h-auto relative ">
       <NavBar />
 
-    <div className="h-auto pt-20 ">
+    <div className="h-auto min-h-screen md:pt-10 ">
       
       <div className="h-auto mt-5 md:p-10 bg-opacity-50 w-11/12 p-7 md:w-6/12 m-auto rounded-md border-2 border-black">
         <div className="flex w-full justify-end items-end">

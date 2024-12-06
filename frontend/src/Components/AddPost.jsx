@@ -55,14 +55,14 @@ function AddPost() {
 
 
   return (
-    <div className='w-full h-auto  '>
+    <div className='w-full h-screen  '>
       <NavBar />
 
-    <div className='h-auto  relative pt-10'>
-    <h1 className='text-center font-semibold text-lg md:text-2xl mb-10'>+ Add a Post</h1>
+    <div className='min-h-screen    pt-10'>
 
+      <h1 className='text-center font-semibold text-lg md:text-2xl mb-10'>+ Add a Post</h1>
 
-      <form onSubmit={handleSubmit} className='flex flex-col  rounded-md items-center justify-center p-5 w-11/12 md:w-8/12 gap-5 m-auto  border-2 border-black'>
+      <form onSubmit={handleSubmit} className='flex flex-col  rounded-md items-center justify-center p-5 w-11/12 md:w-6/12 gap-5 m-auto  border-2 border-black'>
         <div className='w-11/12 mt-5'>
           <label htmlFor="title" className='text-md  font-semibold '>Title</label> <br />
           <input
@@ -116,7 +116,7 @@ function AddPost() {
 
     </div>
 
-    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full">
+    <div className="  w-full">
       <Footer/>
 
       </div>
