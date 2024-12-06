@@ -73,7 +73,7 @@ function ProfilePage() {
     try {
       // Send FormData object directly to the API
       const response = await axios.put(
-        `http://localhost:3000/blog/author/${email}`,
+        `https://node-blog-app-seven.vercel.app/blog/author/${email}`,
         formData,
         {
           headers: {
