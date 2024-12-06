@@ -46,7 +46,7 @@ function LoginPage() {
         password: newPassword,
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         setSuccess("Password updated successfully!");
         setForgotPassword(false);
         setPasswordLabel("Password");

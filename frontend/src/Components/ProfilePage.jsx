@@ -65,8 +65,10 @@ function ProfilePage() {
     formData.append("authorname", authorName);
     formData.append("email", authorEmail);
 
-    if (image) {
-      formData.append("profile", image);
+    if (typeof image === "object") {
+      formData.append("profile", image); // New image
+    } else {
+      formData.append("profile", author.profile); // Existing image from the server
     }
     
 
