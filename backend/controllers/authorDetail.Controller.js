@@ -68,7 +68,7 @@ const addAuthor = async (req, res) => {
 };
 
 const updateAuthor = async (req, res) => {
-  const { authorname, email } = req.body;
+  const { authorname,password, email } = req.body;
   const profile = req.file ? req.file.originalname : '';
   try {
     const author = await Author.findOne({ email: req.params.email });
@@ -89,11 +89,12 @@ const updateAuthor = async (req, res) => {
       if(req.file)
       {
         await s3.send(command)
+        Object.assign(author, {authorname,email,profile});
       }
       console.log("profile data",req.file)
 
     // Object.assign(post, { title, image, description, category });
-    Object.assign(author, {authorname,email,profile});
+    Object.assign(author, {authorname,password,email});
     data = await author.save();
     res.status(201).json({ message: "author updated successfully", data });
 
