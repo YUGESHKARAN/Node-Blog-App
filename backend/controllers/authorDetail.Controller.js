@@ -95,8 +95,8 @@ const updateAuthor = async (req, res) => {
       console.log("profile data",req.file)
 
     // Object.assign(post, { title, image, description, category });
-    author.authorname=authorname||author.authorname;
-    author.email = email||author.email;
+    author.authorname =authorname;
+    author.email = email;
     data = await author.save();
     res.status(201).json({ message: "author updated successfully", data });
 
