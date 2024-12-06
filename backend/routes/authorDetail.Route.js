@@ -8,6 +8,7 @@ const {
   addAuthor,
   getSingleAuthor,
   updateAuthor,
+  updateAPassword,
   deleteAuthor,
 } = require("../controllers/authorDetail.Controller");
 
@@ -35,7 +36,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 router.put("/:email",upload.single('profile'), updateAuthor);
-router.put("/password/:email", updateAuthor);
+router.put("/password/:email", updateAPassword);
 
 router.post("/", addAuthor);
 
