@@ -90,13 +90,13 @@ const updateAuthor = async (req, res) => {
   
       const command = new PutObjectCommand(params)
         await s3.send(command)
-        author.profile = req.file.originalname; 
+        author.profile = profile; 
       }
       console.log("profile data",req.file)
 
     // Object.assign(post, { title, image, description, category });
-    author.name=authorname;
-    author.email = email;
+    author.name=authorname|| author.authorname;
+    author.email = email||author.email;
     data = await author.save();
     res.status(201).json({ message: "author updated successfully", data });
 
