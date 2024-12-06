@@ -77,17 +77,18 @@ const updateAuthor = async (req, res) => {
       return res.status(404).json({ message: "Author not found" });
     }
 
-      // S3 Integration
+    
+      if(req.file)
+      {
+          // S3 Integration
       const params = {
         Bucket:bucketName,
-        Key:req.file.originalname,
+        Key:profile,
         Body:req.file.buffer,
         ContentType:req.file.mimetype
       }
   
       const command = new PutObjectCommand(params)
-      if(req.file)
-      {
         await s3.send(command)
         author.profile = req.file.originalname; 
       }

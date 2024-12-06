@@ -82,8 +82,8 @@ function ProfilePage() {
         }
       );
       toast.success("Author Edited successfully");
-      navigate("/home");
-      if (response.status === 200) {
+      
+      if (response.status === 201) {
         console.log("Post edited successfully:", response.data);
 
         toast.success("post Edited successfully");
