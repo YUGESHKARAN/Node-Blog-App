@@ -63,6 +63,7 @@ function ProfilePage() {
 
     const formData = new FormData();
     formData.append("authorname", authorName);
+    localStorage.setItem('username',authorName);
     formData.append("email", authorEmail);
 
     if (image!=='') {
