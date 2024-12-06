@@ -86,7 +86,10 @@ const updateAuthor = async (req, res) => {
       }
   
       const command = new PutObjectCommand(params)
-      await s3.send(command)
+      if(req.file)
+      {
+        await s3.send(command)
+      }
       console.log("profile data",req.file)
 
     // Object.assign(post, { title, image, description, category });
