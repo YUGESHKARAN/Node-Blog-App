@@ -138,7 +138,7 @@ const updatePost = async (req, res) => {
     const params = {
       Bucket:bucketName,
       Key:req.file.originalname,
-      Body:image,
+      Body:req.file.originalname,
       ContentType:req.file.mimetype
     }
 
