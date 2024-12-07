@@ -132,17 +132,20 @@ const updatePost = async (req, res) => {
 
     Object.assign(post, { title, image, description, category });
 
-    // s3 Integration
+    if(req.file)
+    {
+      // s3 Integration
     const params = {
       Bucket:bucketName,
       Key:req.file.originalname,
-      Body:req.file.buffer,
+      Body:image,
       ContentType:req.file.mimetype
     }
 
     const command = new PutObjectCommand(params)
     await s3.send(command)
     console.log("Updated data",req.file)
+    }
 
     const updatedAuthor = await author.save();
 
