@@ -93,7 +93,7 @@ function BlogContainer() {
         className={`${
           postCategory === ""
             ? "w-full flex h-8 justify-end  text-black"
-            : "w-full flex h-8 justify-between  text-black"
+            : "w-full flex h-8 justify-between mb-5 text-black"
         }`}
       >
         <button
@@ -197,7 +197,7 @@ function BlogContainer() {
             .map((data, index) => (
               <div
                 key={index}
-                className="lg:w-3/12 md:w-1/3 mx-auto bg-[#091533] flex flex-col shadow-xl  h-auto md:h-96  gap-0  p-4 rounded-xl"
+                className="lg:w-3/12 md:w-1/3 mx-auto bg-[#091533] flex flex-col shadow-xl  h-auto md:h-96  gap-0 mb-16   p-4 rounded-xl"
               >
                 <img
                   src={
