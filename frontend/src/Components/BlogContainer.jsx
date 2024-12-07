@@ -5,7 +5,7 @@ import blog1 from "../images/blog1.jpg";
 // import avatar from '../assets/avatars/avatar.png';
 import avatar1 from "../images/avatar1.jpg";
 // import { Select } from "@mui/material";
-import { IoEye } from "react-icons/io5";
+import { IoEye, IoSearchOutline } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 
 import { Link } from "react-router-dom";
@@ -15,6 +15,7 @@ function BlogContainer() {
   const email = localStorage.getItem("email");
   const [postCategory, setPostCategory] = useState("");
   const [posts, setPosts] = useState([]);
+  const [searchTerm,setSearchTerm] = useState('');
   // const [categoryArray,setCategoryArray] = useState()
   const getData = async () => {
     // const email = localStorage.getItem("email");
@@ -31,19 +32,6 @@ function BlogContainer() {
     getData();
   }, []);
 
-  // get posts data based on selected category
-  //   const handleCategory = async (category) =>{
-
-  //    try{
-  //     const response = await axios.get(`https://blog-backend-two-flame.vercel.app/blog/posts/${category}`);
-  //     console.log("selected category data", response.data)
-  //     setCategoryArray(response.data) ;
-  //    }
-  //    catch(err){
-  //  console.log("error",err) ;
-  //     }
-
-  //  hd }
    
   // Function to get unique categories
   const getUniqueCategories = (posts) => {
@@ -52,11 +40,55 @@ function BlogContainer() {
       .filter((value, index, self) => self.indexOf(value) === index); // Remove duplicates
   };
 
+  const handleSearch= (e) => {
+    setSearchTerm(e.target.value)
+  }
+  // search function starts here
+  const filterdPost = posts.filter((post)=>
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.category.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
   console.log("stored posts", posts);
   console.log("category selected", postCategory);
   // console.log('select check',categoryArray)
   return (
-    <div className="flex  w-11/12 gap-16 flex-wrap   justify-center h-auto m-auto">
+    <div className="flex  w-11/12 md:gap-16 flex-wrap   justify-center h-auto mx-auto">
+
+      {/* Search bar */}
+     <div className="w-full  flex items-center gap-2 justify-center">
+      <div className="md:w-72 w-52 flex border border-gray-600 rounded-xl p-2 bg-white justify-center gap-2 items-center my-4">
+        <IoSearchOutline className="text-2xl"/>
+          <input
+            type="text"
+            placeholder="Search by title or category"
+            value={searchTerm}
+            onChange={handleSearch}
+            className="bg-transparent focus:outline-none w-full  text-sm"
+          />
+        </div>
+
+        <select
+          name=""
+          onChange={(e) => {
+            const selectedCategory = e.target.value;
+            setPostCategory(selectedCategory);
+            // handleCategory(selectedCategory);
+          }}
+          id=""
+          className="border w-20 h-7 text-xs md:text-base rounded-lg border-gray-600 cursor-pointer"
+        >
+          {/* <option value="">Filter Category</option> */}
+          <option value="">All</option>
+          {getUniqueCategories(posts).map((category, index) => (
+            <option key={index} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+
+     </div>
+
       <div
         className={`${
           postCategory === ""
@@ -72,7 +104,7 @@ function BlogContainer() {
         >
           back
         </button>
-        <select
+        {/* <select
           name=""
           onChange={(e) => {
             const selectedCategory = e.target.value;
@@ -89,15 +121,18 @@ function BlogContainer() {
               {category}
             </option>
           ))}
-        </select>
+        </select> */}
+      </div>
+      <div>
+
       </div>
 
       {postCategory === ""
-        ? posts.map((data, index) => (
+        ? filterdPost.map((data, index) => (
          
             <div
               key={index}
-              className="lg:w-3/12 md:w-1/3 bg-[#091533] md:pb-2  flex flex-col shadow-xl  h-auto md:h-fit  gap-0  p-4 rounded-xl"
+              className="lg:w-3/12 md:w-1/3 bg-[#091533] md:pb-2  flex flex-col shadow-xl  h-auto mb-16  gap-0  p-4 rounded-xl"
             >
             
               <img
@@ -115,7 +150,7 @@ function BlogContainer() {
 
               <div className="flex justify-between items-center">
                 <div className="flex justify-between gap-2 items-center">
-                  <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`} className="w-8 rounded-md" />
+                  <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`} className="w-8 max-h-10 object-cover rounded-md" />
                   <h3 className="flex flex-col items-center justify-center ">
                     <p className="text-sm text-white w-full font-semibold">
                       {data.authorname}
@@ -162,7 +197,7 @@ function BlogContainer() {
             .map((data, index) => (
               <div
                 key={index}
-                className="lg:w-3/12 md:w-1/3  bg-[#091533] flex flex-col shadow-xl  h-auto md:h-96  gap-0  p-4 rounded-xl"
+                className="lg:w-3/12 md:w-1/3 mx-auto bg-[#091533] flex flex-col shadow-xl  h-auto md:h-96  gap-0  p-4 rounded-xl"
               >
                 <img
                   src={
@@ -199,18 +234,18 @@ function BlogContainer() {
                </Link>
                </p>
 
-             <p className={`${data.authoremail===email?'block':'hidden'}`}>
-             <Link
-                 to={{
-                   pathname: `/EditPost/${data._id}`,
-                   state: { PostId: data._id },
-                 }}
-               >
-               <MdEdit  className="text-[#ffb8b8]"/>
-             </Link>
+              <p className={`${data.authoremail===email?'block':'hidden'}`}>
+              <Link
+                  to={{
+                    pathname: `/EditPost/${data._id}`,
+                    state: { PostId: data._id },
+                  }}
+                >
+                <MdEdit  className="text-[#ffb8b8]"/>
+              </Link>
+              </p>
              </p>
-             </p>
-             <p
+                 <p
                   onClick={()=>setPostCategory(data.category)} 
                   className="px-2 py-1 rounded-md cursor-pointer flex bg-gray-300 text-gray-600 text-sm font-bold">
                     {data.category}
