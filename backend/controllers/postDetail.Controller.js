@@ -132,13 +132,17 @@ const updatePost = async (req, res) => {
 
     Object.assign(post, { title, image, description, category });
 
-    if(req.file)
+
+  if(req.file)
+  {
+    const buffer = await sharp(req.file.buffer).resize({width:672,height:462,fit:'contain'}).toBuffer()
+    if(image!=='')
     {
       // s3 Integration
     const params = {
       Bucket:bucketName,
       Key:req.file.originalname,
-      Body:req.file.originalname,
+      Body:buffer,
       ContentType:req.file.mimetype
     }
 
@@ -146,12 +150,13 @@ const updatePost = async (req, res) => {
     await s3.send(command)
     console.log("Updated data",req.file)
     }
+  }
 
-    const updatedAuthor = await author.save();
+    const updatedPost = await author.save();
 
     res
       .status(200)
-      .json({ message: "post updeted successsfully", data: updatedAuthor });
+      .json({ message: "post updeted successsfully", data: updatedPost });
   } catch (err) {
     res.send(500).json({ message: "server error", error: err.message });
   }

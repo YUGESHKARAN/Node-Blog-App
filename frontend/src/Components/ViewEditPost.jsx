@@ -229,7 +229,7 @@ function ViewEditPost() {
             <option value="Hospitality">Hospitality</option>
             <option value="Entertainment">Entertainment</option>
             <option value="Intrenship">Intrenship</option>
-            <option value="Edit">Edit</option>
+            <option value="Exam">Exam</option>
             </select>
           </div>
 

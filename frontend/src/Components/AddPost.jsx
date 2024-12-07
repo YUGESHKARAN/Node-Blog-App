@@ -108,7 +108,7 @@ function AddPost() {
             <option value="Hospitality">Hospitality</option>
             <option value="Entertainment">Entertainment</option>
             <option value="Intrenship">Intrenship</option>
-            <option value="Edit">Edit</option>
+            <option value="Exam">Exam</option>
           </select>
         </div>
         <button type='submit' className='px-3 py-1 bg-[#192a56] hover:bg-[#273c75] transition-all text-sm md:text-base duration-800 text-[#f7f1e3] rounded-md'>ADD POST </button>
