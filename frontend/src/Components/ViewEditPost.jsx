@@ -76,6 +76,7 @@ function ViewEditPost() {
       const response = axios.delete(`https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`);
       console.log("deleted response",response);
       toast.success('post deleted successfully') ;
+      
       navigate("/home"); // Redirect to the homepage
 
     }

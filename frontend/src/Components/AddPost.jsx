@@ -11,6 +11,7 @@ function AddPost() {
   const [category, setCategory] = useState('Education');
   const[image,setImage] = useState(null) ;
   const email = localStorage.getItem('email'); // Get email from local storage
+  const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
   const onImageChange = (e) =>{
   console.log(e.target.files[0]) ;
@@ -25,7 +26,7 @@ function AddPost() {
     formData.append('category', category);
     formData.append('image', image);
 
-    
+    setLoading(true)
 
 
     try {
@@ -47,6 +48,9 @@ function AddPost() {
       // Optionally, you can reset the form or redirect the user
     } catch (error) {
       console.error('Error adding post:', error);
+    }
+    finally{
+      setLoading(false);
     }
   
  
@@ -111,7 +115,13 @@ function AddPost() {
             <option value="Exam">Exam</option>
           </select>
         </div>
-        <button type='submit' className='px-3 py-1 bg-[#192a56] hover:bg-[#273c75] transition-all text-sm md:text-base duration-800 text-[#f7f1e3] rounded-md'>ADD POST </button>
+        <button
+              type="submit"
+              className="px-3 py-1 bg-[#192a56] hover:bg-[#273c75] transition-all text-sm md:text-base duration-800 text-[#f7f1e3] rounded-md"
+              disabled={loading}
+            >
+              {loading ? 'Submitting...' : 'ADD POST'}
+            </button>
       </form>
       <ToastContainer />
 

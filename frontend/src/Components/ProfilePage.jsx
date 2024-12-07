@@ -21,6 +21,10 @@ function ProfilePage() {
   console.log("check email", email);
 
   const deleteAuthor = async () => {
+
+    const confirm = window.confirm('Are you sure want to delete your account')
+    if(!confirm) return;
+    
     try {
       const response = await axios.delete(
         `https://node-blog-app-seven.vercel.app/blog/author/${email}`
