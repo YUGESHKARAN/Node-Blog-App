@@ -10,7 +10,7 @@ function Authors() {
     const [follow,setFollow] = useState(false)
     const authorsDetails = async() => {
         try{
-            const response = await axios.get('http://localhost:3000/blog/author/profiles/');
+            const response = await axios.get('https://node-blog-app-seven.vercel.app/blog/author/profiles/');
             setAuthors(response.data.filter((author)=>author.email!==email))
         }
         catch(err)
@@ -35,7 +35,7 @@ useEffect(()=>{
 const addFollower = async(userEmail) =>{
   console.log('useremail',userEmail)
   try{
-    const response = await axios.put(`http://localhost:3000/blog/author/follow/${userEmail}`,
+    const response = await axios.put(`https://node-blog-app-seven.vercel.app/blog/author/follow/${userEmail}`,
       {emailAuthor:email}
     )
     console.log(response.data)
