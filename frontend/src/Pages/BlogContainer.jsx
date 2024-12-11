@@ -56,7 +56,7 @@ function BlogContainer() {
   const postViews = async(userEmail,id) =>{
     console.log('view email',userEmail)
     try{
-      const response = await axios.put(`http://localhost:3000/blog/posts/views/${userEmail}/${id}`,
+      const response = await axios.put(`https://node-blog-app-seven.vercel.app/blog/posts/views/${userEmail}/${id}`,
         {emailAuthor:email}
       )
       console.log(response.data)
