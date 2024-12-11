@@ -53,9 +53,9 @@ console.log("authors",authors);
     <div className='w-full min-h-screen bg-gray-500 h-auto reltive  '>
         <NavBar/>
         <div className='w-11/12 mx-auto flex-col  items-center justify-center mt-10'>
-            <h2 className='w-full text-center text-3xl text-white font-semibold'>Authors Profile</h2>
+            <h2 className='w-full text-center text-xl md:text-3xl text-white font-semibold'>Authors Profile</h2>
             <div
-              className={`grid place-items-center gap-4 mt-20 md:grid-cols-2 lg:grid-cols-4`}
+              className={`grid place-items-center gap-4 mt-7 md:mt-20 md:grid-cols-2 lg:grid-cols-4`}
             >
                 {
                  authors.map((author,index)=>(
