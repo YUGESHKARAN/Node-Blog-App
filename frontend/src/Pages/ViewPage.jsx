@@ -4,12 +4,12 @@ import blog1 from "../images/blog1.jpg";
 import avatar1 from "../images/avatar1.jpg";
 // import { useParams } from "react-router-dom";
 import axios from "axios";
-import NavBar from "./NavBar";
+import NavBar from "../ui/NavBar";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 import { useLocation, useParams } from 'react-router-dom';
-import Footer from "./Footer";
+import Footer from "../ui/Footer";
 
 function ViewPage() {
     // const { logout } = useAuth();
@@ -50,11 +50,11 @@ function ViewPage() {
     }, []);
 
     console.log("recevied view data",singlePostData)
-    console.log("time",timeStamp)
+    console.log("time",timeStamp);
 
     // console.log("passed id",PostId)
   return (
-    <div className="w-full min-h-screen h-auto reltive bg-gray-500  ">
+    <div className="w-full min-h-screen h-auto reltive bg-gray-500">
       <NavBar />
       
       <div className="md:min-h-screen h-auto md:w-3/6 p-2  md:p-7 md:p-10  flex flex-col justify-center items-center  m-auto md:mt-10">

@@ -3,13 +3,14 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 import ProtectedRoute from "./ProtectedRoutes";
 
-import Login from "./Components/LoginPage";
-import Register from "./Components/RegisterPage"; // Corrected casing
-import HomePage from "./Components/HomePage";
-import AddPost from "./Components/AddPost";
-import ViewEditPost from "./Components/ViewEditPost";
-import ProfilePage from "./Components/ProfilePage"
-import ViewPage from "./Components/ViewPage";
+import Login from './auth/LoginPage.jsx'
+import Register from "./auth/RegisterPage.jsx"
+import HomePage from "./Pages/HomePage.jsx";
+import AddPost from "./Pages/AddPost.jsx";
+import ViewEditPost from "./Pages/ViewEditPost.jsx";
+import ProfilePage from "./Pages/ProfilePage.jsx"
+import ViewPage from "./Pages/ViewPage.jsx";
+import Authors from "./Pages/Authors.jsx";
 function App() {
   return (
     <AuthProvider>
@@ -40,6 +41,10 @@ function App() {
            <Route
             path="/profile"
             element={<ProtectedRoute element={<ProfilePage/>} />}
+          />
+           <Route
+            path="/authors"
+            element={<ProtectedRoute element={<Authors/>} />}
           />
         </Routes>
       </Router>

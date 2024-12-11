@@ -20,6 +20,16 @@ const postSchema = new mongoose.Schema({
     type:String,
     required:true,
   },
+  views:{
+    type:[String],
+    default:[],
+    validate: {
+      validator: function (v) {
+        return Array.isArray(v) && new Set(v).size === v.length; // Ensure all entries are unique
+      },
+      message: "Views array must contain unique values",
+    },
+  },
   timestamp: {
     type: Date,
     default: Date.now, // Automatically set to the current date
@@ -46,6 +56,10 @@ const authorSchema = new mongoose.Schema({
     type: String,
     required: false, // Image is optional
 
+  },
+  followers:{
+     type:[String],
+     default:[]
   },
   posts: [postSchema], // Array of posts linked to the author
 });

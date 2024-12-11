@@ -67,9 +67,9 @@ app.use((req, res, next) => {
 });
 
 // Start the server
-// app.listen(PORT, () => {
-//   console.log(`Server connected on port ${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server connected on port ${PORT}`);
+});
 
 module.exports = app;
 module.exports.handler = serverless(app); // Wrap Express app

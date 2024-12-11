@@ -10,12 +10,14 @@ const {
   updateAuthor,
   updateAPassword,
   deleteAuthor,
+  getProfile,
+  updateFollowers
 } = require("../controllers/authorDetail.Controller");
 
 //handle author data: name, email, password
 
 router.get("/", getAllAuthor);
-
+router.get("/profiles",getProfile);
 router.get("/:email", getSingleAuthor);
 
 
@@ -39,6 +41,7 @@ router.put("/:email",upload.single('profile'), updateAuthor);
 router.put("/password/:email", updateAPassword);
 
 router.post("/", addAuthor);
+router.put("/follow/:email",updateFollowers);
 
 router.delete("/:email", deleteAuthor);
 

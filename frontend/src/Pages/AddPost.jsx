@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import NavBar from './NavBar';
+import NavBar from '../ui/NavBar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
-import Footer from './Footer';
+import Footer from '../ui/Footer';
 function AddPost() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import avatar1 from "../images/avatar1.jpg";
 import axios from "axios";
-import NavBar from "./NavBar";
+import NavBar from "../ui/NavBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiOutlineUserCircle } from "react-icons/hi";
-import Footer from "./Footer";
+import Footer from "../ui/Footer";
 function ProfilePage() {
   const { logout } = useAuth();
   const email = localStorage.getItem("email");

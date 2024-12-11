@@ -4,11 +4,11 @@ import { useLocation } from "react-router-dom";
 import avatar1 from "../images/avatar1.jpg";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import NavBar from "./NavBar";
+import NavBar from "../ui/NavBar";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
-import Footer from "./Footer";
+import Footer from "../ui/Footer";
 function ViewEditPost() {
   // const username = localStorage.getItem("username");
   const email = localStorage.getItem("email");

@@ -28,6 +28,24 @@ const getAllAuthor = async (req, res) => {
   }
 };
 
+const getProfile = async (req,res) => {
+  try {
+    const authorsProfile = await Author.find({});
+    const data = authorsProfile.map(author=>({
+      authorName:author.authorname,
+      email:author.email,
+      postCount:author.posts.length,
+      profile:author.profile,
+      followers:author.followers
+    }))
+    res.json(data);
+  }
+  catch(err)
+  {
+    res.send("Error",err)
+  }
+}
+
 const getSingleAuthor = async (req, res) => {
   try {
     const author = await Author.findOne({ email: req.params.email });
@@ -148,6 +166,45 @@ const deleteAuthor = async (req, res) => {
     res.send("error" + err);
   }
 };
+
+
+const updateFollowers = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const { emailAuthor } = req.body;
+
+    // Find the author by email
+    const author = await Author.findOne({ email });
+
+    // If author doesn't exist, send a 404 error
+    if (!author) {
+      return res.status(404).json({ message: 'Author not found' });
+    }
+
+    // Check if the emailAuthor is already in the followers array
+    if (author.followers.includes(emailAuthor)) {
+      author.followers = author.followers.filter(follower=>follower!==emailAuthor);
+      await author.save()
+      return res.status(200).json({ message: 'unfollowed successfully',followers:author.followers });
+    }
+
+    // Add the emailAuthor to the followers array
+    author.followers.push(emailAuthor);
+
+    // Save the author document with the updated followers array
+    await author.save();
+
+    // Respond with success and the updated followers array
+    return res.status(200).json({
+      message: 'Author followed successfully',
+      followers: author.followers,
+    });
+  } catch (err) {
+    // If there is a server error, return a 500 error
+    return res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
 module.exports = {
   addAuthor,
   getAllAuthor,
@@ -155,4 +212,6 @@ module.exports = {
   updateAuthor,
   updateAPassword,
   deleteAuthor,
+  getProfile,
+  updateFollowers
 };

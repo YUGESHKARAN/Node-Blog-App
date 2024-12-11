@@ -9,7 +9,7 @@ import { IoEye, IoSearchOutline } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 
 import { Link } from "react-router-dom";
-import Footer from "./Footer";
+import Footer from "../ui/Footer";
 function BlogContainer() {
   const username = localStorage.getItem("username");
   const email = localStorage.getItem("email");
@@ -52,6 +52,21 @@ function BlogContainer() {
   console.log("stored posts", posts);
   console.log("category selected", postCategory);
   // console.log('select check',categoryArray)
+
+  const postViews = async(userEmail,id) =>{
+    console.log('view email',userEmail)
+    try{
+      const response = await axios.put(`http://localhost:3000/blog/posts/views/${userEmail}/${id}`,
+        {emailAuthor:email}
+      )
+      console.log(response.data)
+      getData();
+    }
+    catch(err)
+    {
+      console.error('error',err)
+    }
+  }
   return (
     <div className="flex  w-11/12 md:gap-16 flex-wrap   justify-center h-auto mx-auto">
 
@@ -76,7 +91,7 @@ function BlogContainer() {
             // handleCategory(selectedCategory);
           }}
           id=""
-          className="border w-20 h-7 text-xs md:text-base rounded-lg border-gray-600 cursor-pointer"
+          className="border md:w-fit w-16 h-7 text-xs md:text-base rounded-lg border-gray-600 cursor-pointer"
         >
           {/* <option value="">Filter Category</option> */}
           <option value="">All</option>
@@ -104,24 +119,6 @@ function BlogContainer() {
         >
           back
         </button>
-        {/* <select
-          name=""
-          onChange={(e) => {
-            const selectedCategory = e.target.value;
-            setPostCategory(selectedCategory);
-            // handleCategory(selectedCategory);
-          }}
-          id=""
-          className="border text-sm md:text-base rounded-lg border-gray-600 cursor-pointer"
-        >
-          <option value="">Filter Category</option>
-          <option value="">All</option>
-          {getUniqueCategories(posts).map((category, index) => (
-            <option key={index} value={category}>
-              {category}
-            </option>
-          ))}
-        </select> */}
       </div>
       <div>
 
@@ -164,10 +161,13 @@ function BlogContainer() {
 
                 <div className="flex items-center justify-center gap-2 w-full">
       
-                  <p className="cursor-pointer">
+                  <p
+                  onClick={()=>{postViews(data.authoremail,data._id)}}
+                   className="cursor-pointer flex text-[10px] gap-0.5 items-center text-gray-400">
                   <Link to={`/viewpage/${data.authoremail}/${data._id}`}>
-                      <IoEye className="text-[#F8EFBA]" />
+                      <IoEye className="text-[#F8EFBA] text-base" />
                   </Link>
+                  {data.views?data.views.length:''}
                   </p>
 
                 <p className={`${data.authoremail===email?'block':'hidden'}`}>
@@ -226,12 +226,15 @@ function BlogContainer() {
                   </div>
 
                   <div className="flex gap-3 items-center">
-                  <p className="flex items-center justify-center gap-2 w-full">
+                  <div className="flex items-center justify-center gap-2 w-full">
 
-               <p className="cursor-pointer">
+               <p
+               onClick={()=>{postViews(data.authoremail,data._id)}}
+                className="cursor-pointer flex text-[10px] gap-1 items-center text-white">
                <Link to={`/viewpage/${data.authoremail}/${data._id}`}>
-                   <IoEye  className="text-[#F8EFBA]" />
+                   <IoEye className="text-[#F8EFBA] text-base" />
                </Link>
+               {data.views?data.views.length:''}
                </p>
 
               <p className={`${data.authoremail===email?'block':'hidden'}`}>
@@ -244,7 +247,7 @@ function BlogContainer() {
                 <MdEdit  className="text-[#ffb8b8]"/>
               </Link>
               </p>
-             </p>
+             </div>
                  <p
                   onClick={()=>setPostCategory(data.category)} 
                   className="px-2 py-1 rounded-md cursor-pointer flex bg-gray-300 text-gray-600 text-sm font-bold">

@@ -2,9 +2,10 @@ import React,{useState,useEffect} from "react";
 import axios from "axios";
 // import { useState, useEffect } from "react";
 // import { useAuth } from "../AuthContext";
-import NavBar from "./NavBar";
+import NavBar from "../ui/NavBar";
 import BlogContainer from "./BlogContainer";
-import Footer from "./Footer";
+import Footer from "../ui/Footer";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const username = localStorage.getItem("username");
@@ -78,12 +79,17 @@ function HomePage() {
             </div>
           </div>
 
+         
           <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-[#dff9fb] rounded-lg shadow-xl flex  items-center justify-center">
-            <div className="text-center flex-col justify-center">
-            <h1 className="md:text-3xl text-sm ">{authors.length}</h1>
-            <h3 className="text-xs md:text-sm lg:text-2xl font-semibold text-[#2c2c54]">Authors</h3>
+            <Link to='/authors'>
+              <div className="text-center flex-col justify-center">
+              <h1 className="md:text-3xl text-sm ">{authors.length}</h1>
+              <h3 className="text-xs md:text-sm lg:text-2xl font-semibold text-[#2c2c54]">Authors</h3>
+              </div>
+              </Link>
             </div>
-          </div>
+         
+        
 
           <div className="col-span-2 p-2 md:w-11/12 md:h-fit lg:h-36 bg-[#dff9fb] rounded-lg shadow-xl flex  items-center justify-center">
             <div className="text-center flex-col justify-center">
