@@ -4,6 +4,7 @@ import NavBar from '../ui/NavBar';
 import blog1 from "../images/blog1.jpg";
 import { AiOutlineMail } from 'react-icons/ai';
 import { GrLinkedin } from 'react-icons/gr';
+import Footer from '../ui/Footer';
 function Authors() {
     const [authors,setAuthors] = useState([])
     const email = localStorage.getItem('email');
@@ -52,7 +53,7 @@ console.log("authors",authors);
   return (
     <div className='w-full min-h-screen bg-gray-500 h-auto reltive  '>
         <NavBar/>
-        <div className='w-11/12 mx-auto flex-col  items-center justify-center mt-10'>
+        <div className='w-11/12 min-h-screen h-auto mx-auto flex-col  items-center justify-center mt-10'>
             <h2 className='w-full text-center text-xl md:text-3xl text-white font-semibold'>Authors Profile</h2>
             <div
               className={`grid place-items-center gap-4 mt-7 md:mt-20 md:grid-cols-2 lg:grid-cols-4`}
@@ -110,7 +111,7 @@ console.log("authors",authors);
         </div>
         
        
-
+<Footer/>
     </div>
   )
 }
