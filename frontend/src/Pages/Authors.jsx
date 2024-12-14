@@ -51,10 +51,10 @@ const addFollower = async(userEmail) =>{
 console.log("authors",authors);
 
   return (
-    <div className='w-full min-h-screen bg-gray-500 h-auto reltive  '>
+    <div className='w-full min-h-screen bg-[background:#aaa69d] h-auto reltive  '>
         <NavBar/>
         <div className='w-11/12 min-h-screen h-auto mx-auto flex-col  items-center justify-center mt-10'>
-            <h2 className='w-full text-center text-xl md:text-3xl text-white font-semibold'>Authors Profile</h2>
+            <h2 className='w-full text-center text-xl md:text-3xl font-semibold'>Authors Profile</h2>
             <div
               className={`grid place-items-center gap-4 mt-7 md:mt-20 md:grid-cols-2 lg:grid-cols-4`}
             >
@@ -62,7 +62,7 @@ console.log("authors",authors);
                  authors.map((author,index)=>(
                   <div
                   key={index}
-                   className='h-64 w-9/12 pt-5 flex-col items-center  rounded-lg border-2 border-black  bg-white'>
+                  className="h-64 w-9/12 pt-5 flex-col items-center rounded-lg shadow-lg bg-[#fff]/20">
                     {
                         author.profile?
                      <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${author.profile}`} className='rounded-full w-20 h-20 mx-auto object-cover' alt="" />
@@ -85,20 +85,13 @@ console.log("authors",authors);
                         author.followers.includes(email)?
                         <button
                         onClick={()=>{addFollower(author.email)}}
-                         className='w-fit mx-auto px-4 py-0.5  rounded-lg border bg-white border-[#130f40] text-[#130f40]'>Following...</button>
+                         className='w-fit mx-auto px-4 py-0.5  rounded-lg bg-[#130f40]    text-[#fff]'>Following...</button>
                         :
                         <button
                         onClick={()=>{addFollower(author.email)}}
-                         className='w-fit mx-auto px-4 py-0.5 rounded-lg hover:bg-white hover:text-[#130f40] transition-all duration-200  border  border-[#130f40] bg-[#130f40] text-white'>Follow +</button>
+                         className='w-fit mx-auto px-4 py-0.5 rounded-lg bg-[#6d685d] text-white'>Follow +</button>
                         }
                        </div>
-
-                       {/* <div className='w-11/12 mx-auto mt-5 grid grid-cols-3 place-items-center w-full'>
-                          <div className='col-span-1 cursor-pointer'><AiOutlineMail/></div>
-                          <div className='col-span-1 cursor-pointer'><GrLinkedin/></div>
-                          <div className='col-span-1 cursor-pointer'><AiOutlineMail/></div>
-                       </div> */}
-
                       
                      </div>
 

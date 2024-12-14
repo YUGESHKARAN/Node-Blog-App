@@ -10,12 +10,14 @@ import { MdEdit } from "react-icons/md";
 
 import { Link } from "react-router-dom";
 import Footer from "../ui/Footer";
+import {MagnifyingGlass} from 'react-loader-spinner';
 function BlogContainer() {
   const username = localStorage.getItem("username");
   const email = localStorage.getItem("email");
   const [postCategory, setPostCategory] = useState("");
   const [posts, setPosts] = useState([]);
   const [searchTerm,setSearchTerm] = useState('');
+  const[loader,setLoader] = useState(false);
   // const [categoryArray,setCategoryArray] = useState()
   const getData = async () => {
     // const email = localStorage.getItem("email");
@@ -46,8 +48,16 @@ function BlogContainer() {
   // search function starts here
   const filterdPost = posts.filter((post)=>
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.category.toLowerCase().includes(searchTerm.toLowerCase())
+      post.category.toLowerCase().includes(searchTerm.toLowerCase())  
     );
+
+    useEffect(() => {
+      if (filterdPost.length === 0) {
+        setLoader(true);
+      } else {
+        setLoader(false);
+      }
+    }, [filterdPost]);
 
   console.log("stored posts", posts);
   console.log("category selected", postCategory);
@@ -125,73 +135,93 @@ function BlogContainer() {
       </div>
 
       {postCategory === ""
-        ? filterdPost.map((data, index) => (
-         
-            <div
-              key={index}
-              className="lg:w-3/12 md:w-1/3 bg-[#091533] md:pb-2  flex flex-col shadow-xl  h-auto mb-16  gap-0  p-4 rounded-xl"
-            >
-            
-              <img
-                src={
-                  data.image 
-                    ?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
-                    : blog1
-                }
-                className="w-[472px] h-[250px]  rounded-xl object-cover m-auto mt-0"
-              />
-              <div className="min-h-28  h-auto">
-                <h2 className="text-xl text-white font-bold ">{data.title}</h2>
-                <p className="text-xs text-gray-300 mt-2">{data.description.slice(0,100)} ...</p>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <div className="flex justify-between gap-2 items-center">
-                  <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`} className="w-8 max-h-10 object-cover rounded-md" />
-                  <h3 className="flex flex-col items-center justify-center ">
-                    <p className="text-sm text-white w-full font-semibold">
-                      {data.authorname}
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      {data.timestamp.slice(0, 10)}
-                    </p>
-                  </h3>
-                </div>
-               <div className="flex gap-3 items-center">
-
-                <div className="flex items-center justify-center gap-2 w-full">
-      
-                  <p
-                  onClick={()=>{postViews(data.authoremail,data._id)}}
-                   className="cursor-pointer flex text-[10px] gap-0.5 items-center text-gray-400">
-                  <Link to={`/viewpage/${data.authoremail}/${data._id}`}>
-                      <IoEye className="text-[#F8EFBA] text-base" />
-                  </Link>
-                  {data.views?data.views.length:''}
-                  </p>
-
-                <p className={`${data.authoremail===email?'block':'hidden'}`}>
-                <Link
-                    to={{
-                      pathname: `/EditPost/${data._id}`,
-                      state: { PostId: data._id },
-                    }}
-                  >
-                  <MdEdit className="text-[#ffb8b8]" />
-                </Link>
-                </p>
-                </div>
-
-               <p 
-               onClick={()=>setPostCategory(data.category)} 
-               className="px-2 py-1 rounded-md flex bg-gray-300 cursor-pointer text-gray-600 text-sm font-bold">
-                  {data.category}
-                </p>
-               </div>
-              </div>
+        ? 
+        loader?
+        <div className="flex-col items-center justify-center">
+          <MagnifyingGlass
+            visible={true}
+            height="100"
+            width="100"
+            ariaLabel="magnifying-glass-loading"
+            wrapperStyle={{marginTop:'20px'}}
+            wrapperClass="magnifying-glass-wrapper"
+            glassColor="#c0efff"
+            color="#091533"
+            speed={1} 
           
+          />
+        <p className="text-lg font-semibold">
+          Blog Not Found...
+        </p>
+    </div>:
+        filterdPost.map((data, index) => (
+         
+          <div
+            key={index}
+            className="lg:w-3/12 md:w-1/3 bg-[#091533] md:pb-2  flex flex-col shadow-xl  h-auto mb-16  gap-0  p-4 rounded-xl"
+          >
+          
+            <img
+              src={
+                data.image 
+                  ?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
+                  : blog1
+              }
+              className="w-[472px] h-full md:h-[250px]  rounded-xl object-cover m-auto mt-0"
+            />
+            <div className="min-h-28  h-auto">
+              <h2 className="text-xl text-white font-bold ">{data.title}</h2>
+              <p className="text-xs text-gray-300 mt-2">{data.description.slice(0,100)} ...</p>
             </div>
-          ))
+
+            <div className="flex justify-between items-center">
+              <div className="flex justify-between gap-2 items-center">
+                <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`} className="w-8 max-h-10 object-cover rounded-md" />
+                <h3 className="flex flex-col items-center justify-center ">
+                  <p className="text-sm text-white w-full font-semibold">
+                    {data.authorname}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    {data.timestamp.slice(0, 10)}
+                  </p>
+                </h3>
+              </div>
+             <div className="flex gap-3 items-center">
+
+              <div className="flex items-center justify-center gap-2 w-full">
+    
+                <p
+                onClick={()=>{postViews(data.authoremail,data._id)}}
+                 className="cursor-pointer flex text-[10px] gap-0.5 items-center text-gray-400">
+                <Link to={`/viewpage/${data.authoremail}/${data._id}`}>
+                    <IoEye className="text-[#F8EFBA] text-base" />
+                </Link>
+                {data.views.length>0?data.views.length:''}
+                </p>
+
+              <p className={`${data.authoremail===email?'block':'hidden'}`}>
+              <Link
+                  to={{
+                    pathname: `/EditPost/${data._id}`,
+                    state: { PostId: data._id },
+                  }}
+                >
+                <MdEdit className="text-[#ffb8b8]" />
+              </Link>
+              </p>
+              </div>
+
+             <p 
+             onClick={()=>setPostCategory(data.category)} 
+             className="px-2 py-1 rounded-md flex bg-gray-300 cursor-pointer text-gray-600 text-sm font-bold">
+                {data.category}
+              </p>
+             </div>
+            </div>
+        
+          </div>
+        
+        ))
         : posts
             .filter((data) => data.category === postCategory)
             .map((data, index) => (
@@ -205,7 +235,7 @@ function BlogContainer() {
                       ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
                       : blog1
                   }
-                  className="w-[472px] h-[250px]  rounded-xl object-cover m-auto mt-0 rounded-xl m-auto mt-0"
+                  className="w-[472px] h-full md:h-[250px]  rounded-xl object-cover m-auto mt-0 rounded-xl m-auto mt-0"
                 />
                 <div className="min-h-28  h-auto">
                   <h2 className="text-xl text-white font-bold ">{data.title}</h2>
@@ -225,7 +255,7 @@ function BlogContainer() {
                     </h3>
                   </div>
 
-                  <div className="flex gap-3 items-center">x
+                  <div className="flex gap-3 items-center">
                   <div className="flex items-center justify-center gap-2 w-full">
 
                <p
@@ -234,7 +264,7 @@ function BlogContainer() {
                <Link to={`/viewpage/${data.authoremail}/${data._id}`}>
                    <IoEye className="text-[#F8EFBA] text-base" />
                </Link>
-               {data.views?data.views.length:''}
+               {data.views.length>0?data.views.length:''}
                </p>
 
               <p className={`${data.authoremail===email?'block':'hidden'}`}>

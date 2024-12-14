@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import {CirclesWithBar} from 'react-loader-spinner'
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -16,9 +17,12 @@ function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [passwordLabel, setPasswordLabel] = useState("Password");
+  const[loader,setLoader] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoader(true);
+
 
     try {
       // Send a POST request to the updated API endpoint
@@ -31,11 +35,15 @@ function LoginPage() {
         localStorage.setItem("email", response.data.author.email);
         localStorage.setItem("message",response.data.message); // Assuming role is predefined
         
-        navigate("/home"); // Redirect to the homepage
+         // Delay navigation by 2 seconds
+        setTimeout(() => {
+          navigate("/home"); // Redirect to the homepage
+        }, 2000);
       }
     } catch (error) {
       setErrors({ apiError: error.response?.data?.message || "Login failed" });
     }
+  
   };
 
   const handleChangePassword = async (e, email, newPassword) => {
@@ -56,6 +64,7 @@ function LoginPage() {
     } catch (err) {
       console.log("Error", err);
     }
+  
   };
 
   const handleChange = (e) => {
@@ -67,7 +76,7 @@ function LoginPage() {
 
   return (
     <div className="text-blue-600 text-md font-semibold w-full h-screen  bg-[#130f40] flex justify-center items-center">
-      <div className="bg-white w-11/12 md:w-fit p-16 rounded-md">
+      <div className={`${loader?'hidden':'bg-white w-11/12 md:w-fit p-16 rounded-md'}`}>
         <h2 className="text-center text-[#130f40] text-xl">{title}</h2>
         <form className="md:w-96 w-full mx-auto md:p-4">
           {success && <p className="text-green-500">{success}</p>}
@@ -148,6 +157,20 @@ function LoginPage() {
           </Link>
         </p>
       </div>
+    {
+      loader &&   <CirclesWithBar
+      height="100"
+      width="100"
+      color="#4fa94d"
+      outerCircleColor="#4fa94d"
+      innerCircleColor="#4fa94d"
+      barColor="#4fa94d"
+      ariaLabel="circles-with-bar-loading"
+      wrapperStyle={{}}
+      wrapperClass=""
+      visible={true}
+      />
+    }
     </div>
   );
 }
