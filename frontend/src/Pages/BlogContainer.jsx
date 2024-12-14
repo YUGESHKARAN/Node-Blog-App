@@ -214,7 +214,7 @@ function BlogContainer() {
 
                 <div className="flex justify-between items-center">
                   <div className="flex justify-between gap-2 items-center">
-                    <img src={avatar1} className="w-8 rounded-md" />
+                    <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`} className="w-8 rounded-md" />
                     <h3 className="flex flex-col items-center justify-center ">
                       <p className="text-sm text-white w-full font-semibold">
                         {data.authorname}
@@ -225,7 +225,7 @@ function BlogContainer() {
                     </h3>
                   </div>
 
-                  <div className="flex gap-3 items-center">
+                  <div className="flex gap-3 items-center">x
                   <div className="flex items-center justify-center gap-2 w-full">
 
                <p
