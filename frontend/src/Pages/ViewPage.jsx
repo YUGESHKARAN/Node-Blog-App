@@ -88,8 +88,8 @@ function ViewPage() {
           <img
             // src={`https://blog-backend-two-flame.vercel.app${singlePostData.image}`}
             src={
-              singlePostData.image 
-                ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`
+              singlePostData.profile 
+                ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`
                 : blog1
             }
             className="w-full h-fit"
