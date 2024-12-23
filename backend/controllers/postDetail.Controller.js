@@ -97,7 +97,7 @@ const addPosts = async (req, res) => {
      const params = {
       Bucket:bucketName,
       Key:req.file.originalname,
-      Body:buffer,
+      Body:req.file.buffer,
       ContentType:req.file.mimetype
     }
 
