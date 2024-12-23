@@ -62,7 +62,7 @@ function ViewPage() {
       <div className="'w-fit  flex bg-[#091533] flex-col p-4 h-auto   items-center">
           <div className="flex justify-between w-full items-center">
             <div className="flex justify-between gap-2 items-center">
-              <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`} className="md:w-8 w-5 rounded-md" />
+              <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`} className="md:w-8 w-5 rounded-md" />
               <h3 className="flex flex-col items-center justify-center ">
                 <p className="md:text-md text-white text-sm w-full font-bold">
                   {singlePostData.authorname}
@@ -89,7 +89,7 @@ function ViewPage() {
             // src={`https://blog-backend-two-flame.vercel.app${singlePostData.image}`}
             src={
               singlePostData.profile 
-                ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`
+                ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`
                 : blog1
             }
             className="w-full h-fit"

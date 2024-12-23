@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../ui/Footer";
 import { ReactTyped } from "react-typed";
 import { BsRobot } from "react-icons/bs";
+import Chatbot from "../images/chatbt.gif"
 import {
   MainContainer,
   ChatContainer,
@@ -195,10 +196,14 @@ function AddPost() {
             loop
           />
           <div className="basis-1/5 flex items-center justify-center">
-            <BsRobot
+            {/* <BsRobot
               onClick={() => setChatbot(!chatbot)}
               className="ml-2 text-black text-xl  rounded-full"
-            />
+            /> */}
+            <img 
+            onClick={() => setChatbot(!chatbot)}
+            src={Chatbot}
+             className="ml-2 rounded-full w-7 h-7 md:w-9 md:h-9" />
           </div>
         </div>
 
@@ -285,7 +290,7 @@ function AddPost() {
           </form>
         ) : (
           <div className="md:w-9/12 p-3 h-96 rounded-lg md:p-10 mx-auto">
-            <MainContainer className="rounded-lg bg-red-100">
+            <MainContainer className="rounded-lg w-9/12 mx-auto text-xs  bg-red-100">
               <ChatContainer>
                 <MessageList
                   typingIndicator={
@@ -311,6 +316,7 @@ function AddPost() {
                   placeholder="Type a message..."
                   onSend={handleSend}
                   // attachmentsButton={false} // Disable document uploader
+                  className="bg-red-100"
                 />
               </ChatContainer>
             </MainContainer>
