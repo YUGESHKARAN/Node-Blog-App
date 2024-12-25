@@ -57,9 +57,9 @@ function ViewPage() {
     <div className="w-full min-h-screen h-auto reltive bg-gray-500">
       <NavBar />
       
-      <div className="md:min-h-screen h-auto md:w-3/6 p-2  md:p-7 md:p-10  flex flex-col justify-center items-center  m-auto md:mt-10">
+      <div className="md:min-h-screen h-auto md:pb-40 md:w-3/6 w-full pb-20  p-2 md:p-10  flex flex-col justify-center items-center  m-auto md:mt-10">
       
-      <div className="'w-fit  flex bg-[#091533] flex-col p-4 h-auto   items-center">
+      <div className="w-11/12  flex bg-[#091533] flex-col p-3 h-auto   items-center">
           <div className="flex justify-between w-full items-center">
             <div className="flex justify-between gap-2 items-center">
               <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`} className="md:w-8 w-5 rounded-md" />

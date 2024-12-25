@@ -76,12 +76,19 @@ function ViewEditPost() {
       const response = axios.delete(`https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`);
       console.log("deleted response",response);
       toast.success('post deleted successfully') ;
+      navigate("/home");
       
-      navigate("/home"); // Redirect to the homepage
+      
 
     }
     catch(err){
       console.log(err)
+    }
+    finally{
+      setInterval(() => {
+        window.location.reload()// Redirect to the homepage
+     }, 2000);
+      
     }
   }
 
@@ -108,8 +115,8 @@ function ViewEditPost() {
   return (
     <div className="relative w-full h-auto min-h-[900px]">
       <NavBar />
-      <div className="h-auto w-11/12  flex flex-col justify-center items-center  m-auto mt-10">
-        <div className={`${edit?'hidden':'md:w-6/12 w-11/12 bg-[#091533] flex flex-col p-4 h-auto   items-center'}`}>
+      <div className="h-auto md:w-11/12  flex flex-col p-2  justify-center items-center  m-auto mt-10">
+        <div className={`${edit?'hidden':'md:w-6/12 w-11/12 md:mb-40  mb-20 bg-[#091533] flex flex-col p-3 h-auto   items-center'}`}>
           <div className="flex  justify-between w-full items-center">
             <div className="flex justify-between gap-2 items-center">
               <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`} className="md:w-8 w-5 rounded-md" />

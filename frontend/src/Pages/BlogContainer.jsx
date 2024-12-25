@@ -167,7 +167,7 @@ function BlogContainer() {
                   ?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
                   : blog1
               }
-              className="w-[472px] h-full md:h-[250px]  rounded-xl object-cover m-auto mt-0"
+              className="w-[472px] h-[250px]  rounded-xl object-cover m-auto mt-0"
             />
             <div className="min-h-28  h-auto">
               <h2 className="text-xl text-white font-bold ">{data.title}</h2>
