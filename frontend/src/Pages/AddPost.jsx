@@ -186,11 +186,14 @@ function AddPost() {
         <div className="md:w-96 px-4 mx-auto flex items-center mb-4 justify-center overflow-x-hidden">
           <ReactTyped
             strings={[
-              "Looking for Assistant",
-              "Save time on adding post",
-              "Cook your blog with our Chatbot !!",
+              // "Looking for Assistant",
+              // "Save time on adding post",
+              // "Cook your blog with our Chatbot !!",
+              "Hello, Author 🖐️🖐️🖐️",
+              "I am here to help you",
+              "Cook your blog with me !!",
             ]}
-            typeSpeed={180}
+            typeSpeed={70}
             backSpeed={30}
             className="text-base basis-4/5 flex items-center justify-center  font-bold text-[#192a56]"
             loop
@@ -289,8 +292,8 @@ function AddPost() {
             </button>
           </form>
         ) : (
-          <div className="md:w-9/12 p-3 h-96 rounded-lg md:p-10 mx-auto">
-            <MainContainer className="rounded-lg w-9/12 mx-auto text-xs  bg-red-100">
+          <div className="md:w-9/12 p-3 h-96  rounded-lg md:p-10 mx-auto">
+            <MainContainer className="rounded-lg w-9/12 mx-auto text-xs  ">
               <ChatContainer>
                 <MessageList
                   typingIndicator={

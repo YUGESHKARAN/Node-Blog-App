@@ -11,7 +11,9 @@ const {
   updateAPassword,
   deleteAuthor,
   getProfile,
-  updateFollowers
+  updateFollowers,
+  sendOtp,
+  resetPassword
 } = require("../controllers/authorDetail.Controller");
 
 //handle author data: name, email, password
@@ -44,5 +46,7 @@ router.post("/", addAuthor);
 router.put("/follow/:email",updateFollowers);
 
 router.delete("/:email", deleteAuthor);
+router.post('/send-otp', sendOtp);
+router.post('/reset-password', resetPassword);
 
 module.exports = router;

@@ -21,7 +21,7 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoader(true);
+    
 
 
     try {
@@ -34,7 +34,7 @@ function LoginPage() {
         localStorage.setItem("username", response.data.author.authorname);
         localStorage.setItem("email", response.data.author.email);
         localStorage.setItem("message",response.data.message); // Assuming role is predefined
-        
+        setLoader(true);
          // Delay navigation by 2 seconds
         setTimeout(() => {
           navigate("/home"); // Redirect to the homepage
@@ -46,20 +46,16 @@ function LoginPage() {
   
   };
 
-  const handleChangePassword = async (e, email, newPassword) => {
+  const sendOtp = async (e, email) => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`https://node-blog-app-seven.vercel.app/blog/author/password/${email}`, {
-        password: newPassword,
+      const response = await axios.post(`https://node-blog-app-seven.vercel.app/blog/author/send-otp`, {
+        email
       });
 
       if (response.status === 200) {
-        setSuccess("Password updated successfully!");
-        setForgotPassword(false);
-        setPasswordLabel("Password");
-        setTitle("Login Page");
-        window.location.reload(); // Reload the page
+       navigate("/changePassword");
       }
     } catch (err) {
       console.log("Error", err);
@@ -98,7 +94,7 @@ function LoginPage() {
             />
           </div>
 
-          <div className="mb-4">
+          <div className={`${forgotPassword ? "hidden" : "mb-4"}`}>
             <label htmlFor="password" className="block text-gray-700">
               {passwordLabel}
             </label>
@@ -127,7 +123,7 @@ function LoginPage() {
           </button>
 
           <button
-            onClick={(e) => handleChangePassword(e, formData.email, formData.password)}
+            onClick={(e) => sendOtp(e, formData.email)}
             type="submit"
             className={`${
               forgotPassword
@@ -135,7 +131,7 @@ function LoginPage() {
                 : "hidden"
             }`}
           >
-            Update Password
+            Send OTP
           </button>
         </form>
 
@@ -145,12 +141,12 @@ function LoginPage() {
             setPasswordLabel("New Password");
             setTitle("Forgot Password");
           }}
-          className="mt-4 flex px-4 justify-start md:text-base text-xs gap-2 text-gray-600 cursor-pointer"
+          className={`${forgotPassword?'hidden':'mt-4 flex px-4 justify-start md:text-base text-xs gap-2 text-gray-600 cursor-pointer'}`}
         >
           Forgot Password? <span className="text-[#130f40] md:text-base text-xs hover:underline">Click here</span>
         </p>
 
-        <p className="mt-4 px-4 md:text-base text-xs text-gray-600">
+        <p className={`${forgotPassword?'hidden':'mt-4 px-4 md:text-base text-xs text-gray-600'}`}>
           Don't have an account?{" "}
           <Link to="/register" className="text-[#130f40] hover:underline">
             Register here

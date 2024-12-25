@@ -11,6 +11,7 @@ import ViewEditPost from "./Pages/ViewEditPost.jsx";
 import ProfilePage from "./Pages/ProfilePage.jsx"
 import ViewPage from "./Pages/ViewPage.jsx";
 import Authors from "./Pages/Authors.jsx";
+import ChangePassword from "./auth/ChangePassword.jsx";
 function App() {
   return (
     <AuthProvider>
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           {/* Public Routes for Login & Register */}
           <Route path="/" element={<Login />} />
+          <Route path="/changePassword" element={<ChangePassword/>} />
           <Route path="/register" element={<Register />} />
 
           {/* Protected Route */}

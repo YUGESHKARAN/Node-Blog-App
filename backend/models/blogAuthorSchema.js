@@ -62,6 +62,8 @@ const authorSchema = new mongoose.Schema({
      default:[]
   },
   posts: [postSchema], // Array of posts linked to the author
+  otp: { type: String }, // OTP for password reset
+  otpExpiresAt: { type: Date } // Expiry time for the OTP
 });
 
 // Password encryption before saving the author
