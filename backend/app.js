@@ -60,7 +60,7 @@ app.use((req, res, next) => {
 // Real-time messaging with Socket.IO
 const Author = require("./models/blogAuthorSchema"); // Ensure correct path
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "https://node-blog-app-seven.vercel.app", methods: ["GET", "POST"] } });
+const io = new Server(server, { cors: { origin: "https://blog-frontend-teal-ten.vercel.app", methods: ["GET", "POST"] } });
 const corsOptions = {
   origin: 'https://blog-frontend-teal-ten.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
