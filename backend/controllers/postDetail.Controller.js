@@ -294,6 +294,9 @@ const postView = async (req, res) => {
   }
 };
 
+
+
+
 module.exports = {
   getAllPosts,
   getCategoryPosts,
@@ -301,5 +304,6 @@ module.exports = {
   updatePost,
   deletePost,
   getSinglePost,
-  postView
+  postView,
+ 
 };

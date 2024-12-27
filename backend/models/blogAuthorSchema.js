@@ -2,6 +2,26 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Message schema
+const messageSchema = new mongoose.Schema({
+  user: {
+    type: String,
+    required: true,
+  },
+  message: {
+    type: String,
+    required: true,
+  },
+  profile:{
+    type:String,
+    required:false
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 // Post schema for blog posts
 const postSchema = new mongoose.Schema({
   title: {
@@ -30,6 +50,7 @@ const postSchema = new mongoose.Schema({
       message: "Views array must contain unique values",
     },
   },
+  messages: [messageSchema], // Messages linked to the post
   timestamp: {
     type: Date,
     default: Date.now, // Automatically set to the current date
