@@ -32,7 +32,7 @@ function ViewPage() {
     const getSinglePost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/blog/posts/${email}/${id}`
+          `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${id}`
         );
         const postData = response.data.data;
         setSinglePostData(postData);
@@ -50,7 +50,7 @@ function ViewPage() {
     const getComments = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/blog/posts/${email}/${id}`
+          `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${id}`
         );
         const comments = response.data.data;
         setMessages(comments.messages);
@@ -63,7 +63,7 @@ function ViewPage() {
 
   // Socket connection and message handling
   useEffect(() => {
-    const newSocket = io("http://localhost:3000"); // Replace with your server URL
+    const newSocket = io("https://node-blog-app-seven.vercel.app"); // Replace with your server URL
     setSocket(newSocket);
 
     newSocket.emit("joinPostRoom", postId);
