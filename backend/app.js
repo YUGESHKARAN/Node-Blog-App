@@ -185,7 +185,7 @@ const Author = require("./models/blogAuthorSchema"); // Ensure correct path
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://blog-frontend-teal-ten.vercel.app", // Match your frontend domain
+    origin: "https://blog-frontend-teal-ten.vercel.app/", // Match your frontend domain
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -194,7 +194,7 @@ const io = new Server(server, {
 
 // CORS options for Socket.IO
 const corsOptions = {
-  origin: "https://blog-frontend-teal-ten.vercel.app",
+  origin: "https://blog-frontend-teal-ten.vercel.app/",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -255,3 +255,4 @@ server.listen(PORT, () => {
 
 module.exports = app;
 module.exports.handler = serverless(app);
+
