@@ -12,7 +12,6 @@ import Footer from "../ui/Footer";
 import { MdOutlineInsertComment } from "react-icons/md";
 import { io } from "socket.io-client";
 import { use } from "react";
-
 function ViewPage() {
   const user = localStorage.getItem("username");
   const userEmail = localStorage.getItem("email");
@@ -63,7 +62,7 @@ function ViewPage() {
 
   // Socket connection and message handling
   useEffect(() => {
-    // const newSocket = io("https://node-blog-app-seven.vercel.app", {
+    
     const newSocket = io("https://node-blog-app-x8tt.onrender.com", {
       transports: ['polling']} ); // Replace with your server URL
     setSocket(newSocket);
@@ -156,7 +155,11 @@ function ViewPage() {
             <div className={`${viewComments?'flex-col h-auto overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2':'flex-col  overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2 h-10'}`}>
               {messages.map((msg, index) => (
                 <div key={index} className="flex h-auto items-start justify-start gap-2 mb-5">
-                  <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`} className="w-8 h-8 rounded-full" />
+                  <img
+                  //  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`} 
+                   src={msg.profile && msg.profile!==''?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`:blog1} 
+                   className="w-8 h-8 rounded-full" 
+                   />
                   <p className="text-xs">{msg.message}</p>
                 </div>
               ))}
