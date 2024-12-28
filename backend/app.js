@@ -197,6 +197,7 @@ const corsOptions = {
   origin: "https://blog-frontend-teal-ten.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
