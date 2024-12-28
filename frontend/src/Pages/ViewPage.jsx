@@ -64,7 +64,7 @@ function ViewPage() {
   // Socket connection and message handling
   useEffect(() => {
     // const newSocket = io("https://node-blog-app-seven.vercel.app", {
-    const newSocket = io("http://localhost:3000/", {
+    const newSocket = io("https://node-blog-app-x8tt.onrender.com", {
       transports: ['polling']} ); // Replace with your server URL
     setSocket(newSocket);
 
