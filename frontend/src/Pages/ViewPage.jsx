@@ -63,7 +63,8 @@ function ViewPage() {
 
   // Socket connection and message handling
   useEffect(() => {
-    const newSocket = io("https://node-blog-app-seven.vercel.app"); // Replace with your server URL
+    const newSocket = io("https://node-blog-app-seven.vercel.app", {
+      transports: ['websocket', 'polling']} ); // Replace with your server URL
     setSocket(newSocket);
 
     newSocket.emit("joinPostRoom", postId);
