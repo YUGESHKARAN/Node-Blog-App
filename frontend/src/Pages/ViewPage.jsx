@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import blog1 from "../images/blog1.jpg";
+import blog2 from "../images/blog48.jpg";
 import avatar1 from "../images/avatar1.jpg";
 import axios from "axios";
 import NavBar from "../ui/NavBar";
@@ -157,7 +158,7 @@ function ViewPage() {
                 <div key={index} className="flex h-auto items-start justify-start gap-2 mb-5">
                   <img
                   //  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`} 
-                   src={msg.profile && msg.profile!==''?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`:blog1} 
+                   src={msg.profile && msg.profile!==''?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`:blog2} 
                    className="w-8 h-8 rounded-full" 
                    />
                   <p className="text-xs">{msg.message}</p>
