@@ -156,9 +156,14 @@ function ViewPage() {
               <h3 className="text-lg font-bold">Comments</h3>
               <MdOutlineInsertComment
               onClick={()=>{setViewComments(!viewComments)}}
-               className="text-2xl text-white" />
+               className="text-2xl text-white" /> 
+              {/* <div className="flex items-center gap-1/2">
+              <MdOutlineInsertComment
+              onClick={()=>{setViewComments(!viewComments)}}
+               className="text-2xl text-white" />  <sub className="text-[10px]">{messages.length}</sub> 
+              </div> */}
             </div>
-            <div className={`${viewComments?'flex-col h-auto overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2':'flex-col  overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2 h-9'}`}>
+            <div className={`${viewComments?'flex-col max-h-96 overflow-y-auto min-h-auto mb-2 items-start justify-start gap-2 mt-2':'flex-col  overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2 h-10'}`}>
               {
               messages.length>0?messages.map((msg, index) => (
                 <div key={index} className="flex h-auto items-start justify-start gap-2 mb-5">
