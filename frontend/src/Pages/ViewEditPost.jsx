@@ -152,7 +152,7 @@ function ViewEditPost() {
             alt=""
           />
 
-          <p className="w-full text-justify leading-relaxed text-gray-300 text-md">
+          <p className="w-full text-justify leading-relaxed text-gray-300 text-xs md:text-md">
             {singlePostData.description}
           </p>
         </div>

@@ -14,6 +14,7 @@ import { MdOutlineInsertComment } from "react-icons/md";
 import { io } from "socket.io-client";
 import { use } from "react";
 import { SiTruenas } from "react-icons/si";
+import { ReactTyped } from "react-typed";
 function ViewPage() {
   const user = localStorage.getItem("username");
   const userEmail = localStorage.getItem("email");
@@ -155,8 +156,9 @@ function ViewPage() {
               onClick={()=>{setViewComments(!viewComments)}}
                className="text-2xl text-white" />
             </div>
-            <div className={`${viewComments?'flex-col h-auto overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2':'flex-col  overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2 h-4'}`}>
-              {message.length>0?messages.map((msg, index) => (
+            <div className={`${viewComments?'flex-col h-auto overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2':'flex-col  overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2 h-9'}`}>
+              {
+              messages.length>0?messages.map((msg, index) => (
                 <div key={index} className="flex h-auto items-start justify-start gap-2 mb-5">
                   <img
                   //  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`} 
@@ -165,7 +167,26 @@ function ViewPage() {
                    />
                   <p className="text-xs">{msg.message}</p>
                 </div>
-              )):<p className="md:text-sm  text-xs">Drop a Comment</p>}
+              )):
+               <ReactTyped
+                          strings={["Leave a Comment"]}
+                          typeSpeed={70}
+                          backSpeed={60}
+                          className="md:text-sm  text-xs"
+                          // loop
+                        />
+              // <p className="md:text-sm  text-xs">Leave a Comment</p>
+              // messages.map((msg, index) => (
+              // <div key={index} className="flex h-auto items-start justify-start gap-2 mb-5">
+              //     <img
+              //     //  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`} 
+              //      src={msg.profile && msg.profile!==''?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`:blog2} 
+              //      className="w-8 h-8 rounded-full" 
+              //      />
+              //     <p className="text-xs">{msg.message}</p>
+              // </div>
+              // ))
+              }
             </div>
           </div>
           

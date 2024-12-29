@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Footer from "../ui/Footer";
 import { ReactTyped } from "react-typed";
-import { BsRobot } from "react-icons/bs";
 import Chatbot from "../images/chatbt.gif"
 import {
   MainContainer,
@@ -189,7 +188,7 @@ function AddPost() {
               // "Looking for Assistant",
               // "Save time on adding post",
               // "Cook your blog with our Chatbot !!",
-              "Hello, Author 🖐️🖐️🖐️",
+              "Hello Author 🖐️🖐️🖐️",
               "I am here to help you",
               "Cook your blog with me !!",
             ]}
@@ -199,10 +198,7 @@ function AddPost() {
             loop
           />
           <div className="basis-1/5 flex items-center justify-center">
-            {/* <BsRobot
-              onClick={() => setChatbot(!chatbot)}
-              className="ml-2 text-black text-xl  rounded-full"
-            /> */}
+           
             <img 
             onClick={() => setChatbot(!chatbot)}
             src={Chatbot}
