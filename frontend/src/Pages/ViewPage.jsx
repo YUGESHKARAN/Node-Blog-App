@@ -13,6 +13,7 @@ import Footer from "../ui/Footer";
 import { MdOutlineInsertComment } from "react-icons/md";
 import { io } from "socket.io-client";
 import { use } from "react";
+import { SiTruenas } from "react-icons/si";
 function ViewPage() {
   const user = localStorage.getItem("username");
   const userEmail = localStorage.getItem("email");
@@ -25,6 +26,7 @@ function ViewPage() {
   const [postId, setPostId] = useState("");
   const { email, id } = useParams();
   const [ viewComments,setViewComments] = useState(false);
+  const [showContent, setShowContent] = useState(false);
   const navigate = useNavigate();
 
   // Fetch post data
@@ -123,7 +125,7 @@ function ViewPage() {
             </div>
             <div className="flex items-center gap-5 justify-start">
               <button
-                className="bg-[#F8EFBA] px-3 py-1 text-base text-[#182C61]"
+                className="bg-[#F8EFBA] px-2 md:px-3 py-0.5 md:py-1 text-sm md:text-base text-[#182C61]"
                 onClick={() => navigate('/home')}
               >
                 Back
@@ -141,9 +143,9 @@ function ViewPage() {
             alt="Post"
           />
 
-          <p className="w-full text-justify leading-relaxed text-gray-300 text-md">
-            {singlePostData.description ? singlePostData.description.slice(0, 60) : 'null'}...
-          </p>
+          <div className="w-full text-justify mt-2  text-xs leading-relaxed text-gray-300 text-md">
+            {singlePostData.description && showContent ? <>{singlePostData.description} <br /> <span className="text-xs text-yellow-500 cursor-pointer mt-1" onClick={()=>setShowContent(false)}>show Less</span> </> :<> {singlePostData.description && singlePostData.description.slice(0, 60)}... <br /> <span className="text-xs text-yellow-500 cursor-pointer " onClick={()=>setShowContent(SiTruenas)}>Show More</span></>}
+          </div>
 
           {/* Comment Section */}
           <div className="w-full mt-7 p-3 rounded-lg bg-gray-700 text-white">
@@ -153,8 +155,8 @@ function ViewPage() {
               onClick={()=>{setViewComments(!viewComments)}}
                className="text-2xl text-white" />
             </div>
-            <div className={`${viewComments?'flex-col h-auto overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2':'flex-col  overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2 h-10'}`}>
-              {messages.map((msg, index) => (
+            <div className={`${viewComments?'flex-col h-auto overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2':'flex-col  overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2 h-4'}`}>
+              {message.length>0?messages.map((msg, index) => (
                 <div key={index} className="flex h-auto items-start justify-start gap-2 mb-5">
                   <img
                   //  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`} 
@@ -163,9 +165,10 @@ function ViewPage() {
                    />
                   <p className="text-xs">{msg.message}</p>
                 </div>
-              ))}
+              )):<p className="md:text-sm  text-xs">Drop a Comment</p>}
             </div>
           </div>
+          
 
           <div className="mt-3 flex flex-col items-end w-full justify-end">
             <input 
@@ -173,7 +176,8 @@ function ViewPage() {
               onChange={(e) => setNewMessage(e.target.value)} 
               value={newMessage}
               placeholder="Enter Comment" 
-              className="w-full text-xs focus:outline-none focus:ring-2 focus:ring-red-500 p-2 mt-2 rounded-lg bg-gray-700 text-white"
+              className="w-full text-xs border-none focus:outline focus:outline-1 focus:outline-white transition-all duration-200 p-2 mt-2 rounded-lg bg-gray-700 text-white"
+
             />
             <button 
               onClick={postComment}
