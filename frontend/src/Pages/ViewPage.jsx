@@ -167,7 +167,7 @@ function ViewPage() {
                    src={msg.profile && msg.profile!==''?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`:blog2} 
                    className="w-8 h-8 rounded-full" 
                    />
-                   <div className="flex flex-col items-start justify-start">
+                   <div className="flex w-full flex-col items-start justify-start">
                     <div className="flex justify-between w-full items-center">
                       <p className="text-[10px] text-gray-200">@{msg.user}</p>
                       <p className="text-[7px] text-gray-200">🔘{timeStamp.slice(0,10)}</p>
