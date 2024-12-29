@@ -102,6 +102,8 @@ function ViewPage() {
   };
 
   console.log("post",singlePostData)
+
+  console.log("messages",messages)
   return (
     <div className="w-full min-h-screen h-auto relative bg-gray-500">
       <NavBar />
@@ -165,7 +167,14 @@ function ViewPage() {
                    src={msg.profile && msg.profile!==''?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`:blog2} 
                    className="w-8 h-8 rounded-full" 
                    />
-                  <p className="text-xs">{msg.message}</p>
+                   <div className="flex flex-col items-start justify-start">
+                    <div className="flex justify-between w-full items-center">
+                      <p className="text-[10px] text-gray-200">@{msg.user}</p>
+                      <p className="text-[7px] text-gray-200">🔘{timeStamp.slice(0,10)}</p>
+                    </div>
+                     <p className="text-xs mt-1">{msg.message}</p>
+                   </div>
+                  
                 </div>
               )):
                <ReactTyped
@@ -175,17 +184,7 @@ function ViewPage() {
                           className="md:text-sm  text-xs"
                           // loop
                         />
-              // <p className="md:text-sm  text-xs">Leave a Comment</p>
-              // messages.map((msg, index) => (
-              // <div key={index} className="flex h-auto items-start justify-start gap-2 mb-5">
-              //     <img
-              //     //  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`} 
-              //      src={msg.profile && msg.profile!==''?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`:blog2} 
-              //      className="w-8 h-8 rounded-full" 
-              //      />
-              //     <p className="text-xs">{msg.message}</p>
-              // </div>
-              // ))
+         
               }
             </div>
           </div>
