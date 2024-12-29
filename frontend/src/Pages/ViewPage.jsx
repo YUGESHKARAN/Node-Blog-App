@@ -163,9 +163,9 @@ function ViewPage() {
                className="text-2xl text-white" />  <sub className="text-[10px]">{messages.length}</sub> 
               </div> */}
             </div>
-            <div className={`${viewComments?'flex-col max-h-96 overflow-y-auto min-h-auto mb-2 items-start justify-start gap-2 mt-2':'flex-col  overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2 h-10'}`}>
+            <div className={`${viewComments?'flex-col max-h-96 overflow-y-auto min-h-auto mb-2 items-start justify-start gap-2 mt-2':'flex-col  overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2 h-auto'}`}>
               {
-              messages.length>0?messages.map((msg, index) => (
+              messages.length>0?viewComments?messages.map((msg, index) => (
                 <div key={index} className="flex h-auto items-start justify-start gap-2 mb-5">
                   <img
                   //  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`} 
@@ -182,6 +182,24 @@ function ViewPage() {
                   
                 </div>
               )):
+              messages.slice(0,1).map((msg, index) => (
+                <div key={index} className="flex h-auto items-start justify-start gap-2 mb-5">
+                  <img
+                  //  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`} 
+                   src={msg.profile && msg.profile!==''?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`:blog2} 
+                   className="w-8 h-8 rounded-full" 
+                   />
+                   <div className="flex w-full flex-col items-start justify-start">
+                    <div className="flex justify-between w-full items-center">
+                      <p className="text-[10px] text-gray-200">@{msg.user}</p>
+                      <p className="text-[7px] text-gray-200">🔘{timeStamp.slice(0,10)}</p>
+                    </div>
+                     <p className="text-xs mt-1">{msg.message}</p>
+                   </div>
+                  
+                </div>
+              ))
+              :
                <ReactTyped
                           strings={["Leave a Comment"]}
                           typeSpeed={70}
