@@ -15,6 +15,7 @@ import { io } from "socket.io-client";
 import { use } from "react";
 import { SiTruenas } from "react-icons/si";
 import { ReactTyped } from "react-typed";
+import { IoClose } from "react-icons/io5";
 function ViewPage() {
   const user = localStorage.getItem("username");
   const userEmail = localStorage.getItem("email");
@@ -29,7 +30,7 @@ function ViewPage() {
   const [ viewComments,setViewComments] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const navigate = useNavigate();
-
+const [selectedImage, setSelectedImage] = useState(null);
   // Fetch post data
   useEffect(() => {
     const getSinglePost = async () => {
@@ -101,15 +102,22 @@ function ViewPage() {
     setNewMessage("");
   };
 
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedImage(null);
+  };
   console.log("post",singlePostData)
 
   console.log("messages",messages)
   return (
-    <div className="w-full min-h-screen h-auto relative bg-gray-500">
+    <div className="w-full min-h-screen h-auto relative bg-gradient-to-br from-gray-900 to-gray-800">
       <NavBar />
       
-      <div className="md:min-h-screen h-auto md:pb-40 md:w-3/6 w-full pb-20 p-2 md:p-10 flex flex-col justify-center items-center m-auto md:mt-10">
-        <div className="w-11/12 flex bg-[#091533] flex-col p-3 h-auto items-center">
+      <div className="md:min-h-screen  h-auto md:pb-40 md:w-3/6 w-full pb-20 p-2 md:p-10 flex flex-col justify-center items-center m-auto md:mt-10">
+        <div className="w-full flex bg-gray-800 flex-col p-3 h-auto items-center">
           <div className="flex justify-between w-full items-center">
             <div className="flex justify-between gap-2 items-center">
               <img 
@@ -128,7 +136,7 @@ function ViewPage() {
             </div>
             <div className="flex items-center gap-5 justify-start">
               <button
-                className="bg-[#F8EFBA] px-2 md:px-3 py-0.5 md:py-1 text-sm md:text-base text-[#182C61]"
+                className="bg-[#F8EFBA] rounded-md px-2 md:px-3 py-0.5 md:py-1 text-sm md:text-base text-[#182C61]"
                 onClick={() => navigate('/home')}
               >
                 Back
@@ -144,6 +152,7 @@ function ViewPage() {
             src={singlePostData.image ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}` : blog1}
             className="w-full h-fit"
             alt="Post"
+             onClick={() => handleImageClick(singlePostData.image ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}` : blog1)}
           />
 
           <div className="w-full text-justify mt-2  text-xs leading-relaxed text-gray-300 text-md">
@@ -235,6 +244,20 @@ function ViewPage() {
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full">
         <Footer />
       </div>
+       {/* Image Modal */}
+              {selectedImage && (
+              <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+                <div className="relative">
+                  <img src={selectedImage} alt="Selected" className="max-w-full w-11/12 mx-auto max-h-full" />
+                  <button
+                    onClick={handleCloseModal}
+                    className="absolute top-0 right-10"
+                  >
+                    <IoClose className="text-2xl text-white"/>
+                  </button>
+                </div>
+              </div>
+            )}
     </div>
   );
 }
