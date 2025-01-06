@@ -71,7 +71,7 @@ console.log("authors",authors);
 
                      }
                      <div className='md:w-11/12 md:w-2/3 mx-auto flex-col items-center justify-center'>
-                       <h1 className='text-center font-semibold text-white mt-2 md:text-base'> {author.authorName}</h1>
+                       <h1 className='text-center font-semibold text-white text-wrap w-full overflow-x-auto mt-2 md:text-base'> {author.authorName}</h1>
                        <h1 className='text-center  mt-1 text-[9px] text-white md:text-xs'> {author.email}</h1>
                        <div className='flex mx-auto items-center justify-between mt-1 gap-5 px-5'>
                          <span className='text-center text-yellow-500 text-xs mt-2 font-semibold'>Followers <p className='text-white'>{author.followers.length}</p></span>

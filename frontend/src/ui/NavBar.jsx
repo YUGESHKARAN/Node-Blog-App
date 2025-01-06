@@ -103,8 +103,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from "../AuthContext";
 import { Link } from 'react-router-dom';
-import { MdLogout, MdPostAdd } from 'react-icons/md';
-import { IoHome, IoLogOut } from 'react-icons/io5';
+import { MdDataObject, MdLogout, MdPostAdd } from 'react-icons/md';
+import { IoHome, IoLogOut, IoPeople } from 'react-icons/io5';
 import { FaUserAlt } from 'react-icons/fa';
 import bloglogo from '../assets/bloglogo.png';
 import { RiUser3Line } from 'react-icons/ri';
@@ -194,6 +194,19 @@ function NavBar() {
                             <IoHome className='text-xl mr-3'/> Home
                         </Link>
                     </li>
+
+                    <li className='transition-all mx-auto duration-200'>
+                        <Link to="/yourposts" className='flex items-center justify-start'>
+                            <MdDataObject  className='text-xl mr-3'/>Your Posts
+                        </Link>
+                    </li>
+
+                    <li className='transition-all mx-auto duration-200'>
+                        <Link to="/authors" className='flex items-center justify-start'>
+                            <IoPeople className='text-xl mr-3'/>Authors
+                        </Link>
+                    </li>
+
                     <li className='transition-all mx-auto duration-200'>
                         <Link to="/addPost" className='flex items-center justify-start'>
                             <MdPostAdd className='text-xl mr-3'/>Add Post
