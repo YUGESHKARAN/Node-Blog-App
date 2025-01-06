@@ -318,7 +318,7 @@ function BlogContainer() {
       setLoader(true);
       try {
         const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/posts");
-        setPosts(response.data.posts);
+        setPosts(response.data.posts.filter((post) => post.authoremail !== email));
       } catch (err) {
         console.error("Error fetching posts:", err);
       }

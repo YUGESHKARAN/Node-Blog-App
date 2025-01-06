@@ -12,6 +12,7 @@ import ProfilePage from "./Pages/ProfilePage.jsx"
 import ViewPage from "./Pages/ViewPage.jsx";
 import Authors from "./Pages/Authors.jsx";
 import ChangePassword from "./auth/ChangePassword.jsx";
+import YourPost from "./Pages/YourPost.jsx";
 function App() {
   return (
     <AuthProvider>
@@ -47,6 +48,10 @@ function App() {
            <Route
             path="/authors"
             element={<ProtectedRoute element={<Authors/>} />}
+          />
+           <Route
+            path="/yourposts"
+            element={<ProtectedRoute element={<YourPost/>} />}
           />
         </Routes>
       </Router>

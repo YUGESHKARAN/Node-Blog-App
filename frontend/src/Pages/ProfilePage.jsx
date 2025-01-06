@@ -271,7 +271,7 @@ function ProfilePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
       <NavBar />
-      <div className="container mx-auto py-8 px-4">
+      <div className="container  min-h-screen mx-auto py-8 px-4">
         <h1 className="md:text-3xl text-xl font-bold mb-6">Profile Page</h1>
         <div className="flex justify-end mb-4">
           <button
@@ -293,7 +293,7 @@ function ProfilePage() {
               <HiOutlineUserCircle className="text-center text-[#786fa6] shadow-xl bg-white rounded-3xl border-4 border-orange-500 mx-auto text-9xl" />
             </div>
           )}
-          <form onSubmit={handleSubmit} className="space-y-6 w-full md:w-1/2">
+          <form onSubmit={handleSubmit} className="space-y-8 w-full md:w-1/2">
             <div>
               <label htmlFor="authorName" className="block text-sm font-medium text-gray-300">
                 Author Name
@@ -330,13 +330,13 @@ function ProfilePage() {
                 type="file"
                 id="image"
                 onChange={onImageChange}
-                className="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600"
+                className="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 text-xs md:file:text-sm file:text-xs file:text-white hover:file:bg-orange-600"
               />
             </div>
             <div>
               <button
                 type="submit"
-                className="w-full py-2 px-4 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-md transition duration-200"
+                className="w-full py-2 px-4 bg-orange-600 hover:bg-orange-700 text-sm md:text-base text-white font-bold rounded-md transition duration-200"
               >
                 Update My Details
               </button>

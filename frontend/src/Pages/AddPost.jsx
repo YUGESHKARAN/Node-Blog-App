@@ -496,7 +496,7 @@ function AddPost() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
       <NavBar />
-      <div className="container mx-auto py-8 px-4">
+      <div className="container min-h-screen mx-auto py-8 px-4">
         <h1 className="md:text-3xl text-xl font-bold mb-6">Add New Post</h1>
         <div className="md:w-96 px-4 mx-auto flex items-center mb-4 justify-center overflow-x-hidden">
           <ReactTyped

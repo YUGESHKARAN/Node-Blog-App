@@ -165,17 +165,20 @@ function HomePage() {
   console.log('email', email);
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 text-white">
+    <div className="min-h-screen bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 text-white">
       <NavBar />
 
       <div className="md:text-2xl text-xl mb-10 font-bold text-center mt-5">Welcome to Blog Browser!</div>
 
       <div className="grid grid-cols-8 gap-1.5 md:gap-3 w-11/12 md:w-9/12 my-5 mx-auto">
         <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
+          <Link to='/yourposts'>
           <div className="text-center flex-col justify-center">
             <h1 className="md:text-3xl text-sm text-white">{yourPost.length}</h1>
             <h3 className="text-xs md:text-sm lg:text-2xl font-semibold text-orange-400">Your Posts</h3>
           </div>
+          </Link>
+          
         </div>
 
         <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
@@ -195,6 +198,7 @@ function HomePage() {
         </div>
 
         <div className="col-span-2 p-2 md:w-11/12 md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
+        
           <div className="text-center flex-col justify-center">
             <h1 className="md:text-3xl text-sm text-white">{categoryCount}</h1>
             <h3 className="text-xs md:text-sm lg:text-2xl font-semibold text-orange-400">Categories</h3>

@@ -113,10 +113,10 @@ function ViewEditPost() {
 
   console.log("single post data", singlePostData);
   return (
-    <div className="relative w-full h-auto min-h-[900px]">
+    <div className="relative w-full  bg-gradient-to-br from-gray-900 to-gray-800 h-auto min-h-[900px]">
       <NavBar />
       <div className="h-auto md:w-11/12  flex flex-col p-2  justify-center items-center  m-auto mt-10">
-        <div className={`${edit?'hidden':'md:w-6/12 w-11/12 md:mb-40  mb-20 bg-[#091533] flex flex-col p-3 h-auto   items-center'}`}>
+        <div className={`${edit?'hidden':'md:w-6/12 w-11/12 md:mb-40  mb-20 bg-gray-800 flex flex-col p-3 h-auto   items-center'}`}>
           <div className="flex  justify-between w-full items-center">
             <div className="flex justify-between gap-2 items-center">
               <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`} className="md:w-8 w-5 rounded-md" />
@@ -162,7 +162,7 @@ function ViewEditPost() {
           action=""
           className={`${
         edit
-              ? "flex flex-col rounded-md items-center justify-center p-5 w-11/12 md:w-6/12 gap-1 m-auto  border-2 border-black"
+              ? "flex flex-col text-white rounded-md space-y-4 items-center justify-center p-5 w-11/12  gap-1 m-auto  "
               : "hidden"
           }`}
         >
@@ -174,7 +174,7 @@ function ViewEditPost() {
             <input
               type="text"
               id="title"
-              className="w-full p-3 mt-2 rounded-lg border-2 border-black custom-placeholder focus:outline-none focus:ring-2 focus:ring-[#6D214F]"
+              className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 text-xs sm:text-sm"
               placeholder={title}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -188,7 +188,7 @@ function ViewEditPost() {
             <br />
             <textarea
               id="description"
-              className="w-full p-3 mt-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6D214F]"
+              className="mt-1 block w-full text-xs leading-relaxed px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               placeholder={description}
               value={description}
               rows={5}
@@ -213,6 +213,7 @@ function ViewEditPost() {
               accept="image/*"
               name="image"
               onChange={onImageChange}
+              className="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600"
             />
           </div>
 
@@ -224,7 +225,7 @@ function ViewEditPost() {
             <br />
             <select
               id="category"
-              className="w-full p-3 mt-2 border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6D214F]"
+              className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
@@ -243,7 +244,7 @@ function ViewEditPost() {
 
           <button
             type="submit"
-            className="px-3 mt-5 md:mt-0 py-1 bg-[#40407a] text-sm md:text-base text-[#f7f1e3] rounded-md"
+            className="px-3 mt-5 md:mt-0 py-1 bg-orange-500 text-sm md:text-base text-[#f7f1e3] rounded-md"
           >
             EDIT POST{" "}
           </button>
