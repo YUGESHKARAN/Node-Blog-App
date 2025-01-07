@@ -12,7 +12,8 @@ const {
   updatePost,
   deletePost,
   getSinglePost,
-  postView
+  postView,
+  postLikes
 } = require("../controllers/postDetail.Controller");
 
 // handle authors blog post data
@@ -45,6 +46,7 @@ router.put("/:email/:postId",upload.single('image'), updatePost);
 
 router.get("/:email/:postId",getSinglePost);
 router.put("/views/:email/:id",postView)
+router.put("/likes/:email/:id",postLikes)
 
 router.delete("/:email/:postId", deletePost);
 

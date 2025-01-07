@@ -302,7 +302,7 @@ function ViewPage() {
         setSinglePostData(postData);
         setTimeStamp(postData.timestamp);
         setPostId(postData._id);
-        set;
+        
       } catch (err) {
         console.error("Error fetching post data", err);
       }

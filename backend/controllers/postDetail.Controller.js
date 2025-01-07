@@ -294,6 +294,54 @@ const postView = async (req, res) => {
   }
 };
 
+const postLikes = async (req, res) => {
+  try {
+    const { email, id } = req.params; // Retrieve email and post ID from URL params
+    const { emailAuthor } = req.body; // Retrieve emailAuthor from the body
+
+    // Find the author by email
+    const author = await Author.findOne({ email });
+
+    // If author doesn't exist, send a 404 error
+    if (!author) {
+      return res.status(404).json({ message: 'Author not found' });
+    }
+
+    // Find the specific post by ID in the author's posts array
+    const post = author.posts.find(post => post._id.toString() === id);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Check if the emailAuthor is already in the views array of the post
+    if (post.likes.includes(emailAuthor)) {
+      post.likes = post.likes.filter(like => like !== emailAuthor);
+      await author.save();
+      return res.status(200).json({
+        message: 'like removed successfully',
+        likes: post.likes,
+      });
+    }
+
+    // Add the emailAuthor to the views array
+    post.likes.push(emailAuthor);
+
+    // Save the updated author document with the post's updated views array
+    await author.save();
+
+    // Respond with success and the updated views array
+    return res.status(200).json({
+      message: 'like added successfully',
+      views: post.views,
+    });
+  } catch (err) {
+    // If there is a server error, return a 500 error
+    return res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
+
 
 
 
@@ -305,5 +353,6 @@ module.exports = {
   deletePost,
   getSinglePost,
   postView,
+  postLikes
  
 };

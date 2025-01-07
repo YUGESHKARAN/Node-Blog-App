@@ -50,6 +50,16 @@ const postSchema = new mongoose.Schema({
       message: "Views array must contain unique values",
     },
   },
+  likes:{
+    type:[String],
+    default:[],
+    validate: {
+      validator: function (v) {
+        return Array.isArray(v) && new Set(v).size === v.length; // Ensure all entries are unique
+      },
+      message: "Views array must contain unique values",
+    },
+  },
   messages: [messageSchema], // Messages linked to the post
   timestamp: {
     type: Date,

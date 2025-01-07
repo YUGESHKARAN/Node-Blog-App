@@ -303,6 +303,7 @@ import { IoSearchOutline, IoEye, IoClose } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MagnifyingGlass } from "react-loader-spinner";
 import blog1 from "../images/blog1.jpg";
+import { BiLike, BiSolidLike } from "react-icons/bi";
 
 function BlogContainer() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -312,20 +313,22 @@ function BlogContainer() {
   const email = localStorage.getItem("email");
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Fetch posts from API
   useEffect(() => {
-    const fetchPosts = async () => {
-      setLoader(true);
-      try {
-        const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/posts");
-        setPosts(response.data.posts.filter((post) => post.authoremail !== email));
-      } catch (err) {
-        console.error("Error fetching posts:", err);
-      }
-      setLoader(false);
-    };
+   
     fetchPosts();
   }, []);
+  // Fetch posts from API
+  const fetchPosts = async () => {
+    setLoader(true);
+    try {
+      const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/posts");
+      setPosts(response.data.posts.filter((post) => post.authoremail !== email));
+    } catch (err) {
+      console.error("Error fetching posts:", err);
+    }
+    setLoader(false);
+  };
+
 
   // Search handler
   const handleSearch = (e) => {
@@ -340,7 +343,18 @@ function BlogContainer() {
   // Track post views
   const postViews = async (authorEmail, postId) => {
     try {
-      await axios.post(`https://node-blog-app-seven.vercel.app/blog/posts/views/${authorEmail}/${postId}`);
+      await axios.put(`https://node-blog-app-seven.vercel.app/blog/posts/views/${authorEmail}/${postId}`,{ emailAuthor: email });  
+    } catch (err) {
+      console.error("Error updating views:", err);
+    }
+  };
+
+  const postLikes = async (authorEmail, postId,e) => {
+    e.preventDefault()
+    try {
+      await axios.put(`https://node-blog-app-seven.vercel.app/blog/posts/likes/${authorEmail}/${postId}`,{ emailAuthor: email });
+      fetchPosts();
+      
     } catch (err) {
       console.error("Error updating views:", err);
     }
@@ -465,7 +479,23 @@ function BlogContainer() {
                       <IoEye className="text-sm text-blue-400" />
                       <span className="text-[9px]">{data.views.length || 0}</span>
                     </Link>
-
+                  {
+                    data.likes.includes(email) ? (  <p 
+                      onClick={(e) => postLikes(data.authoremail, data._id,e)}
+                       className="cursor-pointer flex items-center gap-1  hover:text-blue-300"
+                     >
+                       <BiSolidLike className="text-sm text-blue-400" />
+                       
+                       <span className="text-[9px]">{data.likes?data.likes.length : 0}</span>
+                     </p>) : (    <p 
+                     onClick={(e) => postLikes(data.authoremail, data._id,e)}
+                      className="cursor-pointer flex items-center gap-1  hover:text-blue-300"
+                    >
+                      <BiLike className="text-sm text-blue-400" />
+                      
+                      <span className="text-[9px]">{data.likes?data.likes.length : 0}</span>
+                    </p>)
+                  }
                     {data.authoremail === email && (
                       <Link
                         to={`/EditPost/${data._id}`}
