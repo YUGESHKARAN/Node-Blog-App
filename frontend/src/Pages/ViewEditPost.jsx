@@ -166,6 +166,8 @@ function ViewEditPost() {
               : "hidden"
           }`}
         >
+          <h1 className="text-center text-xl">Edit Your Post</h1>
+
           <div className="w-11/12 mt-1">
             <label htmlFor="title" className="text-md  font-semibold ">
               Title

@@ -299,7 +299,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { IoSearchOutline, IoEye, IoClose } from "react-icons/io5";
+import { IoSearchOutline, IoEye, IoClose, IoShareSocial } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MagnifyingGlass } from "react-loader-spinner";
 import blog1 from "../images/blog1.jpg";
@@ -329,6 +329,22 @@ function BlogContainer() {
     setLoader(false);
   };
 
+  // share post with social media
+  const sharePost = async(title,email,url)=>{
+    try{
+      const data = {
+        title:title,
+        text:title,
+        url:`${window.location.origin}/viewpage/${email}/${url}`
+      }
+      const response = await navigator.share(data)
+      console.log("post shared successfully",response)
+    }
+    catch(err){
+      console.log("error sharing post",err) 
+    }
+  }
+
 
   // Search handler
   const handleSearch = (e) => {
@@ -353,7 +369,18 @@ function BlogContainer() {
     e.preventDefault()
     try {
       await axios.put(`https://node-blog-app-seven.vercel.app/blog/posts/likes/${authorEmail}/${postId}`,{ emailAuthor: email });
-      fetchPosts();
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post._id === postId
+            ? {
+                ...post,
+                likes: post.likes.includes(email)
+                  ? post.likes.filter((like) => like !== email) // Unlike the post
+                  : [...post.likes, email], // Like the post
+              }
+            : post
+        )
+      );
       
     } catch (err) {
       console.error("Error updating views:", err);
@@ -438,6 +465,21 @@ function BlogContainer() {
               className="lg:w-3/12 md:w-1/3 bg-gray-800  md:pb-2 flex flex-col 
               shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
             >
+               <div className="flex mb-2 gap-2 items-center">
+                  <img 
+                    src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
+                    className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
+                    alt={data.authorname}
+                  />
+                  <div className="flex flex-col">
+                    <p className="text-xs text-white font-semibold">
+                      {data.authorname}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {data.timestamp.slice(0, 10)}
+                    </p>
+                  </div>
+                </div>
               <img
                 src={data.image ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}` : blog1}
                 className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center  hover:opacity-90 transition-all duration-300"
@@ -453,21 +495,7 @@ function BlogContainer() {
               </div>
 
               <div className="flex justify-between items-center mt-2">
-                <div className="flex justify-between gap-2 items-center">
-                  <img 
-                    src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
-                    className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
-                    alt={data.authorname}
-                  />
-                  <div className="flex flex-col">
-                    <p className="text-sm text-white font-semibold">
-                      {data.authorname}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {data.timestamp.slice(0, 10)}
-                    </p>
-                  </div>
-                </div>
+               
 
                 <div className="flex gap-3 items-center">
                   <div className="flex items-center gap-2">
@@ -479,41 +507,40 @@ function BlogContainer() {
                       <IoEye className="text-sm text-blue-400" />
                       <span className="text-[9px]">{data.views.length || 0}</span>
                     </Link>
-                  {
-                    data.likes.includes(email) ? (  <p 
-                      onClick={(e) => postLikes(data.authoremail, data._id,e)}
-                       className="cursor-pointer flex items-center gap-1  hover:text-blue-300"
-                     >
-                       <BiSolidLike className="text-sm text-blue-400" />
-                       
-                       <span className="text-[9px]">{data.likes?data.likes.length : 0}</span>
-                     </p>) : (    <p 
-                     onClick={(e) => postLikes(data.authoremail, data._id,e)}
+
+                     <button
+                        type="button"
+                         onClick={(e) => postLikes(data.authoremail, data._id, e)}
+                        className="cursor-pointer flex items-center gap-1 hover:text-blue-300 bg-transparent border-0 disabled:opacity-50"
+                       >
+                          {(data.likes || []).includes(email) ? (
+                            <BiSolidLike className="text-sm text-blue-400" />
+                          ) : (
+                            <BiLike className="text-sm text-blue-400" />
+                          )}
+                          <span className="text-[9px] text-white">
+                          {data.likes && data.likes.length > 0 ? data.likes.length : ""}
+                          </span>
+                      </button>
+                   <div 
+                      to={`/viewpage/${data.authoremail}/${data._id}`}
+                      onClick={() => sharePost(data.title,data.authoremail,data._id)}
                       className="cursor-pointer flex items-center gap-1  hover:text-blue-300"
                     >
-                      <BiLike className="text-sm text-blue-400" />
+                      <IoShareSocial className="text-sm text-blue-400" />
                       
-                      <span className="text-[9px]">{data.likes?data.likes.length : 0}</span>
-                    </p>)
-                  }
-                    {data.authoremail === email && (
-                      <Link
-                        to={`/EditPost/${data._id}`}
-                        className="text-pink-400 hover:text-pink-300"
-                      >
-                        <MdEdit className="text-sm"/>
-                      </Link>
-                    )}
+                    </div>
+                   
                   </div>
-
-                  <button
+                 
+                </div>
+                <button
                     onClick={() => setPostCategory(data.category)}
                     className="px-2 py-1 rounded-full bg-gray-600 text-gray-300 text-sm font-medium
                      transition-colors duration-200"
                   >
                     {data.category}
                   </button>
-                </div>
               </div>
             </div>
           ))
