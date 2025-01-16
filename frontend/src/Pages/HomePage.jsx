@@ -121,7 +121,16 @@ import NavBar from "../ui/NavBar";
 import BlogContainer from "./BlogContainer";
 import Footer from "../ui/Footer";
 import { Link } from "react-router-dom";
-
+import {
+  MainContainer,
+  ChatContainer,
+  MessageList,
+  Message,
+  MessageInput,
+  TypingIndicator,
+} from "@chatscope/chat-ui-kit-react";
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import { TbMessageChatbotFilled } from "react-icons/tb";
 function HomePage() {
   const username = localStorage.getItem("username");
   const [posts, setPosts] = useState([]);
@@ -160,12 +169,89 @@ function HomePage() {
     getData();
   }, []);
 
-  console.log('cc', categoryCount);
+  // Chatbot
+  const [messages, setMessages] = useState([
+    {
+      "message": "Hi Chief, admin of Blog Browser here. How can I help?",
+      sender: "bot",
+      direction: "incoming",
+    },
+  ]);
+  const [isTyping, setIsTyping] = useState(false);
+  const [chatbot, setChatbot] = useState(false);
+
+  const backendEndpoint = "https://mongodb-rag-rho.vercel.app/query-rag";
+
+  const handleSend = async (message) => {
+    const newMessage = {
+      message,
+      sender: "user",
+      direction: "outgoing",
+    };
+    setMessages((prev) => [...prev, newMessage]);
+
+    setIsTyping(true);
+
+    try {
+      const response = await axios.post(backendEndpoint, {
+        query: message,
+      });
+
+      const botResponse = response.data.response || "No response received.";
+      console.log("bot response",response)
+      typewriterEffect(botResponse, "bot");
+    } catch (error) {
+      console.error("Error fetching response:", error);
+      const errorMessage = {
+        message: "An error occurred. Please try again later.",
+        sender: "bot",
+        direction: "incoming",
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  const typewriterEffect = (text, sender) => {
+    const words = text.split(" ");
+    let currentMessage = "";
+    let wordIndex = 0;
+
+    const addWord = () => {
+      if (wordIndex < words.length) {
+        currentMessage += (wordIndex > 0 ? " " : "") + words[wordIndex];
+        const newMessage = {
+          message: currentMessage,
+          sender,
+          direction: "incoming",
+        };
+        setMessages((prev) => {
+          const updatedMessages = [...prev];
+          if (
+            updatedMessages.length > 0 &&
+            updatedMessages[updatedMessages.length - 1].sender === sender
+          ) {
+            updatedMessages[updatedMessages.length - 1] = newMessage;
+          } else {
+            updatedMessages.push(newMessage);
+          }
+          return updatedMessages;
+        });
+        wordIndex++;
+        setTimeout(addWord, 200); // Adjust delay for smoother/faster typing
+      }
+    };
+
+    addWord();
+  };
+
+  
   console.log('your posts', yourPost);
   console.log('email', email);
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 text-white">
+    <div className="min-h-screen relative bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 text-white">
       <NavBar />
 
       <div className="md:text-2xl text-xl mb-10 font-bold text-center mt-5">Welcome to Blog Browser!</div>
@@ -209,6 +295,54 @@ function HomePage() {
       <div className="min-h-screen h-auto">
         <BlogContainer />
       </div>
+
+      <div 
+      onClick={()=>{setChatbot(!chatbot)}}
+      className={`${email==='yugeshkaran01@gmail.com'?'fixed md:right-10 cursor-pointer  md:bottom-10 right-5 bottom-5':'hidden'}`}>
+        <TbMessageChatbotFilled className="md:text-3xl text-2xl" />
+      </div>
+      <div className={`${chatbot?'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50':'hidden'}`}>
+        <div className="flex-col w-full"> 
+
+          <MainContainer className="rounded-lg h-96 md:w-1/2 w-9/12 mx-auto md:text-sm text-xs">
+            <ChatContainer>
+              <MessageList
+                typingIndicator={
+                  isTyping && (
+                    <TypingIndicator content="Chatbot is typing..." />
+                  )
+                }
+              >
+                {messages.map((msg, idx) => (
+                  <Message
+                    className="mb-4"
+                    key={idx}
+                    model={{
+                      message: msg.message,
+                      sentTime: "just now",
+                      sender: msg.sender,
+                      direction: msg.direction,
+                    }}
+                  />
+                ))}
+              </MessageList>
+              
+              <MessageInput
+                placeholder="Type a message..."
+                onSend={handleSend}
+                className="bg-gray-800 text-white"
+              />
+              
+            </ChatContainer>
+            
+          </MainContainer>
+
+        <div
+        onClick={()=>setChatbot(!chatbot)}
+         className="text-center mt-4 bg-[#F8EFBA] cursor-pointer w-24 mx-auto rounded-md px-2 md:px-3 py-0.5 md:py-1 text-sm md:text-base text-[#182C61]">close</div>
+
+        </div>          
+      </div>      
 
       <Footer />
     </div>
