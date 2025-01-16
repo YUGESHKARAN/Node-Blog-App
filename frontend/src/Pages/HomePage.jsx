@@ -304,18 +304,21 @@ function HomePage() {
       <div className={`${chatbot?'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50':'hidden'}`}>
         <div className="flex-col w-full"> 
 
-          <MainContainer className="rounded-lg h-96 md:w-1/2 w-9/12 mx-auto md:text-sm text-xs">
-            <ChatContainer>
+          <MainContainer className="rounded-lg h-96 md:w-1/2 w-9/12 mx-auto  bg-gray-700 md:text-sm text-xs">
+            <ChatContainer className="bg-gray-800">
               <MessageList
                 typingIndicator={
                   isTyping && (
-                    <TypingIndicator content="Chatbot is typing..." />
+                    <TypingIndicator
+                    className="bg-gray-800 w-full"
+                     content="Admin is typing..." />
                   )
                 }
+                   className="bg-gray-800 text-gray-200"
               >
                 {messages.map((msg, idx) => (
                   <Message
-                    className="mb-4"
+                     className="mb-4 text-white"
                     key={idx}
                     model={{
                       message: msg.message,
@@ -323,6 +326,7 @@ function HomePage() {
                       sender: msg.sender,
                       direction: msg.direction,
                     }}
+                    
                   />
                 ))}
               </MessageList>
@@ -337,9 +341,12 @@ function HomePage() {
             
           </MainContainer>
 
-        <div
-        onClick={()=>setChatbot(!chatbot)}
-         className="text-center mt-4 bg-[#F8EFBA] cursor-pointer w-24 mx-auto rounded-md px-2 md:px-3 py-0.5 md:py-1 text-sm md:text-base text-[#182C61]">close</div>
+          <div
+            onClick={() => setChatbot(!chatbot)}
+            className="text-center mt-4 bg-orange-500 cursor-pointer w-24 mx-auto rounded-md py-1 text-sm"
+          >
+            Close
+          </div>
 
         </div>          
       </div>      
