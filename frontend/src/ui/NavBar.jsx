@@ -185,6 +185,11 @@ function NavBar() {
             <p className='text-white flex md:hidden  font-semibold items-center gap-1 mr-3 text-sm'>
                 <RiUser3Line className='text-xl text-[#0be881]' /> Hi,{username}  
             </p>
+            <p className='transition-all duration-200 hover:text-white'>
+                    <Link to="/profile" className='flex items-center '>
+                        <IoMdNotifications className='text-lg'/><sup className='text-[10px]'>{notification.length>0?notification.length:''}</sup>
+                    </Link>
+                </p>
             <button onClick={toggleSidebar} className="lg:hidden text-white">
                 ☰
             </button>
