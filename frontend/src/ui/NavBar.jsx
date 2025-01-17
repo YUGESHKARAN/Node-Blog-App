@@ -100,7 +100,7 @@
 
 // export default NavBar;
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect,useContext } from 'react';
 import { useAuth } from "../AuthContext";
 import { Link } from 'react-router-dom';
 import { MdDataObject, MdLogout, MdPostAdd } from 'react-icons/md';
@@ -108,13 +108,14 @@ import { IoHome, IoLogOut, IoPeople } from 'react-icons/io5';
 import { FaUserAlt } from 'react-icons/fa';
 import bloglogo from '../assets/bloglogo.png';
 import { RiUser3Line } from 'react-icons/ri';
-
+import { IoMdNotifications } from 'react-icons/io';
+import { GlobalStateContext } from '../GlobalStateContext';
 function NavBar() {
     const { logout } = useAuth();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const sidebarRef = useRef(null);
     const menuRef = useRef(null);
-
+    const { notification } = useContext(GlobalStateContext);
     const username = localStorage.getItem("username");
     const exit = () => {
         localStorage.removeItem("username");
@@ -166,6 +167,11 @@ function NavBar() {
                 <li className='transition-all duration-200 hover:text-white'>
                     <Link to="/profile" className='flex items-center gap-1'>
                         <FaUserAlt className='text-lg'/>My Profile
+                    </Link>
+                </li>
+                <li className='transition-all duration-200 hover:text-white'>
+                    <Link to="/profile" className='flex items-center gap-1'>
+                        <IoMdNotifications className='text-2xl'/>{notification.length}
                     </Link>
                 </li>
                 <li>

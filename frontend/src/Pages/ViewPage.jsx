@@ -276,6 +276,7 @@ import { use } from "react";
 import { SiTruenas } from "react-icons/si";
 import { ReactTyped } from "react-typed";
 import { IoClose } from "react-icons/io5";
+import { GlobalStateContext } from "../GlobalStateContext";
 function ViewPage() {
   const user = localStorage.getItem("username");
   const userEmail = localStorage.getItem("email");
@@ -291,6 +292,9 @@ function ViewPage() {
   const [showContent, setShowContent] = useState(false);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
+  const [notification, setNotification] = useState(GlobalStateContext);  
+  const [isFocused, setIsFocused] = useState(true); // Track conversation focus
+
   // Fetch post data
   useEffect(() => {
     const getSinglePost = async () => {
@@ -329,19 +333,41 @@ function ViewPage() {
   useEffect(() => {
     const newSocket = io("https://node-blog-app-x8tt.onrender.com", {
       transports: ["polling"],
-    }); // Replace with your server URL
+    }); 
     setSocket(newSocket);
 
     newSocket.emit("joinPostRoom", postId);
 
     newSocket.on("message", (message) => {
       // setMessages((prevMessages) => [...prevMessages, message]);
+
+       // Send a notification if the user is not focused
+       if (!isFocused) {
+        setNotification((prev) => [
+          ...prev,
+          { id: Date.now(), message: message.message, postId: postId },
+        ]);
+      }
     });
 
     return () => {
       newSocket.disconnect();
     };
-  }, [postId]);
+  }, [postId, isFocused, setNotification]);
+
+  useEffect(() => {
+    // Track focus on the conversation
+    const handleFocus = () => setIsFocused(true);
+    const handleBlur = () => setIsFocused(false);
+
+    window.addEventListener("focus", handleFocus);
+    window.addEventListener("blur", handleBlur);
+
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      window.removeEventListener("blur", handleBlur);
+    };
+  }, []);
 
   console.log("postId", postId);
 

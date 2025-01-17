@@ -13,9 +13,11 @@ import ViewPage from "./Pages/ViewPage.jsx";
 import Authors from "./Pages/Authors.jsx";
 import ChangePassword from "./auth/ChangePassword.jsx";
 import YourPost from "./Pages/YourPost.jsx";
+import { GlobalStateProvider } from "./GlobalStateContext.jsx";
 function App() {
   return (
     <AuthProvider>
+     <GlobalStateProvider>
       <Router>
         <Routes>
           {/* Public Routes for Login & Register */}
@@ -55,6 +57,7 @@ function App() {
           />
         </Routes>
       </Router>
+      </GlobalStateProvider>
     </AuthProvider>
   );
 }
