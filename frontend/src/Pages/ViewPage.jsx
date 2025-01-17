@@ -260,7 +260,7 @@
 
 // export default ViewPage;
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import blog1 from "../images/blog1.jpg";
 import blog2 from "../images/blog48.jpg";
 import avatar1 from "../images/avatar1.jpg";
@@ -292,7 +292,7 @@ function ViewPage() {
   const [showContent, setShowContent] = useState(false);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
-  const [notification, setNotification] = useState(GlobalStateContext);  
+  const {notification, setNotification} = useContext(GlobalStateContext);  
   const [isFocused, setIsFocused] = useState(true); // Track conversation focus
 
   // Fetch post data
@@ -342,13 +342,20 @@ function ViewPage() {
       // setMessages((prevMessages) => [...prevMessages, message]);
 
        // Send a notification if the user is not focused
-       if (!isFocused) {
-        setNotification((prev) => [
+        // Add a notification if the user is not focused
+    if (!isFocused) {
+      setNotification((prev) => {
+        console.log("Previous Notifications:", prev);
+        const updatedNotifications = [
           ...prev,
-          { id: Date.now(), message: message.message, postId: postId },
-        ]);
-      }
+          { postId, message: "New comment added to the post!" },
+        ];
+        console.log("Updated Notifications:", updatedNotifications);
+        return updatedNotifications;
+      });
+  }
     });
+
 
     return () => {
       newSocket.disconnect();
@@ -394,9 +401,7 @@ function ViewPage() {
   const handleCloseModal = () => {
     setSelectedImage(null);
   };
-  console.log("post", singlePostData);
-
-  console.log("messages", messages);
+console.log('notification',notification)
   return (
     <div className="w-full min-h-screen h-auto relative bg-gradient-to-br from-gray-900 to-gray-800">
       <NavBar />
