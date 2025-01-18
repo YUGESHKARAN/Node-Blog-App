@@ -292,8 +292,8 @@ function ViewPage() {
   const [showContent, setShowContent] = useState(false);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
-  const {notification, setNotification} = useContext(GlobalStateContext);
-  const[profile,setProfile] = useState('')  
+  const[profile,setProfile] = useState('')
+  const {notification, setNotification} = useContext(GlobalStateContext);  
   const [isFocused, setIsFocused] = useState(true); // Track conversation focus
 
   // Fetch post data
@@ -307,7 +307,7 @@ function ViewPage() {
         setSinglePostData(postData);
         setTimeStamp(postData.timestamp);
         setPostId(postData._id);
-        setProfile(postData.image)
+        setProfile(postData.profile)
         
       } catch (err) {
         console.error("Error fetching post data", err);
@@ -375,6 +375,7 @@ getComments();
       email: userEmail,
       message: newMessage,
       profile:profile
+    
     };
 
     socket.emit("newMessage", messageData);
@@ -389,7 +390,7 @@ getComments();
     setSelectedImage(null);
   };
 console.log('messages--------------',messages)
-console.log('single post--------------',singlePostData)
+console.log('singlepost data--------------',singlePostData)
   return (
     <div className="w-full min-h-screen h-auto relative bg-gradient-to-br from-gray-900 to-gray-800">
       <NavBar />

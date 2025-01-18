@@ -294,7 +294,7 @@ connectToDatabase();
 app.use(
   cors({
     // origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173","https://mongodb-rag-rho.vercel.app"],// Match your frontend domain
-    origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173","https://mongodb-rag-rho.vercel.app","https://mongodb-rag.onrender.com"],// Match your frontend domain
+    origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173","https://mongodb-rag-rho.vercel.app"],// Match your frontend domain
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -410,7 +410,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('newMessage', async (data) => {
-    const { postId, user, email, message } = data;
+    const { postId, user, profile, message } = data;
 
     try {
       // Find the author and the specific post by postId
@@ -429,7 +429,7 @@ io.on('connection', (socket) => {
       console.log("Author email:", authorEmail);
 
       // Create the new message object
-      const newMessage = { user, message, profile};
+      const newMessage = { user, message, profile: profile };
 
       // Update the database with the new message
       await Author.updateOne(
