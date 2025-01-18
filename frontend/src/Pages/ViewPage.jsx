@@ -292,7 +292,8 @@ function ViewPage() {
   const [showContent, setShowContent] = useState(false);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
-  const {notification, setNotification} = useContext(GlobalStateContext);  
+  const {notification, setNotification} = useContext(GlobalStateContext);
+  const[profile,setProfile] = useState('')  
   const [isFocused, setIsFocused] = useState(true); // Track conversation focus
 
   // Fetch post data
@@ -306,6 +307,7 @@ function ViewPage() {
         setSinglePostData(postData);
         setTimeStamp(postData.timestamp);
         setPostId(postData._id);
+        setProfile(postData.image)
         
       } catch (err) {
         console.error("Error fetching post data", err);
@@ -327,7 +329,9 @@ useEffect(() => {
     }
   };
 getComments();
+
 }, [messages]);
+
 
   // Socket connection and message handling
   // "https://node-blog-app-x8tt.onrender.com
@@ -347,19 +351,9 @@ getComments();
       setNotification((prevNotifications) => [notification, ...prevNotifications]);
     });
 
-    // Fetch stored notifications from the server
-    const fetchNotifications = async () => {
-      try {
-        const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/notification`,
-         { email:userEmail}
-        );
-        setNotification(response.data.notifications);
-      } catch (error) {
-        console.error('Error fetching notifications:', error);
-      }
-    };
+    
 
-    fetchNotifications();
+
 
     return () => {
       newSocket.disconnect();
@@ -380,6 +374,7 @@ getComments();
       user,
       email: userEmail,
       message: newMessage,
+      profile:profile
     };
 
     socket.emit("newMessage", messageData);
@@ -393,7 +388,8 @@ getComments();
   const handleCloseModal = () => {
     setSelectedImage(null);
   };
-console.log('notification',notification)
+console.log('messages--------------',messages)
+console.log('single post--------------',singlePostData)
   return (
     <div className="w-full min-h-screen h-auto relative bg-gradient-to-br from-gray-900 to-gray-800">
       <NavBar />

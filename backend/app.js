@@ -294,7 +294,7 @@ connectToDatabase();
 app.use(
   cors({
     // origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173","https://mongodb-rag-rho.vercel.app"],// Match your frontend domain
-    origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173","https://mongodb-rag-rho.vercel.app"],// Match your frontend domain
+    origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173","https://mongodb-rag-rho.vercel.app","https://mongodb-rag.onrender.com"],// Match your frontend domain
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -332,8 +332,8 @@ const Author = require("./models/blogAuthorSchema"); // Ensure correct path
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    // origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173"], // Match your frontend domain
-    origin: ["http://localhost:5173"], // Match your frontend domain
+    origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173"], // Match your frontend domain
+    // origin: ["http://localhost:5173"], // Match your frontend domain
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -429,7 +429,7 @@ io.on('connection', (socket) => {
       console.log("Author email:", authorEmail);
 
       // Create the new message object
-      const newMessage = { user, message, profile: '' };
+      const newMessage = { user, message, profile};
 
       // Update the database with the new message
       await Author.updateOne(
@@ -453,7 +453,7 @@ io.on('connection', (socket) => {
       const authorSocketId = userSocketMap.get(authorEmail);
       if (authorSocketId) {
         // Author is connected - send them a notification
-        io.to(authorSocketId).emit('notification', notification);
+        // io.to(authorSocketId).emit('notification', notification);
         console.log(`Notification sent to author: ${authorEmail}`);
       } else {
         // Author is not connected - save the notification to the database
@@ -461,6 +461,7 @@ io.on('connection', (socket) => {
           { email: authorEmail },
           { $push: { notification: notification } }
         );
+        io.to(authorSocketId).emit('notification', notification);
         console.log(`Notification saved for offline author: ${authorEmail}`);
       }
     } catch (error) {

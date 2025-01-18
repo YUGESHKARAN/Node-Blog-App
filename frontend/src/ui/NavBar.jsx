@@ -110,13 +110,17 @@ import bloglogo from '../assets/bloglogo.png';
 import { RiUser3Line } from 'react-icons/ri';
 import { IoMdNotifications } from 'react-icons/io';
 import { GlobalStateContext } from '../GlobalStateContext';
+import axios from 'axios';
+import { io } from "socket.io-client";
 function NavBar() {
     const { logout } = useAuth();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const sidebarRef = useRef(null);
     const menuRef = useRef(null);
-    const { notification } = useContext(GlobalStateContext);
+    const { notification,setNotification } = useContext(GlobalStateContext);
     const username = localStorage.getItem("username");
+    const userEmail = localStorage.getItem("email");
+    const[socket,setSocket] = useState(null)
     const exit = () => {
         localStorage.removeItem("username");
         localStorage.removeItem("email");
@@ -124,6 +128,8 @@ function NavBar() {
         logout();
     };
 
+
+    const [note,setNote] = useState([])
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
@@ -144,7 +150,23 @@ function NavBar() {
         };
     }, []);
 
-    console.log("notification",notification)
+    useEffect(()=>{
+            // Fetch stored notifications from the server
+    const fetchNotifications = async () => {
+        try {
+          const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/${userEmail}`);
+          setNote(response.data.notification);
+          console.log("author email data", response.data.notification)
+        } catch (error) {
+          console.error('Error fetching notifications:', error);
+        }
+      };
+  
+      fetchNotifications();
+    },[note])
+
+
+    console.log("notification-------------s",notification)
 
     return (
         <div className='flex relative justify-between items-center h-16 bg-gray-900 mb-2 px-5'>
@@ -172,8 +194,8 @@ function NavBar() {
                     </Link>
                 </li>
                 <li className='transition-all duration-200 hover:text-white'>
-                    <Link to="/profile" className='flex items-center gap-1'>
-                        <IoMdNotifications className='text-2xl'/>{notification.length}
+                    <Link to="/profile" className='flex text-white items-center gap-1'>
+                        <IoMdNotifications className='text-2xl text-white'/>{note.length}
                     </Link>
                 </li>
                 <li>
@@ -189,7 +211,7 @@ function NavBar() {
             </p>
             <p className='transition-all duration-200 hover:text-white'>
                     <Link to="/profile" className='flex items-center '>
-                        <IoMdNotifications className='text-lg'/><sup className='text-[10px]'>{notification.length>0?notification.length:''}</sup>
+                        <IoMdNotifications className='text-lg text-white'/><sup className='text-[10px] text-white'>{note.length>0?note.length:''}</sup>
                     </Link>
                 </p>
             <button onClick={toggleSidebar} className="lg:hidden text-white">
