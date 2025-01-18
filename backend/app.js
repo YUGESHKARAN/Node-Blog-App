@@ -293,6 +293,7 @@ connectToDatabase();
 // Middleware setup
 app.use(
   cors({
+    // origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173","https://mongodb-rag-rho.vercel.app"],// Match your frontend domain
     origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173","https://mongodb-rag-rho.vercel.app"],// Match your frontend domain
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
@@ -331,7 +332,8 @@ const Author = require("./models/blogAuthorSchema"); // Ensure correct path
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173"], // Match your frontend domain
+    // origin: ["https://blog-frontend-teal-ten.vercel.app","http://localhost:5173"], // Match your frontend domain
+    origin: ["http://localhost:5173"], // Match your frontend domain
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -339,49 +341,147 @@ const io = new Server(server, {
 });
 
 // Socket.IO event handling
-io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
+// io.on("connection", (socket) => {
+//   console.log("A user connected:", socket.id);
 
-  socket.on("joinPostRoom", (postId) => {
+//   socket.on("joinPostRoom", (postId) => {
+//     console.log(`joinPostRoom event received with postId: ${postId}`);
+//     if (!postId) {
+//       console.error("Invalid postId received.");
+//       return;
+//     }
+//     socket.join(postId);
+//     console.log(`User joined room: ${postId}`);
+//   });
+
+//   socket.on("newMessage", async (data) => {
+//     const { postId, user, email, message } = data;
+//     try {
+//       // Find the post by ID
+//       const author = await Author.findOne({ "posts._id": postId }, { "posts.$": 1 });
+//       if (!author || !author.posts || author.posts.length === 0) {
+//         console.error("Post not found");
+//         return;
+//       }
+
+//       const authorProfile = await Author.findOne({ email });
+//       const profile = authorProfile?.profile || "";
+
+//       // Get the post and add the new message
+//       const post = author.posts[0];
+//       const newMessage = { user, message, profile };
+//       post.messages.push(newMessage);
+
+//       // Update the post with the new message
+//       await Author.updateOne(
+//         { "posts._id": postId },
+//         { $push: { "posts.$.messages": newMessage } }
+//       );
+
+//       // Emit the message to all clients in the room
+//       io.to(postId).emit("message", newMessage);
+//     } catch (error) {
+//       console.error("Error saving message:", error);
+//     }
+//   });
+
+//   socket.on("disconnect", () => {
+//     console.log("User disconnected:", socket.id);
+//   });
+// });
+
+//Map to store user email and their socket IDs
+
+const userSocketMap = new Map();
+
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id);
+
+  // Register user with their email
+  socket.on('registerUser', (email) => {
+    userSocketMap.set(email, socket.id);
+    console.log(`User registered: ${email} with socket ID: ${socket.id}`);
+  });
+
+  // Join a specific post room
+  socket.on('joinPostRoom', (postId) => {
     socket.join(postId);
     console.log(`User joined room: ${postId}`);
   });
 
-  socket.on("newMessage", async (data) => {
+  socket.on('newMessage', async (data) => {
     const { postId, user, email, message } = data;
+
     try {
-      // Find the post by ID
-      const author = await Author.findOne({ "posts._id": postId }, { "posts.$": 1 });
+      // Find the author and the specific post by postId
+      const author = await Author.findOne(
+        { 'posts._id': postId },
+        { 'email': 1, 'posts.$': 1 }
+      );
+
       if (!author || !author.posts || author.posts.length === 0) {
-        console.error("Post not found");
+        console.error('Post not found');
         return;
       }
 
-      const authorProfile = await Author.findOne({ email });
-      const profile = authorProfile?.profile || "";
-
-      // Get the post and add the new message
       const post = author.posts[0];
-      const newMessage = { user, message, profile };
-      post.messages.push(newMessage);
+      const authorEmail = author.email;
+      console.log("Author email:", authorEmail);
 
-      // Update the post with the new message
+      // Create the new message object
+      const newMessage = { user, message, profile: '' };
+
+      // Update the database with the new message
       await Author.updateOne(
-        { "posts._id": postId },
-        { $push: { "posts.$.messages": newMessage } }
+        { 'posts._id': postId },
+        { $push: { 'posts.$.messages': newMessage } }
       );
 
-      // Emit the message to all clients in the room
-      io.to(postId).emit("message", newMessage);
+      // Emit the message to all clients in the room except the sender
+      socket.to(postId).emit('message', newMessage);
+
+      // Prepare the notification object
+      const notification = {
+        postId,
+        user,
+        message,
+        authorEmail,
+        timestamp: new Date(),
+      };
+
+      // Check if the author is connected
+      const authorSocketId = userSocketMap.get(authorEmail);
+      if (authorSocketId) {
+        // Author is connected - send them a notification
+        io.to(authorSocketId).emit('notification', notification);
+        console.log(`Notification sent to author: ${authorEmail}`);
+      } else {
+        // Author is not connected - save the notification to the database
+        await Author.updateOne(
+          { email: authorEmail },
+          { $push: { notifications: notification } }
+        );
+        console.log(`Notification saved for offline author: ${authorEmail}`);
+      }
     } catch (error) {
-      console.error("Error saving message:", error);
+      console.error('Error processing new message:', error);
     }
   });
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+    userSocketMap.forEach((id, email) => {
+      if (id === socket.id) {
+        userSocketMap.delete(email);
+        console.log(`User unregistered: ${email}`);
+      }
+    });
   });
 });
+
+
+
 
 // Start the server
 server.listen(PORT, () => {

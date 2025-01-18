@@ -13,7 +13,8 @@ const {
   getProfile,
   updateFollowers,
   sendOtp,
-  resetPassword
+  resetPassword,
+  notificationAuthor
 } = require("../controllers/authorDetail.Controller");
 
 //handle author data: name, email, password
@@ -48,5 +49,6 @@ router.put("/follow/:email",updateFollowers);
 router.delete("/:email", deleteAuthor);
 router.post('/send-otp', sendOtp);
 router.post('/reset-password', resetPassword);
+router.get('/notification',notificationAuthor)
 
 module.exports = router;

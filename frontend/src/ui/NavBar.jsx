@@ -144,6 +144,8 @@ function NavBar() {
         };
     }, []);
 
+    console.log("notification",notification)
+
     return (
         <div className='flex relative justify-between items-center h-16 bg-gray-900 mb-2 px-5'>
             <div className='md:text-xl text-sm w-1/2 md:w-1/5 font-bold text-white'>
@@ -171,7 +173,7 @@ function NavBar() {
                 </li>
                 <li className='transition-all duration-200 hover:text-white'>
                     <Link to="/profile" className='flex items-center gap-1'>
-                        <IoMdNotifications className='text-2xl'/>{notification.length}
+                        <IoMdNotifications className='text-2xl'/>
                     </Link>
                 </li>
                 <li>
@@ -187,7 +189,7 @@ function NavBar() {
             </p>
             <p className='transition-all duration-200 hover:text-white'>
                     <Link to="/profile" className='flex items-center '>
-                        <IoMdNotifications className='text-lg'/><sup className='text-[10px]'>{notification.length>0?notification.length:''}</sup>
+                        <IoMdNotifications className='text-lg'/><sup className='text-[10px]'></sup>
                     </Link>
                 </p>
             <button onClick={toggleSidebar} className="lg:hidden text-white">

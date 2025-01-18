@@ -67,6 +67,34 @@ const postSchema = new mongoose.Schema({
   },
 });
 
+
+// notification schema
+const notificationSchema = new mongoose.Schema(
+  {
+    postId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post',
+      required: true,
+    },
+    user: {
+      type: String,
+      required: true,
+    },
+    message: {
+      type: String,
+      required: true,
+    },
+    authorEmail: {
+      type: String,
+      required: true,
+    },
+    timestamp: {
+      type: Date,
+      default: Date.now,
+    },
+  }
+)
+
 // Author schema for storing authors and their posts
 const authorSchema = new mongoose.Schema({
   authorname: {
@@ -93,6 +121,7 @@ const authorSchema = new mongoose.Schema({
      default:[]
   },
   posts: [postSchema], // Array of posts linked to the author
+  notification:[notificationSchema],
   otp: { type: String }, // OTP for password reset
   otpExpiresAt: { type: Date } // Expiry time for the OTP
 });

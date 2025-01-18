@@ -277,6 +277,23 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const notificationAuthor = async(req,res)=>{
+  const { email } = req.query;
+  try{
+    const author = await Author.findOne({ email });
+    if (!author) {
+      return res.status(404).json({ message: 'Author not found' });
+    }
+
+    res.json({ notifications: author.notifications });
+  }
+  catch(err)
+  {
+    console.error('Error fetching notifications:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+}
+
 
 
 module.exports = {
@@ -289,5 +306,6 @@ module.exports = {
   getProfile,
   updateFollowers,
   sendOtp,
-  resetPassword
+  resetPassword,
+  notificationAuthor
 };

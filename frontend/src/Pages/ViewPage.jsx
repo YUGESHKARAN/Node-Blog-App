@@ -314,67 +314,57 @@ function ViewPage() {
     getSinglePost();
   }, [email, id]);
 
-  useEffect(() => {
-    const getComments = async () => {
-      try {
-        const response = await axios.get(
-          `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${id}`
-        );
-        const comments = response.data.data;
-        setMessages(comments.messages);
-      } catch (err) {
-        console.error("Error fetching comments", err);
-      }
-    };
-    getComments();
-  }, [messages]);
+useEffect(() => {
+  const getComments = async () => {
+    try {
+      const response = await axios.get(
+        `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${id}`
+      );
+      const comments = response.data.data;
+      setMessages(comments.messages);
+    } catch (err) {
+      console.error("Error fetching comments", err);
+    }
+  };
+getComments();
+}, [messages]);
 
   // Socket connection and message handling
+  // "https://node-blog-app-x8tt.onrender.com
   useEffect(() => {
-    const newSocket = io("https://node-blog-app-x8tt.onrender.com", {
+    const newSocket = io("http://localhost:3000", {
       transports: ["polling"],
-    }); 
+    });
     setSocket(newSocket);
 
+    // Register the user with their email
+    newSocket.emit("registerUser", userEmail);
     newSocket.emit("joinPostRoom", postId);
 
-    newSocket.on("message", (message) => {
-      // setMessages((prevMessages) => [...prevMessages, message]);
-
-       // Send a notification if the user is not focused
-        // Add a notification if the user is not focused
-    if (!isFocused) {
-      setNotification((prev) => {
-        console.log("Previous Notifications:", prev);
-        const updatedNotifications = [
-          ...prev,
-          { postId, message: "New comment added to the post!" },
-        ];
-        console.log("Updated Notifications:", updatedNotifications);
-        return updatedNotifications;
-      });
-  }
+    // Listen for incoming notifications
+    newSocket.on("notification", (notification) => {
+      console.log("Received notification:", notification);
+      setNotification((prevNotifications) => [notification, ...prevNotifications]);
     });
 
+    // Fetch stored notifications from the server
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/notification?email=${userEmail}`);
+        setNotification(response.data.notifications);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
+
+    fetchNotifications();
 
     return () => {
       newSocket.disconnect();
     };
-  }, [postId, isFocused, setNotification]);
+  }, [postId, userEmail]);
+  
 
-  useEffect(() => {
-    // Track focus on the conversation
-    const handleFocus = () => setIsFocused(true);
-    const handleBlur = () => setIsFocused(false);
-
-    window.addEventListener("focus", handleFocus);
-    window.addEventListener("blur", handleBlur);
-
-    return () => {
-      window.removeEventListener("focus", handleFocus);
-      window.removeEventListener("blur", handleBlur);
-    };
-  }, []);
 
   console.log("postId", postId);
 
