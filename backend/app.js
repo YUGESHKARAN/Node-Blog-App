@@ -459,7 +459,7 @@ io.on('connection', (socket) => {
         // Author is not connected - save the notification to the database
         await Author.updateOne(
           { email: authorEmail },
-          { $push: { notifications: notification } }
+          { $push: { notification: notification } }
         );
         console.log(`Notification saved for offline author: ${authorEmail}`);
       }

@@ -350,7 +350,9 @@ getComments();
     // Fetch stored notifications from the server
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/notification?email=${userEmail}`);
+        const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/notification`,
+         { email:userEmail}
+        );
         setNotification(response.data.notifications);
       } catch (error) {
         console.error('Error fetching notifications:', error);

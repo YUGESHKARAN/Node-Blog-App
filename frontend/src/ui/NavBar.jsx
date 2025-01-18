@@ -173,7 +173,7 @@ function NavBar() {
                 </li>
                 <li className='transition-all duration-200 hover:text-white'>
                     <Link to="/profile" className='flex items-center gap-1'>
-                        <IoMdNotifications className='text-2xl'/>
+                        <IoMdNotifications className='text-2xl'/>{notification.length}
                     </Link>
                 </li>
                 <li>
@@ -189,7 +189,7 @@ function NavBar() {
             </p>
             <p className='transition-all duration-200 hover:text-white'>
                     <Link to="/profile" className='flex items-center '>
-                        <IoMdNotifications className='text-lg'/><sup className='text-[10px]'></sup>
+                        <IoMdNotifications className='text-lg'/><sup className='text-[10px]'>{notification.length>0?notification.length:''}</sup>
                     </Link>
                 </p>
             <button onClick={toggleSidebar} className="lg:hidden text-white">

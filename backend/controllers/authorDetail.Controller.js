@@ -278,14 +278,14 @@ const resetPassword = async (req, res) => {
 };
 
 const notificationAuthor = async(req,res)=>{
-  const { email } = req.query;
+  const { email } = req.body;
   try{
     const author = await Author.findOne({ email });
     if (!author) {
       return res.status(404).json({ message: 'Author not found' });
     }
 
-    res.json({ notifications: author.notifications });
+    res.json({ notifications: author.notification });
   }
   catch(err)
   {
