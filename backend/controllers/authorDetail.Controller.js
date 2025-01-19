@@ -306,7 +306,7 @@ const notificationAuthorDelete = async (req, res) => {
 
     // Filter out the notification with the given notificationId
     const updatedNotifications = author.notification.filter(
-      (notif) => notif._id !== notificationId
+      (notif) =>  notif._id.toString()!== notificationId
     );
 
     // If no notification matches the provided ID
