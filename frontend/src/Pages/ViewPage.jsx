@@ -336,7 +336,7 @@ getComments();
   // Socket connection and message handling
   // "https://node-blog-app-x8tt.onrender.com
   useEffect(() => {
-    const newSocket = io("http://localhost:3000", {
+    const newSocket = io("https://node-blog-app-x8tt.onrender.com", {
       transports: ["polling"],
     });
     setSocket(newSocket);
@@ -374,6 +374,7 @@ getComments();
       user,
       email: userEmail,
       message: newMessage,
+      url:`${window.location.origin}/viewpage/${singlePostData.authoremail}/${postId}`,
       profile:profile
     
     };

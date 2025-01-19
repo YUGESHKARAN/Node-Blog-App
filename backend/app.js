@@ -410,7 +410,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('newMessage', async (data) => {
-    const { postId, user, profile, message } = data;
+    const { postId, user, profile, url,message } = data;
 
     try {
       // Find the author and the specific post by postId
@@ -445,7 +445,9 @@ io.on('connection', (socket) => {
         postId,
         user,
         message,
+        profile: profile,
         authorEmail,
+        url,
         timestamp: new Date(),
       };
 

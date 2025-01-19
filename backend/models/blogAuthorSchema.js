@@ -84,6 +84,14 @@ const notificationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    profile:{
+      type:String,
+      required:false
+    },
+    url:{
+      type:String,
+      required:true
+    },
     authorEmail: {
       type: String,
       required: true,

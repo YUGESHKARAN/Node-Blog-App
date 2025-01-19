@@ -108,9 +108,10 @@ import { IoHome, IoLogOut, IoPeople } from 'react-icons/io5';
 import { FaUserAlt } from 'react-icons/fa';
 import bloglogo from '../assets/bloglogo.png';
 import { RiUser3Line } from 'react-icons/ri';
-import { IoMdNotifications } from 'react-icons/io';
+import { IoIosClose, IoMdNotifications } from 'react-icons/io';
 import { GlobalStateContext } from '../GlobalStateContext';
 import axios from 'axios';
+import blog1 from "../images/blog1.jpg";
 import { io } from "socket.io-client";
 function NavBar() {
     const { logout } = useAuth();
@@ -166,7 +167,7 @@ function NavBar() {
     },[note])
 
 
-    console.log("notification-------------s",notification)
+    console.log("notification-------------s",note)
 
     return (
         <div className='flex relative justify-between items-center h-16 bg-gray-900 mb-2 px-5'>
@@ -194,7 +195,7 @@ function NavBar() {
                     </Link>
                 </li>
                 <li className='transition-all duration-200 hover:text-white'>
-                    <Link to="/profile" className='flex text-white items-center gap-1'>
+                    <Link to="/profile" className='flex text-white items-center'>
                         <IoMdNotifications className='text-2xl text-white'/>{note.length}
                     </Link>
                 </li>
@@ -206,7 +207,7 @@ function NavBar() {
             </ul>
 
             {/* Mobile Hamburger Button */}
-            <p className='text-white flex md:hidden  font-semibold items-center gap-1 mr-3 text-sm'>
+            <p className='text-white flex lg:hidden  font-semibold items-center gap-1 mr-3 text-sm'>
                 <RiUser3Line className='text-xl text-[#0be881]' /> Hi,{username}  
             </p>
             <p className='transition-all duration-200 hover:text-white'>
@@ -259,6 +260,29 @@ function NavBar() {
                     </li>
                 </ul>
             </div>
+
+            {/* notification */}
+            <div className="fixed flex right-2 top-14 justify-center rounded-md bg-gray-700 p-1 z-30 w-40 h-32">
+                <div className='flex-col justify-start items-start  h-full w-40'>
+                   <div className='flex relative mt-2 border-b pb-1 border-b-white w-full justify-start pl-2 gap-2 items-center'>
+                    
+                        <img src={blog1} className='w-8 h-8 border border-green-500 rounded-full' alt="" />
+
+                        <div className='flex-col items-start justify-center'>
+                          <p className='text-xs font-semibold '>Yugesh Karan</p>
+                          <p className='text-[10px] text-gray-200'>good....</p>
+                        </div>
+
+                        <div className='text-white absolute right-1 top-0'>
+                          <IoIosClose/>
+                        </div>
+                   </div>
+
+                   
+                </div>
+            </div>
+
+
         </div>
     );
 }
