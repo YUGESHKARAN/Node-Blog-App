@@ -52,7 +52,7 @@ router.delete("/:email", deleteAuthor);
 router.post('/send-otp', sendOtp);
 router.post('/reset-password', resetPassword);
 router.get('/notification',notificationAuthor);
-router.get('/notification/delete',notificationAuthorDelete);
-router.get('/notification/deleteall',notificationAuthorDeleteAll);
+router.delete('/notification/delete',notificationAuthorDelete);
+router.delete('/notification/deleteall',notificationAuthorDeleteAll);
 
 module.exports = router;
