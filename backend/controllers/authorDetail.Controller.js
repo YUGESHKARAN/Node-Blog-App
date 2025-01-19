@@ -295,7 +295,7 @@ const notificationAuthor = async(req,res)=>{
 }
 
 const notificationAuthorDelete = async (req, res) => {
-  const { email, notificationId } = req.body; // Expecting `notificationId` to identify which notification to delete.
+  const { email, notificationId } = req.query; // Expecting `notificationId` to identify which notification to delete.
 
   try {
     // Find the author by email
@@ -329,7 +329,7 @@ const notificationAuthorDelete = async (req, res) => {
 };
 
 const notificationAuthorDeleteAll = async (req, res) => {
-  const { email } = req.body; // Expecting the author's email in the request body.
+  const { email } = req.query; // Expecting the author's email in the request body.
 
   try {
     // Find the author by email

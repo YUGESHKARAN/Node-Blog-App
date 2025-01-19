@@ -166,6 +166,32 @@ function NavBar() {
       fetchNotifications();
     },[note])
 
+    const deleteSigleNotification = async(userEmail,notificationId) =>{
+        try{
+           const response = await axios.delete( `https://node-blog-app-seven.vercel.app/blog/author/notification/delete?email=${userEmail}&notificationId=${notificationId}`)
+
+           console.log("deleted",response.data)
+        }
+        catch(err)
+        {
+            console.log("error",err)
+        }
+    }
+
+    const deleteAllNotification = async() =>{
+        try{
+           const response = await axios.delete(`https://node-blog-app-seven.vercel.app/blog/author/notification/deleteall?email=${userEmail}`)
+
+           console.log("deleted",response.data)
+        }
+        catch(err)
+        {
+            console.log("error",err)
+        }
+    }
+
+
+
 
     console.log("notification-------------s",note)
 
@@ -265,27 +291,35 @@ function NavBar() {
             <div className="fixed flex-col right-2 top-14 justify-center rounded-md bg-gray-700 p-1 pb-4 z-30 w-44  overflow-y-scroll h-fit max-h-60">
            
                 <div className='relative flex-col  justify-start items-start h-auto w-full'>
-                    <div className='w-full sticky right-0 top-0 z-30 flex'> <button className='text-[10px] px-2   rounded-md text-black bg-white'>Clear All</button></div>
+                    <div className='w-full sticky right-0 top-0 z-30 flex'>
+                         <button 
+                         onClick={()=>{deleteAllNotification}}
+                         className='text-[10px] px-2   rounded-md text-black bg-white'>Clear All</button>
+                    </div>
             
                    {note.map((data,index)=>(
-                    <Link 
+                    <div 
                     key={index}
-                    to={data.url}
+                    
                     className='flex relative mt-4 border-b pb-1 border-b-gray-300 w-full mx-auto justify-start pl-2 gap-2 items-center'>
  
                          <img 
                          src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
                           className='w-8 h-8 border border-green-500 rounded-full' alt="" />
  
-                         <div className='flex-col items-start justify-center'>
+                         <Link 
+                         to={data.url}
+                         className='flex-col items-start justify-center'>
                            <p className='text-xs text-white font-semibold '>{data.user}</p>
                            <p className='text-[10px] text-gray-200'>{data.message?data.message.slice(0,5):'got notification'}...</p>
-                         </div>
+                         </Link>
  
-                         <div className='text-white absolute right-1 top-0'>
+                         <div
+                         onClick={()=>{deleteSigleNotification(userEmail,data._id)}}
+                         className='text-white absolute right-1 top-0'>
                            <IoIosClose/>
                          </div>
-                    </Link>
+                    </div>
                    ))}
 
                    
