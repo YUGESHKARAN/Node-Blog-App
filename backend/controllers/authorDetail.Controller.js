@@ -294,6 +294,65 @@ const notificationAuthor = async(req,res)=>{
   }
 }
 
+const notificationAuthorDelete = async (req, res) => {
+  const { email, notificationId } = req.body; // Expecting `notificationId` to identify which notification to delete.
+
+  try {
+    // Find the author by email
+    const author = await Author.findOne({ email });
+    if (!author) {
+      return res.status(404).json({ message: 'Author not found' });
+    }
+
+    // Filter out the notification with the given notificationId
+    const updatedNotifications = author.notification.filter(
+      (notif) => notif._id !== notificationId
+    );
+
+    // If no notification matches the provided ID
+    if (updatedNotifications.length === author.notification.length) {
+      return res.status(404).json({ message: 'Notification not found' });
+    }
+
+    // Update the author's notifications and save
+    author.notification = updatedNotifications;
+    await author.save();
+
+    res.json({
+      message: 'Notification deleted successfully',
+      notifications: author.notification,
+    });
+  } catch (error) {
+    console.error('Error deleting notification:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const notificationAuthorDeleteAll = async (req, res) => {
+  const { email } = req.body; // Expecting the author's email in the request body.
+
+  try {
+    // Find the author by email
+    const author = await Author.findOne({ email });
+    if (!author) {
+      return res.status(404).json({ message: 'Author not found' });
+    }
+
+    // Set the notifications array to empty
+    author.notification = [];
+    await author.save();
+
+    res.json({
+      message: 'All notifications deleted successfully',
+      notifications: author.notification, // This will now be an empty array
+    });
+  } catch (error) {
+    console.error('Error deleting all notifications:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
 
 
 module.exports = {
@@ -307,5 +366,7 @@ module.exports = {
   updateFollowers,
   sendOtp,
   resetPassword,
-  notificationAuthor
+  notificationAuthor,
+  notificationAuthorDelete,
+  notificationAuthorDeleteAll
 };

@@ -262,21 +262,31 @@ function NavBar() {
             </div>
 
             {/* notification */}
-            <div className="fixed flex right-2 top-14 justify-center rounded-md bg-gray-700 p-1 z-30 w-40 h-32">
-                <div className='flex-col justify-start items-start  h-full w-40'>
-                   <div className='flex relative mt-2 border-b pb-1 border-b-white w-full justify-start pl-2 gap-2 items-center'>
-                    
-                        <img src={blog1} className='w-8 h-8 border border-green-500 rounded-full' alt="" />
-
-                        <div className='flex-col items-start justify-center'>
-                          <p className='text-xs font-semibold '>Yugesh Karan</p>
-                          <p className='text-[10px] text-gray-200'>good....</p>
-                        </div>
-
-                        <div className='text-white absolute right-1 top-0'>
-                          <IoIosClose/>
-                        </div>
-                   </div>
+            <div className="fixed flex-col right-2 top-14 justify-center rounded-md bg-gray-700 p-1 pb-4 z-30 w-44  overflow-y-scroll h-fit max-h-60">
+           
+                <div className='relative flex-col  justify-start items-start h-auto w-full'>
+                    <div className='w-full sticky right-0 top-0 z-30 flex'> <button className='text-[10px] px-2   rounded-md text-black bg-white'>Clear All</button></div>
+            
+                   {note.map((data,index)=>(
+                    <Link 
+                    key={index}
+                    to={data.url}
+                    className='flex relative mt-4 border-b pb-1 border-b-gray-300 w-full mx-auto justify-start pl-2 gap-2 items-center'>
+ 
+                         <img 
+                         src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
+                          className='w-8 h-8 border border-green-500 rounded-full' alt="" />
+ 
+                         <div className='flex-col items-start justify-center'>
+                           <p className='text-xs text-white font-semibold '>{data.user}</p>
+                           <p className='text-[10px] text-gray-200'>{data.message?data.message.slice(0,5):'got notification'}...</p>
+                         </div>
+ 
+                         <div className='text-white absolute right-1 top-0'>
+                           <IoIosClose/>
+                         </div>
+                    </Link>
+                   ))}
 
                    
                 </div>
