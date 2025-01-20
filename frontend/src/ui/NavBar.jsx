@@ -225,13 +225,13 @@ function NavBar() {
                         <FaUserAlt className='text-lg'/>My Profile
                     </Link>
                 </li>
-                <li className='transition-all duration-200 hover:text-white'>
-                    <Link to="/profile" className='flex text-white items-center'>
+                {/* <li className='transition-all duration-200 hover:text-white'>
+                    <div className='flex text-white items-center'>
                         <IoMdNotifications 
                         onClick={()=>{setShowNotification(!showNotefication)}}
-                        className='text-2xl text-white'/>{note.length}
-                    </Link>
-                </li>
+                        className='text-2xl text-white'/>{note.length>0?note.length:''}
+                    </div>
+                </li> */}
                 <li>
                     <a href="" className='text-2xl font-bold text-red-500' onClick={exit}>
                         <MdLogout/>
@@ -240,19 +240,21 @@ function NavBar() {
             </ul>
 
             {/* Mobile Hamburger Button */}
-            <p className='text-white flex lg:hidden  font-semibold items-center gap-1 mr-3 text-sm'>
+            <p className='text-white flex w-full lg:hidden  font-semibold items-center gap-1 mr-3 text-sm'>
                 <RiUser3Line className='text-xl text-[#0be881]' /> Hi,{username}  
             </p>
+
+            <button onClick={toggleSidebar} className="lg:hidden mr-2 text-white">
+                ☰
+            </button>
             <p className='transition-all duration-200 hover:text-white'>
                     <div className='flex items-center '>
                         <IoMdNotifications
                         onClick={()=>{setShowNotification(!showNotefication)}}
-                         className='text-lg text-white'/><sup className='text-[10px] text-white'>{note.length>0?note.length:''}</sup>
+                         className='text-lg cursor-pointer text-white'/><sup className={`${note.length>0?'text-[10px] bg-red-500 w-4 h-4 flex items-center justify-center rounded-full text-white':'text-[10px]  flex items-center justify-center rounded-full text-white'}`}>{note.length>0?note.length:''}</sup>
                     </div>
                 </p>
-            <button onClick={toggleSidebar} className="lg:hidden text-white">
-                ☰
-            </button>
+            
 
             {/* Sidebar */}
             <div
@@ -297,7 +299,7 @@ function NavBar() {
             </div>
 
             {/* notification */}
-            <div className={`${note.length>0&&showNotefication?'fixed top-14 flex-col right-2  justify-center rounded-md bg-gray-700 p-1 pb-4 z-30 w-44  overflow-y-scroll h-fit max-h-60':'hidden'}`}>
+            <div className={`${note.length>0&&showNotefication?'fixed top-14 flex-col right-2  justify-center rounded-md bg-gray-700 p-1 pb-4 z-30 md:w-72 scrollbar-hide w-44  overflow-y-scroll h-fit max-h-60':'hidden'}`}>
            
                 <div className='relative flex-col  justify-start items-start h-auto w-full'>
                     <div className='w-full sticky right-0 top-0 z-30 flex'>
@@ -325,7 +327,7 @@ function NavBar() {
  
                          <div
                          onClick={()=>{deleteSigleNotification(userEmail,data._id)}}
-                         className='text-white absolute right-1 top-0'>
+                         className='text-white cursor-pointer absolute right-1 top-0'>
                            <IoIosClose/>
                          </div>
                     </div>
