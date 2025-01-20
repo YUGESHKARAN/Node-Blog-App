@@ -358,14 +358,14 @@ const io = new Server(server, {
 //     const { postId, user, email, message } = data;
 //     try {
 //       // Find the post by ID
-//       const author = await Author.findOne({ "posts._id": postId }, { "posts.$": 1 });
-//       if (!author || !author.posts || author.posts.length === 0) {
-//         console.error("Post not found");
-//         return;
-//       }
+      // const author = await Author.findOne({ "posts._id": postId }, { "posts.$": 1 });
+      // if (!author || !author.posts || author.posts.length === 0) {
+      //   console.error("Post not found");
+      //   return;
+      // }
 
-//       const authorProfile = await Author.findOne({ email });
-//       const profile = authorProfile?.profile || "";
+      // const authorProfile = await Author.findOne({ email });
+      // const profile = authorProfile?.profile || "";
 
 //       // Get the post and add the new message
 //       const post = author.posts[0];
@@ -410,7 +410,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('newMessage', async (data) => {
-    const { postId, user, profile, url,message } = data;
+    const { postId, user,email, url,message } = data;
 
     try {
       // Find the author and the specific post by postId
@@ -419,12 +419,12 @@ io.on('connection', (socket) => {
         { 'email': 1, 'posts.$': 1 }
       );
 
-      if (!author || !author.posts || author.posts.length === 0) {
-        console.error('Post not found');
-        return;
-      }
+     
 
-      const post = author.posts[0];
+      const authorProfile = await Author.findOne({ email });
+      const profile = authorProfile?.profile || "";
+
+      // const post = author.posts[0];
       const authorEmail = author.email;
       console.log("Author email:", authorEmail);
 

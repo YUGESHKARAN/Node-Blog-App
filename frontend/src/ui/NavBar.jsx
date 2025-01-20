@@ -121,6 +121,7 @@ function NavBar() {
     const { notification,setNotification } = useContext(GlobalStateContext);
     const username = localStorage.getItem("username");
     const userEmail = localStorage.getItem("email");
+    const[showNotefication,setShowNotification] = useState(false)
     const[socket,setSocket] = useState(null)
     const exit = () => {
         localStorage.removeItem("username");
@@ -151,8 +152,7 @@ function NavBar() {
         };
     }, []);
 
-    useEffect(()=>{
-            // Fetch stored notifications from the server
+    // Fetch stored notifications from the server
     const fetchNotifications = async () => {
         try {
           const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/${userEmail}`);
@@ -162,6 +162,10 @@ function NavBar() {
           console.error('Error fetching notifications:', error);
         }
       };
+
+    useEffect(()=>{
+         
+ 
   
       fetchNotifications();
     },[note])
@@ -171,6 +175,7 @@ function NavBar() {
            const response = await axios.delete( `https://node-blog-app-seven.vercel.app/blog/author/notification/delete?email=${userEmail}&notificationId=${notificationId}`)
 
            console.log("deleted",response.data)
+           fetchNotifications()
         }
         catch(err)
         {
@@ -178,7 +183,7 @@ function NavBar() {
         }
     }
 
-    const deleteAllNotification = async() =>{
+    const deleteAllNotification = async(userEmail) =>{
         try{
            const response = await axios.delete(`https://node-blog-app-seven.vercel.app/blog/author/notification/deleteall?email=${userEmail}`)
 
@@ -222,7 +227,9 @@ function NavBar() {
                 </li>
                 <li className='transition-all duration-200 hover:text-white'>
                     <Link to="/profile" className='flex text-white items-center'>
-                        <IoMdNotifications className='text-2xl text-white'/>{note.length}
+                        <IoMdNotifications 
+                        onClick={()=>{setShowNotification(!showNotefication)}}
+                        className='text-2xl text-white'/>{note.length}
                     </Link>
                 </li>
                 <li>
@@ -237,9 +244,11 @@ function NavBar() {
                 <RiUser3Line className='text-xl text-[#0be881]' /> Hi,{username}  
             </p>
             <p className='transition-all duration-200 hover:text-white'>
-                    <Link to="/profile" className='flex items-center '>
-                        <IoMdNotifications className='text-lg text-white'/><sup className='text-[10px] text-white'>{note.length>0?note.length:''}</sup>
-                    </Link>
+                    <div className='flex items-center '>
+                        <IoMdNotifications
+                        onClick={()=>{setShowNotification(!showNotefication)}}
+                         className='text-lg text-white'/><sup className='text-[10px] text-white'>{note.length>0?note.length:''}</sup>
+                    </div>
                 </p>
             <button onClick={toggleSidebar} className="lg:hidden text-white">
                 ☰
@@ -288,12 +297,12 @@ function NavBar() {
             </div>
 
             {/* notification */}
-            <div className="fixed flex-col right-2 top-14 justify-center rounded-md bg-gray-700 p-1 pb-4 z-30 w-44  overflow-y-scroll h-fit max-h-60">
+            <div className={`${note.length>0&&showNotefication?'fixed top-14 flex-col right-2  justify-center rounded-md bg-gray-700 p-1 pb-4 z-30 w-44  overflow-y-scroll h-fit max-h-60':'hidden'}`}>
            
                 <div className='relative flex-col  justify-start items-start h-auto w-full'>
                     <div className='w-full sticky right-0 top-0 z-30 flex'>
                          <button 
-                         onClick={()=>{deleteAllNotification}}
+                         onClick={()=>{deleteAllNotification(userEmail)}}
                          className='text-[10px] px-2   rounded-md text-black bg-white'>Clear All</button>
                     </div>
             
