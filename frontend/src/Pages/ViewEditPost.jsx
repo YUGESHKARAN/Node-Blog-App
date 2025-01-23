@@ -29,48 +29,102 @@ function ViewEditPost() {
     setImage(e.target.files[0]);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault(); // Prevent the default form submission
 
+  //   const formData = new FormData();
+  //   formData.append("title", title);
+  //   formData.append("description", description);
+  //   formData.append("category", category);
+  //   if(image){
+  //     formData.append("image", image);
+  //   }
+
+  //   try {
+  //     // Send FormData object directly to the API
+  //     const response = await axios.put(
+  //       `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+        
+  //     );
+  //     toast.success('post Edited successfully');
+  //     if (response.status === 200) {
+  //       console.log("Post edited successfully:", response.data);
+  //       setTitle("");
+  //       setDescription("");
+  //       setCategory("");
+  //       setImage(null);
+  //       toast.success('post Edited successfully') ;
+  //       navigate("/home"); // Redirect to the homepage
+        
+
+  //       // Optionally, you can reset the form or redirect the user
+  //       // window.location.reload(); // Uncomment if you want to reload the page
+  //     }
+  //   } catch (error) {
+  //     console.error("Error editing post:", error);
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("category", category);
-    if(image){
+    
+    if (image) {
       formData.append("image", image);
     }
-
+  
+    // Handle document uploads if needed
+    if (documents && documents.length > 0) {
+      documents.forEach((doc) => {
+        formData.append('document', doc);
+      });
+    }
+  
     try {
-      // Send FormData object directly to the API
       const response = await axios.put(
         `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`,
+        // `http://localhost:3000/blog/posts/${email}/${PostId}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         }
-        
       );
-      toast.success('post Edited successfully');
+  
       if (response.status === 200) {
-        console.log("Post edited successfully:", response.data);
+        toast.success('Post edited successfully');
         setTitle("");
         setDescription("");
         setCategory("");
         setImage(null);
-        toast.success('post Edited successfully') ;
-        navigate("/home"); // Redirect to the homepage
-        
-
-        // Optionally, you can reset the form or redirect the user
-        // window.location.reload(); // Uncomment if you want to reload the page
+        setDocuments([]);
+        navigate("/home");
       }
     } catch (error) {
       console.error("Error editing post:", error);
+      toast.error('Failed to edit post');
     }
   };
-
+  
+  // Add this to your state initialization
+  const [documents, setDocuments] = useState([]);
+  
+  // Add a new file input for documents
+  const onDocumentsChange = (e) => {
+    const files = Array.from(e.target.files);
+    setDocuments(files);
+  };
   const deletePost = async() => {
     try{
       const response = axios.delete(`https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`);
@@ -162,7 +216,7 @@ function ViewEditPost() {
           action=""
           className={`${
         edit
-              ? "flex flex-col text-white rounded-md space-y-4 items-center justify-center p-5 w-11/12  gap-1 m-auto  "
+              ? "flex flex-col text-white rounded-md space-y-4 items-center md:mb-12 justify-center p-5 w-11/12  gap-1 m-auto  "
               : "hidden"
           }`}
         >
@@ -205,9 +259,11 @@ function ViewEditPost() {
            <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`} className="w-40" alt="" />
           </div>
 
+
+
           <div className="w-11/12 mt-5">
             <label htmlFor="description" className="text-md  font-semibold ">
-              Upload Post
+              Update Post
             </label>{" "}
             <br />
             <input
@@ -215,6 +271,35 @@ function ViewEditPost() {
               accept="image/*"
               name="image"
               onChange={onImageChange}
+              className="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600"
+            />
+          </div>
+
+          
+          <div className="w-11/12 mt-5">
+            <label htmlFor="description" className="text-md  font-semibold ">
+              current Documents
+            </label>{" "}
+            <br />
+            <div className="flex-col w-full mt-2 items-start justify-start gap-2">
+              {
+                 singlePostData.documents&& singlePostData.documents.map((doc, index) => (
+                    <a key={index} href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`} className="text-xs flex justify-start items-start mb-2 text-gray-200 gap-1 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center hover:bg-gray-300 transition-all duration-200 text-black justify-center"> Open </p> {doc}</a>
+
+                    ))
+                }
+            </div>
+          </div>
+
+          <div className="w-11/12 mt-5">
+            <label htmlFor="documents" className="text-md font-semibold">
+              Update Documents
+            </label>
+            <input
+              type="file"
+              multiple
+              accept=".pdf,.doc,.docx"
+              onChange={onDocumentsChange}
               className="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600"
             />
           </div>
@@ -246,7 +331,7 @@ function ViewEditPost() {
 
           <button
             type="submit"
-            className="px-3 mt-5 md:mt-0 py-1 bg-orange-500 text-sm md:text-base text-[#f7f1e3] rounded-md"
+            className="px-3 mt-5 md:mt-0 py-1  bg-orange-500 text-sm md:text-base text-[#f7f1e3] hover:bg-orange-400 transition-all duration-200 cursor-pointer rounded-md"
           >
             EDIT POST{" "}
           </button>

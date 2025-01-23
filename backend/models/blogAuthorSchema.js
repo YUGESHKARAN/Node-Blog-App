@@ -32,6 +32,17 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: false, // Image is optional
   },
+  documents:{
+    type:[String],
+    default:[],
+    required:false,
+    validate: {
+      validator: function (v) {
+        return Array.isArray(v) && new Set(v).size === v.length; // Ensure all entries are unique
+      },
+      message: "pdfs array must contain unique values",
+    },
+  },
   description: {
     type: String,
     required: true,

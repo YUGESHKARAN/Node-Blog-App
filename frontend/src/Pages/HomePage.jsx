@@ -180,28 +180,78 @@ function HomePage() {
   const [isTyping, setIsTyping] = useState(false);
   const [chatbot, setChatbot] = useState(false);
 
-  const backendEndpoint = "https://mongodb-rag-rho.vercel.app/query-rag";
+  const backendEndpoint = "https://mongodb-rag.onrender.com/query-rag";
 
+  // const handleSend = async (message) => {
+  //   const newMessage = {
+  //     message,
+  //     sender: "user",
+  //     direction: "outgoing",
+  //   };
+  //   setMessages((prev) => [...prev, newMessage]);
+
+  //   setIsTyping(true);
+
+  //   console.log("my query mesg",message)
+
+  //   try {
+  //     const response = await axios.post(backendEndpoint, {
+  //       query: message,
+  //     });
+
+  //     const botResponse = response.data.response || "No response received.";
+  //     console.log("bot response",response)
+  //     typewriterEffect(botResponse, "bot");
+  //   } catch (error) {
+  //     console.error("Error fetching response:", error);
+  //     const errorMessage = {
+  //       message: "An error occurred. Please try again later.",
+  //       sender: "bot",
+  //       direction: "incoming",
+  //     };
+  //     setMessages((prev) => [...prev, errorMessage]);
+  //   } finally {
+  //     setIsTyping(false);
+  //   }
+  // };
   const handleSend = async (message) => {
+    // Sanitize input message to remove HTML tags
+    const sanitizedMessage = message.replace(/<[^>]*>/g, ""); // Removes HTML tags
+    console.log("san mesg",sanitizedMessage)
     const newMessage = {
-      message,
+      message: sanitizedMessage,
       sender: "user",
       direction: "outgoing",
     };
+  
+    // Add user message to the messages array
     setMessages((prev) => [...prev, newMessage]);
-
     setIsTyping(true);
-
+  
+    // console.log("User's query message:", sanitizedMessage);
+  
     try {
+      // Send POST request to the backend
       const response = await axios.post(backendEndpoint, {
-        query: message,
+        query: sanitizedMessage,
       });
-
-      const botResponse = response.data.response || "No response received.";
-      console.log("bot response",response)
+  
+      // Extract bot response or use a fallback
+      const botResponse = response.data?.response || "No response received from the bot.";
+      console.log("Bot response:", response);
+  
+      // Show the bot's response with a typewriter effect
       typewriterEffect(botResponse, "bot");
     } catch (error) {
       console.error("Error fetching response:", error);
+  
+      // Log error details for debugging
+      if (error.response) {
+        console.error("Server Response Data:", error.response.data);
+        console.error("Server Response Status:", error.response.status);
+      }
+  
+      // Add error message to the messages array
       const errorMessage = {
         message: "An error occurred. Please try again later.",
         sender: "bot",
@@ -209,10 +259,11 @@ function HomePage() {
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
+      // Ensure typing status is cleared
       setIsTyping(false);
     }
   };
-
+  
   const typewriterEffect = (text, sender) => {
     const words = text.split(" ");
     let currentMessage = "";
@@ -247,8 +298,8 @@ function HomePage() {
   };
 
   
-  console.log('your posts', yourPost);
-  console.log('email', email);
+  // console.log('your posts', yourPost);
+  // console.log('email', email);
 
   return (
     <div className="min-h-screen relative bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 text-white">

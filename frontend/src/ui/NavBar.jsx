@@ -111,8 +111,7 @@ import { RiUser3Line } from 'react-icons/ri';
 import { IoIosClose, IoMdNotifications } from 'react-icons/io';
 import { GlobalStateContext } from '../GlobalStateContext';
 import axios from 'axios';
-import blog1 from "../images/blog1.jpg";
-import { io } from "socket.io-client";
+
 function NavBar() {
     const { logout } = useAuth();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -157,7 +156,7 @@ function NavBar() {
         try {
           const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/${userEmail}`);
           setNote(response.data.notification);
-          console.log("author email data", response.data.notification)
+        //   console.log("author email data", response.data.notification)
         } catch (error) {
           console.error('Error fetching notifications:', error);
         }
@@ -195,10 +194,6 @@ function NavBar() {
         }
     }
 
-
-
-
-    console.log("notification-------------s",note)
 
     return (
         <div className='flex relative justify-between items-center h-16 bg-gray-900 mb-2 px-5'>
@@ -247,13 +242,13 @@ function NavBar() {
             <button onClick={toggleSidebar} className="lg:hidden mr-2 text-white">
                 ☰
             </button>
-            <p className='transition-all duration-200 hover:text-white'>
+            <div className='transition-all duration-200 hover:text-white'>
                     <div className='flex items-center '>
                         <IoMdNotifications
                         onClick={()=>{setShowNotification(!showNotefication)}}
                          className='text-lg cursor-pointer text-white'/><sup className={`${note.length>0?'text-[10px] bg-red-500 w-4 h-4 flex items-center justify-center rounded-full text-white':'text-[10px]  flex items-center justify-center rounded-full text-white'}`}>{note.length>0?note.length:''}</sup>
                     </div>
-                </p>
+                </div>
             
 
             {/* Sidebar */}

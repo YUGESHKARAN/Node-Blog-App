@@ -1,6 +1,8 @@
 const Author = require("../models/blogAuthorSchema");
 const path = require('path');
 
+const { v4: uuidv4 } = require('uuid'); // For generating unique IDs
+
 const sharp = require('sharp');
 
 // s3 integration
@@ -79,11 +81,43 @@ const getCategoryPosts = async (req, res) => {
   }
 };
 
+// const addPosts = async (req, res) => {
+
+//   const { title, description, category } = req.body;
+
+//   const image = req.file ? req.file.originalname : ''; // Image path as URL
+  
+//   try {
+//     const author = await Author.findOne({ email: req.params.email });
+//     if (!author) {
+//       return res.status(404).json({ message: "author not found" });
+//     }
+
+//     // resizeing the image
+//     const buffer = await sharp(req.file.buffer).resize({width:672,height:462,fit:'contain'}).toBuffer()
+//      // S3 Integration
+//      const params = {
+//       Bucket:bucketName,
+//       Key:req.file.originalname,
+//       Body:buffer,
+//       ContentType:req.file.mimetype
+//     }
+
+//     const command = new PutObjectCommand(params)
+//     await s3.send(command)
+//     console.log("post data",req.file)
+
+//     author.posts.push({ title, image, description, category, });
+     
+//     data = await author.save();
+//     res.status(201).json({ message: "post added successfully", data });
+//   } catch (err) {
+//     res.status(500).json({ message: "server error", err });
+//   }
+// };
+
 const addPosts = async (req, res) => {
-
   const { title, description, category } = req.body;
-
-  const image = req.file ? req.file.originalname : ''; // Image path as URL
   
   try {
     const author = await Author.findOne({ email: req.params.email });
@@ -91,114 +125,266 @@ const addPosts = async (req, res) => {
       return res.status(404).json({ message: "author not found" });
     }
 
-    // resizeing the image
-    const buffer = await sharp(req.file.buffer).resize({width:672,height:462,fit:'contain'}).toBuffer()
-     // S3 Integration
-     const params = {
-      Bucket:bucketName,
-      Key:req.file.originalname,
-      Body:buffer,
-      ContentType:req.file.mimetype
+    let imageUrl = '';
+    if (req.files && req.files.image) {
+      const buffer = await sharp(req.files.image[0].buffer)
+        .resize({ width: 672, height: 462, fit: 'contain' })
+        .toBuffer();
+
+      const params = {
+        Bucket: bucketName,
+        Key: req.files.image[0].originalname,
+        Body: buffer,
+        ContentType: req.files.image[0].mimetype
+      };
+
+      const command = new PutObjectCommand(params);
+      await s3.send(command);
+      imageUrl = req.files.image[0].originalname;
     }
 
-    const command = new PutObjectCommand(params)
-    await s3.send(command)
-    console.log("post data",req.file)
+    const documentUrls = [];
+    if (req.files && req.files.document) {
+      for (const doc of req.files.document) {
+        const params = {
+          Bucket: bucketName,
+          Key: doc.originalname,
+          Body: doc.buffer,
+          ContentType: doc.mimetype
+        };
 
-    author.posts.push({ title, image, description, category, });
+        const command = new PutObjectCommand(params);
+        await s3.send(command);
+        documentUrls.push(doc.originalname);
+      }
+    }
+
+    author.posts.push({ 
+      title, 
+      image: imageUrl, 
+      description, 
+      category,
+      documents: documentUrls
+    });
      
-    data = await author.save();
+    const data = await author.save();
     res.status(201).json({ message: "post added successfully", data });
   } catch (err) {
-    res.status(500).json({ message: "server error", err });
+    res.status(500).json({ message: "server error", error: err.message });
   }
 };
+
+// const updatePost = async (req, res) => {
+//   const { email, postId } = req.params;
+//   const { title, description, category } = req.body;
+//   const image = req.file ? req.file.originalname : '';
+  
+//   try {
+//     const author = await Author.findOne({ email });
+
+//     if (!author) {
+//       return res.status(404).json({ message: "author not found" });
+//     }
+//     // const post = author.posts.id(postId);
+//     const post = author.posts.id(postId);
+
+//     if (!post) {
+//       return res.status(404).json({ message: "post not found" });
+//     }
+
+//     Object.assign(post, { title, image, description, category });
+
+
+//   if(req.file)
+//   {
+//     const buffer = await sharp(req.file.buffer).resize({width:672,height:462,fit:'contain'}).toBuffer()
+//     if(image!=='')
+//     {
+//       // s3 Integration
+//     const params = {
+//       Bucket:bucketName,
+//       Key:req.file.originalname,
+//       Body:buffer,
+//       ContentType:req.file.mimetype
+//     }
+
+//     const command = new PutObjectCommand(params)
+//     await s3.send(command)
+//     console.log("Updated data",req.file)
+//     }
+//   }
+
+//     const updatedPost = await author.save();
+
+//     res
+//       .status(200)
+//       .json({ message: "post updeted successsfully", data: updatedPost });
+//   } catch (err) {
+//     res.send(500).json({ message: "server error", error: err.message });
+//   }
+// };
 
 const updatePost = async (req, res) => {
   const { email, postId } = req.params;
   const { title, description, category } = req.body;
-  const image = req.file ? req.file.originalname : '';
+  
   try {
     const author = await Author.findOne({ email });
 
     if (!author) {
       return res.status(404).json({ message: "author not found" });
     }
-    // const post = author.posts.id(postId);
+
     const post = author.posts.id(postId);
 
     if (!post) {
       return res.status(404).json({ message: "post not found" });
     }
 
-    Object.assign(post, { title, image, description, category });
+    // Handle image upload
+    let imageUrl = post.image;
+    if (req.files && req.files.image) {
+      const buffer = await sharp(req.files.image[0].buffer)
+        .resize({ width: 672, height: 462, fit: 'contain' })
+        .toBuffer();
 
+      const params = {
+        Bucket: bucketName,
+        Key: req.files.image[0].originalname,
+        Body: buffer,
+        ContentType: req.files.image[0].mimetype
+      };
 
-  if(req.file)
-  {
-    const buffer = await sharp(req.file.buffer).resize({width:672,height:462,fit:'contain'}).toBuffer()
-    if(image!=='')
-    {
-      // s3 Integration
-    const params = {
-      Bucket:bucketName,
-      Key:req.file.originalname,
-      Body:buffer,
-      ContentType:req.file.mimetype
+      const command = new PutObjectCommand(params);
+      await s3.send(command);
+      imageUrl = req.files.image[0].originalname;
     }
 
-    const command = new PutObjectCommand(params)
-    await s3.send(command)
-    console.log("Updated data",req.file)
+    // Handle document uploads
+    const documentUrls = [];
+    if (req.files && req.files.document) {
+      for (const doc of req.files.document) {
+        const params = {
+          Bucket: bucketName,
+          Key: doc.originalname,
+          Body: doc.buffer,
+          ContentType: doc.mimetype
+        };
+
+        const command = new PutObjectCommand(params);
+        await s3.send(command);
+        documentUrls.push(doc.originalname);
+      }
     }
-  }
+
+    // Update post details
+    Object.assign(post, { 
+      title, 
+      image: imageUrl, 
+      description, 
+      category,
+      documents: documentUrls
+    });
 
     const updatedPost = await author.save();
 
-    res
-      .status(200)
-      .json({ message: "post updeted successsfully", data: updatedPost });
+    res.status(200).json({ 
+      message: "Post updated successfully", 
+      data: updatedPost 
+    });
   } catch (err) {
-    res.send(500).json({ message: "server error", error: err.message });
+    res.status(500).json({ 
+      message: "Server error", 
+      error: err.message 
+    });
   }
 };
+// const deletePost = async (req, res) => {
+//   try {
+//     const { email, postId } = req.params;
 
-const deletePost = async (req, res) => {
+//     // Find the author by email
+//     const author = await Author.findOne({ email });
+
+//     if (!author) {
+//       return res.status(404).json({ message: "Author not found" });
+//     }
+
+//     // Find the index of the post by _id within the posts array
+//     const postIndex = author.posts.findIndex(
+//       (post) => post._id.toString() === postId
+//     );
+//     const postToDelete  = author.posts[postIndex].image;
+//     console.log('post to delete',postToDelete)
+
+//     // if (postIndex === -1) {
+//     //   return res.status(404).json({ message: "Post not found" });
+//     // }
+
+//     // const postToDelete  = author.posts[postIndex]
+    
+//        // S3 Integration
+//        const params = {
+//         Bucket:bucketName,
+//         Key:postToDelete
+//       }
+   
+//       const command = new DeleteObjectCommand(params)
+//       await s3.send(command)
+//       console.log(postToDelete)
+ 
+//     // Remove the post from the posts array
+//      author.posts.splice(postIndex, 1);
+
+//     // Save the updated author document
+//     const updatedAuthor = await author.save();
+
+//     res.status(200).json({
+//       message: "Post deleted successfully",
+//       data: updatedAuthor,
+//     });
+//   } catch (err) {
+//     res.status(500).json({ message: "Server error", error: err.message });
+//   }
+// };
+
+const deletePost = async (req, res) => {   
   try {
     const { email, postId } = req.params;
 
-    // Find the author by email
     const author = await Author.findOne({ email });
 
     if (!author) {
       return res.status(404).json({ message: "Author not found" });
     }
 
-    // Find the index of the post by _id within the posts array
     const postIndex = author.posts.findIndex(
       (post) => post._id.toString() === postId
     );
-    const postToDelete  = author.posts[postIndex].image;
-    console.log('post to delete',postToDelete)
 
-    // if (postIndex === -1) {
-    //   return res.status(404).json({ message: "Post not found" });
-    // }
+    const postToDelete = author.posts[postIndex];
 
-    // const postToDelete  = author.posts[postIndex]
-    
-       // S3 Integration
-       const params = {
-        Bucket:bucketName,
-        Key:postToDelete
-      }
-   
-      const command = new DeleteObjectCommand(params)
-      await s3.send(command)
-      console.log(postToDelete)
- 
+    // Delete image from S3
+    if (postToDelete.image) {
+      await s3.send(new DeleteObjectCommand({
+        Bucket: bucketName,
+        Key: postToDelete.image
+      }));
+    }
+
+    // Delete documents from S3 (including PDFs)
+    if (postToDelete.documents && postToDelete.documents.length > 0) {
+      const documentDeletePromises = postToDelete.documents.map(doc => 
+        s3.send(new DeleteObjectCommand({
+          Bucket: bucketName,
+          Key: doc
+        }))
+      );
+      await Promise.all(documentDeletePromises);
+    }
+
     // Remove the post from the posts array
-     author.posts.splice(postIndex, 1);
+    author.posts.splice(postIndex, 1);
 
     // Save the updated author document
     const updatedAuthor = await author.save();
@@ -211,6 +397,7 @@ const deletePost = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 const getSinglePost = async(req,res) =>{
   try {

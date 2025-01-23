@@ -5,6 +5,8 @@ import blog1 from "../images/blog1.jpg";
 import { AiOutlineMail } from 'react-icons/ai';
 import { GrLinkedin } from 'react-icons/gr';
 import Footer from '../ui/Footer';
+import user from "../images/user.png";
+
 function Authors() {
     const [authors,setAuthors] = useState([])
     const email = localStorage.getItem('email');
@@ -67,7 +69,7 @@ console.log("authors",authors);
                         author.profile?
                      <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${author.profile}`} className='rounded-full w-20 h-20 mx-auto object-cover' alt="" />
                      :
-                     <img src={blog1} className='rounded-full w-20 h-20 mx-auto object-cover' />
+                     <img src={user} className='rounded-full w-20 h-20 bg-white border-2 border-black mx-auto object-cover' />
 
                      }
                      <div className='md:w-11/12 md:w-2/3 mx-auto flex-col items-center justify-center'>

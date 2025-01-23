@@ -460,89 +460,194 @@ function BlogContainer() {
         ) : (
           (postCategory === "" ? filterdPost : posts.filter(post => post.category === postCategory))
           .map((data, index) => (
-            <div
-              key={index}
-              className="lg:w-3/12  w-80 bg-gray-800  md:pb-2 flex flex-col 
-              shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
-            >
-               <div className="flex mb-2 gap-2 items-center">
-                  <img 
-                    src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
-                    className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
-                    alt={data.authorname}
-                  />
-                  <div className="flex flex-col">
-                    <p className="text-xs text-white font-semibold">
-                      {data.authorname}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {data.timestamp.slice(0, 10)}
-                    </p>
-                  </div>
-                </div>
-              <img
-                src={data.image ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}` : blog1}
-                className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center  hover:opacity-90 transition-all duration-300"
-                alt={data.title}
-                onClick={() => handleImageClick(data.image ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}` : blog1)}
+            // <div
+            //   key={index}
+            //   className="lg:w-3/12  w-80 bg-gray-800  md:pb-2 flex flex-col 
+            //   shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
+            // >
+            //    <div className="flex mb-2 gap-2 items-center">
+            //       <img 
+            //         src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
+            //         className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
+            //         alt={data.authorname}
+            //       />
+            //       <div className="flex flex-col">
+            //         <p className="text-xs text-white font-semibold">
+            //           {data.authorname}
+            //         </p>
+            //         <p className="text-xs text-gray-500">
+            //           {data.timestamp.slice(0, 10)}
+            //         </p>
+            //       </div>
+            //     </div>
+            //   <img
+            //     src={data.image ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}` : blog1}
+            //     className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center  hover:opacity-90 transition-all duration-300"
+            //     alt={data.title}
+            //     onClick={() => handleImageClick(data.image ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}` : blog1)}
 
-              />
-              <div className="min-h-28 h-auto py-4">
-                <h2 className="md:text-xl text-lg text-white font-bold">{data.title}</h2>
-                <p className="text-xs text-gray-400 mt-2">
-                  {data.description.slice(0,100)}...
-                </p>
-              </div>
+            //   />
+            //   <div className="min-h-28 h-auto py-4">
+            //     <h2 className="md:text-xl text-lg text-white font-bold">{data.title}</h2>
+            //     <p className="text-xs text-gray-400 mt-2">
+            //       {data.description.slice(0,100)}...
+            //     </p>
+            //   </div>
 
-              <div className="flex justify-between items-center mt-2">
+            //   <div className="flex justify-between items-center mt-2">
                
 
-                <div className="flex gap-3 items-center">
-                  <div className="flex items-center gap-2">
-                    <Link 
-                      to={`/viewpage/${data.authoremail}/${data._id}`}
-                      onClick={() => postViews(data.authoremail, data._id)}
-                      className="cursor-pointer flex items-center gap-1  hover:text-blue-300"
-                    >
-                      <IoEye className="text-sm text-blue-400" />
-                      <span className="text-[9px]">{data.views.length || 0}</span>
-                    </Link>
+            //     <div className="flex gap-3 items-center">
+            //       <div className="flex items-center gap-2">
+            //         <Link 
+            //           to={`/viewpage/${data.authoremail}/${data._id}`}
+            //           onClick={() => postViews(data.authoremail, data._id)}
+            //           className="cursor-pointer flex items-center gap-1  hover:text-blue-300"
+            //         >
+            //           <IoEye className="text-sm text-blue-400" />
+            //           <span className="text-[9px]">{data.views.length || 0}</span>
+            //         </Link>
 
-                     <button
-                        type="button"
-                         onClick={(e) => postLikes(data.authoremail, data._id, e)}
-                        className="cursor-pointer flex items-center gap-1 hover:text-blue-300 bg-transparent border-0 disabled:opacity-50"
-                       >
-                          {(data.likes || []).includes(email) ? (
-                            <BiSolidLike className="text-sm text-blue-400" />
-                          ) : (
-                            <BiLike className="text-sm text-blue-400" />
-                          )}
-                          <span className="text-[9px] text-white">
-                          {data.likes && data.likes.length > 0 ? data.likes.length : ""}
-                          </span>
-                      </button>
-                   <div 
-                      to={`/viewpage/${data.authoremail}/${data._id}`}
-                      onClick={() => sharePost(data.title,data.authoremail,data._id)}
-                      className="cursor-pointer flex items-center gap-1  hover:text-blue-300"
-                    >
-                      <IoShareSocial className="text-sm text-blue-400" />
+            //          <button
+            //             type="button"
+            //              onClick={(e) => postLikes(data.authoremail, data._id, e)}
+            //             className="cursor-pointer flex items-center gap-1 hover:text-blue-300 bg-transparent border-0 disabled:opacity-50"
+            //            >
+            //               {(data.likes || []).includes(email) ? (
+            //                 <BiSolidLike className="text-sm text-blue-400" />
+            //               ) : (
+            //                 <BiLike className="text-sm text-blue-400" />
+            //               )}
+            //               <span className="text-[9px] text-white">
+            //               {data.likes && data.likes.length > 0 ? data.likes.length : ""}
+            //               </span>
+            //           </button>
+            //        <div 
+            //           to={`/viewpage/${data.authoremail}/${data._id}`}
+            //           onClick={() => sharePost(data.title,data.authoremail,data._id)}
+            //           className="cursor-pointer flex items-center gap-1  hover:text-blue-300"
+            //         >
+            //           <IoShareSocial className="text-sm text-blue-400" />
                       
-                    </div>
+            //         </div>
                    
-                  </div>
+            //       </div>
                  
-                </div>
-                <button
-                    onClick={() => setPostCategory(data.category)}
-                    className="px-2 py-1 rounded-full bg-gray-600 text-gray-300 text-sm font-medium
-                     transition-colors duration-200"
-                  >
-                    {data.category}
-                  </button>
-              </div>
-            </div>
+            //     </div>
+            //     <button
+            //         onClick={() => setPostCategory(data.category)}
+            //         className="px-2 py-1 rounded-full bg-gray-600 text-gray-300 text-sm font-medium
+            //          transition-colors duration-200"
+            //       >
+            //         {data.category}
+            //       </button>
+            //   </div>
+            // </div>
+            <div
+  key={index}
+  className="lg:w-3/12 w-80 bg-gray-800 md:pb-2 flex flex-col 
+  shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
+>
+  <div className="flex mb-2 gap-2 items-center">
+    <img 
+      src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
+      className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
+      alt={data.authorname}
+    />
+    <div className="flex flex-col">
+      <p className="text-xs text-white font-semibold">{data.authorname}</p>
+      <p className="text-xs text-gray-500">{data.timestamp.slice(0, 10)}</p>
+    </div>
+  </div>
+
+  {data.image && /\.(mp4|webm|ogg)$/.test(data.image) ? (
+    <video
+      src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`}
+      className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
+      controls
+      alt={data.title}
+      onClick={() =>
+        handleImageClick(`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`)
+      }
+    />
+  ) : (
+    <img
+      src={
+        data.image
+          ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
+          : blog1
+      }
+      className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
+      alt={data.title}
+      onClick={() =>
+        handleImageClick(
+          data.image
+            ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
+            : blog1
+        )
+      }
+    />
+  )}
+
+  <div className="min-h-28 h-auto py-4">
+    <h2 className="md:text-xl text-lg text-white font-bold">{data.title}</h2>
+    <p className="text-xs text-gray-400 mt-2">
+      {data.description.slice(0, 100)}...
+    </p>
+  </div>
+
+  <h1 className={`${data.documents?.length>0?'text-xs text-gray-200':'hidden'}`}>Source Documents:</h1>
+  <div className="flex w-full items-start mt-2 gap-2">      
+    {
+      data.documents&& data.documents.map((doc, index) => (
+       <a key={index} href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`} className="text-xs flex justify-start items-start text-gray-200 gap-1 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center text-black hover:bg-gray-200 transition-all duration-200 justify-center"> Open </p> {doc}</a>
+      ))
+    }
+  </div>
+
+  <div className="flex justify-between items-center mt-2">
+    <div className="flex gap-3 items-center">
+      <div className="flex items-center gap-2">
+        <Link
+          to={`/viewpage/${data.authoremail}/${data._id}`}
+          onClick={() => postViews(data.authoremail, data._id)}
+          className="cursor-pointer flex items-center gap-1 hover:text-blue-300"
+        >
+          <IoEye className="text-sm text-blue-400" />
+          <span className="text-[9px]">{data.views.length || 0}</span>
+        </Link>
+
+        <button
+          type="button"
+          onClick={(e) => postLikes(data.authoremail, data._id, e)}
+          className="cursor-pointer flex items-center gap-1 hover:text-blue-300 bg-transparent border-0 disabled:opacity-50"
+        >
+          {(data.likes || []).includes(email) ? (
+            <BiSolidLike className="text-sm text-blue-400" />
+          ) : (
+            <BiLike className="text-sm text-blue-400" />
+          )}
+          <span className="text-[9px] text-white">
+            {data.likes && data.likes.length > 0 ? data.likes.length : ""}
+          </span>
+        </button>
+        <div
+          onClick={() => sharePost(data.title, data.authoremail, data._id)}
+          className="cursor-pointer flex items-center gap-1 hover:text-blue-300"
+        >
+          <IoShareSocial className="text-sm text-blue-400" />
+        </div>
+      </div>
+    </div>
+    <button
+      onClick={() => setPostCategory(data.category)}
+      className="px-2 py-1 rounded-full bg-gray-600 text-gray-300 text-sm font-medium transition-colors duration-200"
+    >
+      {data.category}
+    </button>
+  </div>
+</div>
+
           ))
         )}
       </div>

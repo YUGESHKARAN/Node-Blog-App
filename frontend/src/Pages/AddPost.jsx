@@ -369,6 +369,9 @@ function AddPost() {
       direction: "incoming",
     },
   ]);
+
+  const [documents, setDocuments] = useState([]);
+
   const [isTyping, setIsTyping] = useState(false);
   const [chatbot, setChatbot] = useState(false);
 
@@ -468,11 +471,15 @@ function AddPost() {
     formData.append("category", category);
     formData.append("image", image);
 
+     // Append all selected documents
+  documents.forEach((doc) => formData.append('document', doc));
+
     setLoading(true);
 
     try {
       const response = await axios.post(
         `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
+        // `http://localhost:3000/blog/posts/${email}`,
         formData,
         {
           headers: {
@@ -480,6 +487,7 @@ function AddPost() {
           },
         }
       );
+      console.log("adding post response",response)
       setTitle("");
       setDescription("");
       setCategory("");
@@ -492,7 +500,11 @@ function AddPost() {
       setLoading(false);
     }
   };
-
+  const onDocumentsChange = (e) => {
+    const files = Array.from(e.target.files); // Convert FileList to Array
+    setDocuments(files);
+  };
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
       <NavBar />
@@ -520,10 +532,10 @@ function AddPost() {
           </div>
         </div>
         {!chatbot ? (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-10">
             <div>
               <label htmlFor="title" className="block text-sm font-medium text-gray-300">
-                Title
+                Title <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -537,7 +549,7 @@ function AddPost() {
             </div>
             <div>
               <label htmlFor="description" className="block text-sm font-medium text-gray-300">
-                Description
+                Description <span className="text-red-500">*</span>
               </label>
               <textarea
                 id="description"
@@ -551,7 +563,7 @@ function AddPost() {
             </div>
             <div>
               <label htmlFor="category" className="block text-sm font-medium text-gray-300">
-                Category
+                Category <span className="text-red-500">*</span>
               </label>
               <select
                 id="category"
@@ -573,19 +585,32 @@ function AddPost() {
             </div>
             <div>
               <label htmlFor="image" className="block text-sm font-medium text-gray-300">
-                Image
+                Poster <span className="text-red-500">*</span>
               </label>
               <input
                 type="file"
                 id="image"
                 onChange={onImageChange}
-                className="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-500 file:text-black hover:file:bg-white "
+                className="mt-1 block w-full text-sm text-gray-300 text-xs file:mr-4 file:cursor-pointer file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold hover:file:bg-gray-500 file:text-black file:bg-white "
+              />
+            </div>
+            <div>
+              <label htmlFor="documents" className="block text-sm font-medium text-gray-300">
+               Source Documents (PDF/Word)
+              </label>
+              <input
+                type="file"
+                id="documents"
+                multiple
+                accept=".pdf,.doc,.docx"
+                onChange={onDocumentsChange}
+                className="mt-1 block w-full text-sm text-gray-300 text-xs file:mr-4 file:cursor-pointer file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold hover:file:bg-gray-500 file:text-black file:bg-white"
               />
             </div>
             <div>
               <button
                 type="submit"
-                className="w-full md:w-40 py-2 px-4 bg-gray-500 hover:bg-gray-400 text-white font-bold rounded-md transition duration-200"
+                className="w-full md:w-40 py-2 px-4 hover:bg-gray-500 bg-white text-gray-800 font-bold rounded-md transition duration-200"
                 disabled={loading}
               >
                 {loading ? "Submitting..." : "ADD POST"}

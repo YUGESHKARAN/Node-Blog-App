@@ -38,11 +38,19 @@ router.get("/:category", getCategoryPosts);
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+const uploadata = multer().fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'document', maxCount: 10 }, // Allow up to 10 document files
+]);
+
+router.post("/:email",uploadata, addPosts);
+
+// router.put("/:email/:postId",upload.single('image'), updatePost);
 
 
-router.post("/:email",upload.single('image'), addPosts);
 
-router.put("/:email/:postId",upload.single('image'), updatePost);
+router.put("/:email/:postId",uploadata,updatePost);
+
 
 router.get("/:email/:postId",getSinglePost);
 router.put("/views/:email/:id",postView)

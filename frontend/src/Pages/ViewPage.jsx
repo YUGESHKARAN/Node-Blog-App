@@ -294,7 +294,6 @@ function ViewPage() {
   const [selectedImage, setSelectedImage] = useState(null);
   const[profile,setProfile] = useState('')
   const {notification, setNotification} = useContext(GlobalStateContext);  
-  const [isFocused, setIsFocused] = useState(true); // Track conversation focus
 
   // Fetch post data
   useEffect(() => {
@@ -362,7 +361,7 @@ getComments();
   
 
 
-  console.log("postId", postId);
+  // console.log("postId", postId);
 
   // Post comment function
   const postComment = () => {
@@ -390,8 +389,8 @@ getComments();
   const handleCloseModal = () => {
     setSelectedImage(null);
   };
-console.log('messages--------------',messages)
-console.log('singlepost data--------------',singlePostData)
+// console.log('messages--------------',messages)
+// console.log('singlepost data--------------',singlePostData)
   return (
     <div className="w-full min-h-screen h-auto relative bg-gradient-to-br from-gray-900 to-gray-800">
       <NavBar />
