@@ -678,7 +678,7 @@ function AddPost() {
                       setCurrentLinkUrl("");
                     }
                   }}
-                  className="px-3 py-2 bg-blue-500 text-white rounded-md"
+                  className="py-2 px-4 hover:bg-gray-500 bg-white text-gray-800 font-bold rounded-md transition duration-200"
                 >
                   Add
                 </button>

@@ -34,7 +34,6 @@
 //     getData();
 //   }, []);
 
-   
 //   // Function to get unique categories
 //   const getUniqueCategories = (posts) => {
 //     return posts
@@ -48,7 +47,7 @@
 //   // search function starts here
 //   const filterdPost = posts.filter((post)=>
 //       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//       post.category.toLowerCase().includes(searchTerm.toLowerCase())  
+//       post.category.toLowerCase().includes(searchTerm.toLowerCase())
 //     );
 
 //     useEffect(() => {
@@ -135,7 +134,7 @@
 //       </div>
 
 //       {postCategory === ""
-//         ? 
+//         ?
 //         loader?
 //         <div className="flex-col items-center justify-center">
 //           <MagnifyingGlass
@@ -147,23 +146,23 @@
 //             wrapperClass="magnifying-glass-wrapper"
 //             glassColor="#c0efff"
 //             color="#091533"
-//             speed={1} 
-          
+//             speed={1}
+
 //           />
 //         <p className="text-lg font-semibold">
 //           Blog Not Found...
 //         </p>
 //     </div>:
 //         filterdPost.map((data, index) => (
-         
+
 //           <div
 //             key={index}
 //             className="lg:w-3/12 md:w-1/3 bg-[#091533] md:pb-2  flex flex-col shadow-xl  h-auto mb-16  gap-0  p-4 rounded-xl"
 //           >
-          
+
 //             <img
 //               src={
-//                 data.image 
+//                 data.image
 //                   ?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
 //                   : blog1
 //               }
@@ -189,7 +188,7 @@
 //              <div className="flex gap-3 items-center">
 
 //               <div className="flex items-center justify-center gap-2 w-full">
-    
+
 //                 <p
 //                 onClick={()=>{postViews(data.authoremail,data._id)}}
 //                  className="cursor-pointer flex text-[10px] gap-0.5 items-center text-gray-400">
@@ -211,16 +210,16 @@
 //               </p>
 //               </div>
 
-//              <p 
-//              onClick={()=>setPostCategory(data.category)} 
+//              <p
+//              onClick={()=>setPostCategory(data.category)}
 //              className="px-2 py-1 rounded-md flex bg-gray-300 cursor-pointer text-gray-600 text-sm font-bold">
 //                 {data.category}
 //               </p>
 //              </div>
 //             </div>
-        
+
 //           </div>
-        
+
 //         ))
 //         : posts
 //             .filter((data) => data.category === postCategory)
@@ -279,16 +278,15 @@
 //               </p>
 //              </div>
 //                  <p
-//                   onClick={()=>setPostCategory(data.category)} 
+//                   onClick={()=>setPostCategory(data.category)}
 //                   className="px-2 py-1 rounded-md cursor-pointer flex bg-gray-300 text-gray-600 text-sm font-bold">
 //                     {data.category}
 //                   </p>
 //                   </div>
-                  
+
 //                 </div>
 //               </div>
 //             ))}
-
 
 //     </div>
 //   );
@@ -299,7 +297,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { IoSearchOutline, IoEye, IoClose, IoShareSocial } from "react-icons/io5";
+import {
+  IoSearchOutline,
+  IoEye,
+  IoClose,
+  IoShareSocial,
+} from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MagnifyingGlass } from "react-loader-spinner";
 import blog1 from "../images/blog1.jpg";
@@ -314,15 +317,18 @@ function BlogContainer() {
   const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
-   
     fetchPosts();
   }, []);
   // Fetch posts from API
   const fetchPosts = async () => {
     setLoader(true);
     try {
-      const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/posts");
-      setPosts(response.data.posts.filter((post) => post.authoremail !== email));
+      const response = await axios.get(
+        "https://node-blog-app-seven.vercel.app/blog/posts"
+      );
+      setPosts(
+        response.data.posts.filter((post) => post.authoremail !== email)
+      );
     } catch (err) {
       console.error("Error fetching posts:", err);
     }
@@ -330,21 +336,19 @@ function BlogContainer() {
   };
 
   // share post with social media
-  const sharePost = async(title,email,url)=>{
-    try{
+  const sharePost = async (title, email, url) => {
+    try {
       const data = {
-        title:title,
-        text:title,
-        url:`${window.location.origin}/viewpage/${email}/${url}`
-      }
-      const response = await navigator.share(data)
-      console.log("post shared successfully",response)
+        title: title,
+        text: title,
+        url: `${window.location.origin}/viewpage/${email}/${url}`,
+      };
+      const response = await navigator.share(data);
+      console.log("post shared successfully", response);
+    } catch (err) {
+      console.log("error sharing post", err);
     }
-    catch(err){
-      console.log("error sharing post",err) 
-    }
-  }
-
+  };
 
   // Search handler
   const handleSearch = (e) => {
@@ -359,16 +363,22 @@ function BlogContainer() {
   // Track post views
   const postViews = async (authorEmail, postId) => {
     try {
-      await axios.put(`https://node-blog-app-seven.vercel.app/blog/posts/views/${authorEmail}/${postId}`,{ emailAuthor: email });  
+      await axios.put(
+        `https://node-blog-app-seven.vercel.app/blog/posts/views/${authorEmail}/${postId}`,
+        { emailAuthor: email }
+      );
     } catch (err) {
       console.error("Error updating views:", err);
     }
   };
 
-  const postLikes = async (authorEmail, postId,e) => {
-    e.preventDefault()
+  const postLikes = async (authorEmail, postId, e) => {
+    e.preventDefault();
     try {
-      await axios.put(`https://node-blog-app-seven.vercel.app/blog/posts/likes/${authorEmail}/${postId}`,{ emailAuthor: email });
+      await axios.put(
+        `https://node-blog-app-seven.vercel.app/blog/posts/likes/${authorEmail}/${postId}`,
+        { emailAuthor: email }
+      );
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
           post._id === postId
@@ -381,16 +391,16 @@ function BlogContainer() {
             : post
         )
       );
-      
     } catch (err) {
       console.error("Error updating views:", err);
     }
   };
 
   // Filter posts based on search
-  const filterdPost = posts.filter((post) =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.category.toLowerCase().includes(searchTerm.toLowerCase())
+  const filterdPost = posts.filter(
+    (post) =>
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleImageClick = (image) => {
@@ -407,7 +417,7 @@ function BlogContainer() {
         {/* Search and Filter Section */}
         <div className="w-full flex items-center gap-2 justify-center">
           <div className="md:w-72 w-52 flex border border-gray-600 rounded-xl p-2 bg-gray-800 justify-center gap-2 items-center my-4">
-            <IoSearchOutline className="text-2xl text-gray-400"/>
+            <IoSearchOutline className="text-2xl text-gray-400" />
             <input
               type="text"
               placeholder="Search by title or category"
@@ -423,13 +433,19 @@ function BlogContainer() {
           >
             <option value="">All</option>
             {getUniqueCategories(posts).map((category, index) => (
-              <option key={index} value={category}>{category}</option>
+              <option key={index} value={category}>
+                {category}
+              </option>
             ))}
           </select>
         </div>
 
         {/* Back Button */}
-        <div className={`w-full flex h-8 ${postCategory ? 'justify-between' : 'justify-end'} mb-5`}>
+        <div
+          className={`w-full flex h-8 ${
+            postCategory ? "justify-between" : "justify-end"
+          } mb-5`}
+        >
           {postCategory && (
             <button
               className="bg-gray-600 px-3 py-1 text-sm font-semibold text-white rounded-lg hover:bg-gray-700"
@@ -448,7 +464,7 @@ function BlogContainer() {
               height="100"
               width="100"
               ariaLabel="loading"
-              wrapperStyle={{marginTop:'20px'}}
+              wrapperStyle={{ marginTop: "20px" }}
               wrapperClass="magnifying-glass-wrapper"
               glassColor="#4B5563"
               color="#60A5FA"
@@ -458,15 +474,17 @@ function BlogContainer() {
             </p>
           </div>
         ) : (
-          (postCategory === "" ? filterdPost : posts.filter(post => post.category === postCategory))
-          .map((data, index) => (
+          (postCategory === ""
+            ? filterdPost
+            : posts.filter((post) => post.category === postCategory)
+          ).map((data, index) => (
             // <div
             //   key={index}
-            //   className="lg:w-3/12  w-80 bg-gray-800  md:pb-2 flex flex-col 
+            //   className="lg:w-3/12  w-80 bg-gray-800  md:pb-2 flex flex-col
             //   shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
             // >
             //    <div className="flex mb-2 gap-2 items-center">
-            //       <img 
+            //       <img
             //         src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
             //         className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
             //         alt={data.authorname}
@@ -495,11 +513,10 @@ function BlogContainer() {
             //   </div>
 
             //   <div className="flex justify-between items-center mt-2">
-               
 
             //     <div className="flex gap-3 items-center">
             //       <div className="flex items-center gap-2">
-            //         <Link 
+            //         <Link
             //           to={`/viewpage/${data.authoremail}/${data._id}`}
             //           onClick={() => postViews(data.authoremail, data._id)}
             //           className="cursor-pointer flex items-center gap-1  hover:text-blue-300"
@@ -522,17 +539,17 @@ function BlogContainer() {
             //               {data.likes && data.likes.length > 0 ? data.likes.length : ""}
             //               </span>
             //           </button>
-            //        <div 
+            //        <div
             //           to={`/viewpage/${data.authoremail}/${data._id}`}
             //           onClick={() => sharePost(data.title,data.authoremail,data._id)}
             //           className="cursor-pointer flex items-center gap-1  hover:text-blue-300"
             //         >
             //           <IoShareSocial className="text-sm text-blue-400" />
-                      
+
             //         </div>
-                   
+
             //       </div>
-                 
+
             //     </div>
             //     <button
             //         onClick={() => setPostCategory(data.category)}
@@ -544,123 +561,169 @@ function BlogContainer() {
             //   </div>
             // </div>
             <div
-  key={index}
-  className="lg:w-3/12 w-80 bg-gray-800 md:pb-2 flex flex-col 
+              key={index}
+              className="lg:w-3/12 w-80 bg-gray-800 md:pb-2 flex flex-col 
   shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
->
-  <div className="flex mb-2 gap-2 items-center">
-    <img 
-      src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
-      className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
-      alt={data.authorname}
-    />
-    <div className="flex flex-col">
-      <p className="text-xs text-white font-semibold">{data.authorname}</p>
-      <p className="text-xs text-gray-500">{data.timestamp.slice(0, 10)}</p>
-    </div>
-  </div>
+            >
+              <div className="flex mb-2 gap-2 items-center">
+                <img
+                  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
+                  className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
+                  alt={data.authorname}
+                />
+                <div className="flex flex-col">
+                  <p className="text-xs text-white font-semibold">
+                    {data.authorname}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {data.timestamp.slice(0, 10)}
+                  </p>
+                </div>
+              </div>
 
-  {data.image && /\.(mp4|webm|ogg)$/.test(data.image) ? (
-    <video
-      src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`}
-      className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
-      controls
-      alt={data.title}
-      onClick={() =>
-        handleImageClick(`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`)
-      }
-    />
-  ) : (
-    <img
-      src={
-        data.image
-          ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
-          : blog1
-      }
-      className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
-      alt={data.title}
-      onClick={() =>
-        handleImageClick(
-          data.image
-            ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
-            : blog1
-        )
-      }
-    />
-  )}
+              {data.image && /\.(mp4|webm|ogg)$/.test(data.image) ? (
+                <video
+                  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`}
+                  className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
+                  controls
+                  alt={data.title}
+                  onClick={() =>
+                    handleImageClick(
+                      `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
+                    )
+                  }
+                />
+              ) : (
+                <img
+                  src={
+                    data.image
+                      ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
+                      : blog1
+                  }
+                  className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
+                  alt={data.title}
+                  onClick={() =>
+                    handleImageClick(
+                      data.image
+                        ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
+                        : blog1
+                    )
+                  }
+                />
+              )}
 
-  <div className="min-h-28 h-auto py-4">
-    <h2 className="md:text-xl text-lg text-white font-bold">{data.title}</h2>
-    <p className="text-xs text-gray-400 mt-2">
-      {data.description.slice(0, 100)}...
-    </p>
-  </div>
+              <div className="min-h-28 h-auto py-4">
+                <h2 className="md:text-xl text-lg text-white font-bold">
+                  {data.title}
+                </h2>
+                <p className="text-xs text-gray-400 mt-2">
+                  {data.description.slice(0, 100)}...
+                </p>
+              </div>
 
-  <h1 className={`${data.documents?.length>0?'text-xs text-gray-200':'hidden'}`}>Source Documents:</h1>
-  <div className="flex w-full items-start mt-2 gap-2">      
-    {
-      data.documents&& data.documents.map((doc, index) => (
-       <a key={index} href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`} className="text-xs flex justify-start items-start text-gray-200 gap-1 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center text-black hover:bg-gray-200 transition-all duration-200 justify-center"> Open </p> {doc}</a>
-      ))
-    }
-  </div>
+              <h1
+                className={`${
+                  data.documents?.length > 0
+                    ? "text-xs text-gray-200"
+                    : "hidden"
+                }`}
+              >
+                Source Documents & Links:
+              </h1>
+              <div className="flex w-full items-start mt-2 gap-2">
+                {data.documents &&
+                  data.documents.map((doc, index) => (
+                    <a
+                      key={index}
+                      href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`}
+                      className="text-xs flex justify-start items-start text-gray-200 gap-1 w-full"
+                    >
+                      <p className="bg-white rounded-md w-fit px-3 text-xs flex items-center text-black hover:bg-gray-200 transition-all duration-200 justify-center">
+                      {doc}
+                      </p>
+                     
+                    </a>
+                  ))}
+                {data.links &&
+                  data.links.map((link, index) => (
+                    <a
+                      key={index}
+                      href={`${link.url}`}
+                      className="text-xs flex justify-start items-start text-gray-200 gap-1 w-full"
+                    >
+                      <p className="bg-white rounded-md w-fit px-3 text-xs flex items-center text-black hover:bg-gray-200 transition-all duration-200 justify-center">
+                        {" "}
+                        {link.title}{" "}
+                      </p>{" "}
+                    </a>
+                  ))}
+              </div>
 
-  <div className="flex justify-between items-center mt-2">
-    <div className="flex gap-3 items-center">
-      <div className="flex items-center gap-2">
-        <Link
-          to={`/viewpage/${data.authoremail}/${data._id}`}
-          onClick={() => postViews(data.authoremail, data._id)}
-          className="cursor-pointer flex items-center gap-1 hover:text-blue-300"
-        >
-          <IoEye className="text-sm text-blue-400" />
-          <span className="text-[9px]">{data.views.length || 0}</span>
-        </Link>
+              <div className="flex justify-between items-center mt-2">
+                <div className="flex gap-3 items-center">
+                  <div className="flex items-center gap-2">
+                    <Link
+                      to={`/viewpage/${data.authoremail}/${data._id}`}
+                      onClick={() => postViews(data.authoremail, data._id)}
+                      className="cursor-pointer flex items-center gap-1 hover:text-blue-300"
+                    >
+                      <IoEye className="text-sm text-blue-400" />
+                      <span className="text-[9px]">
+                        {data.views.length || 0}
+                      </span>
+                    </Link>
 
-        <button
-          type="button"
-          onClick={(e) => postLikes(data.authoremail, data._id, e)}
-          className="cursor-pointer flex items-center gap-1 hover:text-blue-300 bg-transparent border-0 disabled:opacity-50"
-        >
-          {(data.likes || []).includes(email) ? (
-            <BiSolidLike className="text-sm text-blue-400" />
-          ) : (
-            <BiLike className="text-sm text-blue-400" />
-          )}
-          <span className="text-[9px] text-white">
-            {data.likes && data.likes.length > 0 ? data.likes.length : ""}
-          </span>
-        </button>
-        <div
-          onClick={() => sharePost(data.title, data.authoremail, data._id)}
-          className="cursor-pointer flex items-center gap-1 hover:text-blue-300"
-        >
-          <IoShareSocial className="text-sm text-blue-400" />
-        </div>
-      </div>
-    </div>
-    <button
-      onClick={() => setPostCategory(data.category)}
-      className="px-2 py-1 rounded-full bg-gray-600 text-gray-300 text-sm font-medium transition-colors duration-200"
-    >
-      {data.category}
-    </button>
-  </div>
-</div>
-
+                    <button
+                      type="button"
+                      onClick={(e) => postLikes(data.authoremail, data._id, e)}
+                      className="cursor-pointer flex items-center gap-1 hover:text-blue-300 bg-transparent border-0 disabled:opacity-50"
+                    >
+                      {(data.likes || []).includes(email) ? (
+                        <BiSolidLike className="text-sm text-blue-400" />
+                      ) : (
+                        <BiLike className="text-sm text-blue-400" />
+                      )}
+                      <span className="text-[9px] text-white">
+                        {data.likes && data.likes.length > 0
+                          ? data.likes.length
+                          : ""}
+                      </span>
+                    </button>
+                    <div
+                      onClick={() =>
+                        sharePost(data.title, data.authoremail, data._id)
+                      }
+                      className="cursor-pointer flex items-center gap-1 hover:text-blue-300"
+                    >
+                      <IoShareSocial className="text-sm text-blue-400" />
+                    </div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setPostCategory(data.category)}
+                  className="px-2 py-1 rounded-full bg-gray-600 text-gray-300 text-sm font-medium transition-colors duration-200"
+                >
+                  {data.category}
+                </button>
+              </div>
+            </div>
           ))
         )}
       </div>
-        {/* Image Modal */}
-        {selectedImage && (
+      {/* Image Modal */}
+      {selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
           <div className="">
-            <img src={selectedImage} alt="Selected" className="max-w-full w-11/12 mx-auto max-h-full" />
+            <img
+              src={selectedImage}
+              alt="Selected"
+              className="max-w-full w-11/12 mx-auto max-h-full"
+            />
             <button
               onClick={handleCloseModal}
               className="absolute top-10 right-7"
             >
-              <IoClose className="text-2xl"/>
+              <IoClose className="text-2xl" />
             </button>
           </div>
         </div>
