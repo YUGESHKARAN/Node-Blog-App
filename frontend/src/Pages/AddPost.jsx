@@ -514,20 +514,17 @@ function AddPost() {
     formData.append("category", category);
     formData.append("image", image);
   
-    // Append documents
+    // Correctly append documents
     documents.forEach((doc) => formData.append('document', doc));
   
-    // Append links
-    links.forEach((link, index) => {
-      formData.append(`links[${index}][title]`, link.title);
-      formData.append(`links[${index}][url]`, link.url);
-    });
+    // Correctly append links using JSON stringification
+    formData.append('links', JSON.stringify(links));
   
     setLoading(true);
   
     try {
       const response = await axios.post(
-        `http://localhost:3000/blog/posts/${email}`,
+        `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
         formData,
         {
           headers: {
@@ -556,6 +553,8 @@ function AddPost() {
     setDocuments(files);
   };
   
+  console.log("links",links)
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
       <NavBar />

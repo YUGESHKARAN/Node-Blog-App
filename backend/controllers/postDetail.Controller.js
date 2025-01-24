@@ -117,7 +117,7 @@ const getCategoryPosts = async (req, res) => {
 // };
 
 const addPosts = async (req, res) => {
-  const { title, description, category } = req.body;
+  const { title, description, category,links} = req.body;
 
   try {
     const author = await Author.findOne({ email: req.params.email });
@@ -160,17 +160,7 @@ const addPosts = async (req, res) => {
     }
 
     // Parse links from form data
-    const parsedLinks = [];
-    Object.keys(req.body).forEach((key) => {
-      if (key.startsWith('links[') && key.includes('][title]')) {
-        const index = key.match(/\[(\d+)\]/)[1];
-        const title = req.body[key];
-        const url = req.body[`links[${index}][url]`];
-        if (title && url) {
-          parsedLinks.push({ title, url });
-        }
-      }
-    });
+    const parsedLinks = links ? JSON.parse(links) : [];
 
     author.posts.push({
       title,
