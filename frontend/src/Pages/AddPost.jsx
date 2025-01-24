@@ -507,16 +507,16 @@ function AddPost() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("category", category);
     formData.append("image", image);
-    
+  
     // Append documents
     documents.forEach((doc) => formData.append('document', doc));
-    
+  
     // Append links
     links.forEach((link, index) => {
       formData.append(`links[${index}][title]`, link.title);
@@ -524,10 +524,9 @@ function AddPost() {
     });
   
     setLoading(true);
-    
+  
     try {
       const response = await axios.post(
-        // `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
         `http://localhost:3000/blog/posts/${email}`,
         formData,
         {
@@ -536,16 +535,13 @@ function AddPost() {
           },
         }
       );
-      
+  
       // Reset form
       setTitle("");
       setDescription("");
       setCategory("");
       setImage(null);
       setLinks([]);
-      setCurrentLinkTitle("");
-      setCurrentLinkUrl("");
-      
       toast.success("Post added successfully");
       navigate("/home");
     } catch (error) {
@@ -554,6 +550,7 @@ function AddPost() {
       setLoading(false);
     }
   };
+  
   const onDocumentsChange = (e) => {
     const files = Array.from(e.target.files); // Convert FileList to Array
     setDocuments(files);
