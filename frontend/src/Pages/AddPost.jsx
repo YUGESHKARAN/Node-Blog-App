@@ -524,7 +524,8 @@ function AddPost() {
   
     try {
       const response = await axios.post(
-        `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
+        // `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
+        `http://localhost:3000/blog/posts/${email}`,
         formData,
         {
           headers: {

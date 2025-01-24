@@ -19,6 +19,9 @@ function ViewEditPost() {
   const [image, setImage] = useState(null);
   const [edit, setEdit] = useState(false);
   const [timeStamp, setTimeStamp] = useState("");
+  const [links, setLinks] = useState([]);
+  const [currentLinkTitle, setCurrentLinkTitle] = useState('');
+  const [currentLinkUrl, setCurrentLinkUrl] = useState('');
   const navigate = useNavigate();
 
   const { PostId } = useParams(); //Accessing Post Id of selected post
@@ -78,6 +81,7 @@ function ViewEditPost() {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("category", category);
+    formData.append('links', JSON.stringify(links));
     
     if (image) {
       formData.append("image", image);
@@ -275,8 +279,78 @@ function ViewEditPost() {
             />
           </div>
 
-          
+          <div className={`${singlePostData.links&&singlePostData.links.length>0?'w-11/12 mt-5':'hidden'}`}>
+            <label htmlFor="description" className="text-md  font-semibold ">
+              current Links
+            </label>{" "}
+            <br />
+            <div className="flex-col w-full mt-2 items-start justify-start gap-2">
+              {
+                 singlePostData.links&& singlePostData.links.map((link, index) => (
+                    <a key={index} href={`${link.url}`} className="text-xs flex justify-start items-start mb-2 text-gray-200 gap-1 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center hover:bg-gray-300 transition-all duration-200 text-black justify-center"> View </p> {link.title}</a>
+
+                    ))
+                }
+            </div>
+          </div>
+
           <div className="w-11/12 mt-5">
+              <label className="block text-sm font-medium text-gray-300">
+               Update Links
+              </label>
+              <div className="flex space-x-2 mt-1">
+                <input
+                  type="text"
+                  value={currentLinkTitle}
+                  onChange={(e) => setCurrentLinkTitle(e.target.value)}
+                  placeholder="Title"
+                  className="w-1/2 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm px-3 text-sm p bg-gray-800 border border-gray-600 rounded-md"
+                />
+                <input
+                  type="url"
+                  value={currentLinkUrl}
+                  onChange={(e) => setCurrentLinkUrl(e.target.value)}
+                  placeholder="Link URL"
+                  className="w-1/2 focus:outline-none text-xs focus:ring-green-500 focus:border-green-500 md:text-sm px-3 py-1 md:py-2 text-sm  bg-gray-800 border border-gray-600 rounded-md"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (currentLinkTitle.trim() && currentLinkUrl.trim()) {
+                      const newLink = { 
+                        title: currentLinkTitle.trim(), 
+                        url: currentLinkUrl.trim() 
+                      };
+                      setLinks([...links, newLink]);
+                      setCurrentLinkTitle("");
+                      setCurrentLinkUrl("");
+                    }
+                  }}
+                  className="mt-1 block  text-xs text-gray-300 mr-4 py-1 md:py-2 px-4 rounded-full border-0 md:text-sm font-semibold bg-orange-500 text-white hover:bg-orange-600"
+                >
+                  Add
+                </button>
+              </div>
+              {links.length > 0 && (
+                <div className="mt-2 space-y-1">
+                  {links.map((link, index) => (
+                    <div key={index} className="flex justify-between items-center bg-gray-700 px-2 py-1 rounded-md">
+                      <span className="text-sm">{link.title}: {link.url}</span>
+                      <button
+                        type="button"
+                        onClick={() => setLinks(links.filter((_, i) => i !== index))}
+                        className="text-red-500 ml-2"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+          
+          <div className={`${singlePostData.documents&&singlePostData.documents.length>0?'w-11/12 mt-5':'hidden'}`}>
             <label htmlFor="description" className="text-md  font-semibold ">
               current Documents
             </label>{" "}

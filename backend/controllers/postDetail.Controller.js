@@ -7,6 +7,7 @@ const sharp = require('sharp');
 
 // s3 integration
 const { S3Client,PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const { link } = require("fs");
 require('dotenv').config()
 
 
@@ -161,6 +162,7 @@ const addPosts = async (req, res) => {
 
     // Parse links from form data
     const parsedLinks = links ? JSON.parse(links) : [];
+    console.log("parsedLinks",parsedLinks)  
 
     author.posts.push({
       title,
@@ -231,7 +233,7 @@ const addPosts = async (req, res) => {
 
 const updatePost = async (req, res) => {
   const { email, postId } = req.params;
-  const { title, description, category } = req.body;
+  const { title, description, category,links } = req.body;
   
   try {
     const author = await Author.findOne({ email });
@@ -247,7 +249,7 @@ const updatePost = async (req, res) => {
     }
 
     // Handle image upload
-    let imageUrl = post.image;
+    let imageUrl = post.image ||[];
     if (req.files && req.files.image) {
       const buffer = await sharp(req.files.image[0].buffer)
         .resize({ width: 672, height: 462, fit: 'contain' })
@@ -281,14 +283,15 @@ const updatePost = async (req, res) => {
         documentUrls.push(doc.originalname);
       }
     }
-
+const parsedLinks = links? JSON.parse(links):[];
     // Update post details
     Object.assign(post, { 
       title, 
       image: imageUrl, 
       description, 
       category,
-      documents: documentUrls
+      documents: documentUrls,
+      links:parsedLinks
     });
 
     const updatedPost = await author.save();
