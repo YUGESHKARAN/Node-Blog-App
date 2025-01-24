@@ -117,32 +117,32 @@ const getCategoryPosts = async (req, res) => {
 // };
 
 const addPosts = async (req, res) => {
-  const { title, description, category } = req.body;
-  
+  const { title, description, category, links } = req.body;
+ 
   try {
     const author = await Author.findOne({ email: req.params.email });
     if (!author) {
       return res.status(404).json({ message: "author not found" });
     }
-
+ 
     let imageUrl = '';
     if (req.files && req.files.image) {
       const buffer = await sharp(req.files.image[0].buffer)
         .resize({ width: 672, height: 462, fit: 'contain' })
         .toBuffer();
-
+ 
       const params = {
         Bucket: bucketName,
         Key: req.files.image[0].originalname,
         Body: buffer,
         ContentType: req.files.image[0].mimetype
       };
-
+ 
       const command = new PutObjectCommand(params);
       await s3.send(command);
       imageUrl = req.files.image[0].originalname;
     }
-
+ 
     const documentUrls = [];
     if (req.files && req.files.document) {
       for (const doc of req.files.document) {
@@ -152,27 +152,39 @@ const addPosts = async (req, res) => {
           Body: doc.buffer,
           ContentType: doc.mimetype
         };
-
+ 
         const command = new PutObjectCommand(params);
         await s3.send(command);
         documentUrls.push(doc.originalname);
       }
     }
-
-    author.posts.push({ 
-      title, 
-      image: imageUrl, 
-      description, 
+ 
+    // Parse links from multipart form data
+    const parsedLinks = [];
+    for (const key in req.body) {
+      if (key.startsWith('links[') && key.includes('][title]')) {
+        const index = key.match(/\[(\d+)\]/)[1];
+        const title = req.body[key];
+        const url = req.body[`links[${index}][url]`];
+        parsedLinks.push({ title, url });
+      }
+    }
+ 
+    author.posts.push({
+      title,
+      image: imageUrl,
+      description,
       category,
-      documents: documentUrls
+      documents: documentUrls,
+      links: parsedLinks
     });
-     
+ 
     const data = await author.save();
     res.status(201).json({ message: "post added successfully", data });
   } catch (err) {
     res.status(500).json({ message: "server error", error: err.message });
   }
-};
+ };
 
 // const updatePost = async (req, res) => {
 //   const { email, postId } = req.params;

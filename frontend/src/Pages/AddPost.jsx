@@ -463,23 +463,72 @@ function AddPost() {
     setImage(e.target.files[0]);
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault(); // Prevent the default form submission
+  //   const formData = new FormData();
+  //   formData.append("title", title);
+  //   formData.append("description", description);
+  //   formData.append("category", category);
+  //   formData.append("image", image);
+
+  //    // Append all selected documents
+  // documents.forEach((doc) => formData.append('document', doc));
+
+  //   setLoading(true);
+
+  //   try {
+  //     const response = await axios.post(
+  //       `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
+  //       // `http://localhost:3000/blog/posts/${email}`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+  //     console.log("adding post response",response)
+  //     setTitle("");
+  //     setDescription("");
+  //     setCategory("");
+  //     setImage(null);
+  //     toast.success("Post added successfully");
+  //     navigate("/home"); // Redirect to the homepage
+  //   } catch (error) {
+  //     console.error("Error adding post:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  const [currentLink, setCurrentLink] = useState('');
+  const [links, setLinks] = useState([]);
+  const [currentLinkTitle, setCurrentLinkTitle] = useState('');
+  const [currentLinkUrl, setCurrentLinkUrl] = useState('');
+  
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
+    e.preventDefault();
+    
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("category", category);
     formData.append("image", image);
-
-     // Append all selected documents
-  documents.forEach((doc) => formData.append('document', doc));
-
+    
+    // Append documents
+    documents.forEach((doc) => formData.append('document', doc));
+    
+    // Append links
+    links.forEach((link, index) => {
+      formData.append(`links[${index}][title]`, link.title);
+      formData.append(`links[${index}][url]`, link.url);
+    });
+  
     setLoading(true);
-
+    
     try {
       const response = await axios.post(
-        `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
-        // `http://localhost:3000/blog/posts/${email}`,
+        // `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
+        `http://localhost:3000/blog/posts/${email}`,
         formData,
         {
           headers: {
@@ -487,13 +536,18 @@ function AddPost() {
           },
         }
       );
-      console.log("adding post response",response)
+      
+      // Reset form
       setTitle("");
       setDescription("");
       setCategory("");
       setImage(null);
+      setLinks([]);
+      setCurrentLinkTitle("");
+      setCurrentLinkUrl("");
+      
       toast.success("Post added successfully");
-      navigate("/home"); // Redirect to the homepage
+      navigate("/home");
     } catch (error) {
       console.error("Error adding post:", error);
     } finally {
@@ -594,6 +648,62 @@ function AddPost() {
                 className="mt-1 block w-full text-sm text-gray-300 text-xs file:mr-4 file:cursor-pointer file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold hover:file:bg-gray-500 file:text-black file:bg-white "
               />
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300">
+                Links
+              </label>
+              <div className="flex space-x-2 mt-1">
+                <input
+                  type="text"
+                  value={currentLinkTitle}
+                  onChange={(e) => setCurrentLinkTitle(e.target.value)}
+                  placeholder="Link Title"
+                  className="w-1/2 px-3 py-2 bg-gray-800 border border-gray-600 rounded-md"
+                />
+                <input
+                  type="url"
+                  value={currentLinkUrl}
+                  onChange={(e) => setCurrentLinkUrl(e.target.value)}
+                  placeholder="Link URL"
+                  className="w-1/2 px-3 py-2 bg-gray-800 border border-gray-600 rounded-md"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (currentLinkTitle.trim() && currentLinkUrl.trim()) {
+                      const newLink = { 
+                        title: currentLinkTitle.trim(), 
+                        url: currentLinkUrl.trim() 
+                      };
+                      setLinks([...links, newLink]);
+                      setCurrentLinkTitle("");
+                      setCurrentLinkUrl("");
+                    }
+                  }}
+                  className="px-3 py-2 bg-blue-500 text-white rounded-md"
+                >
+                  Add
+                </button>
+              </div>
+              {links.length > 0 && (
+                <div className="mt-2 space-y-1">
+                  {links.map((link, index) => (
+                    <div key={index} className="flex justify-between items-center bg-gray-700 px-2 py-1 rounded-md">
+                      <span className="text-sm">{link.title}: {link.url}</span>
+                      <button
+                        type="button"
+                        onClick={() => setLinks(links.filter((_, i) => i !== index))}
+                        className="text-red-500 ml-2"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div>
               <label htmlFor="documents" className="block text-sm font-medium text-gray-300">
                Source Documents (PDF/Word)

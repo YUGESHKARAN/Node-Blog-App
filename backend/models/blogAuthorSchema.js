@@ -32,6 +32,23 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: false, // Image is optional
   },
+  links: {
+    type: [
+      {
+        title: { type: String, required: true }, // Title of the link
+        url: { type: String, required: true },  // URL of the link
+      },
+    ],
+    default: [],
+    validate: {
+      validator: function (v) {
+        // Ensure all entries have unique URLs
+        return Array.isArray(v) && new Set(v.map(link => link.url)).size === v.length;
+      },
+      message: "Links array must contain unique URLs",
+    },
+  },
+
   documents:{
     type:[String],
     default:[],
