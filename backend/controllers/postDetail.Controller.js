@@ -82,129 +82,103 @@ const getCategoryPosts = async (req, res) => {
   }
 };
 
-const addPosts = async (req, res) => {
+// const addPosts = async (req, res) => {
 
-  const { title, description, category } = req.body;
+//   const { title, description, category } = req.body;
 
-  const image = req.file ? req.file.originalname : ''; // Image path as URL
+//   const image = req.file ? req.file.originalname : ''; // Image path as URL
   
-  try {
-    const author = await Author.findOne({ email: req.params.email });
-    if (!author) {
-      return res.status(404).json({ message: "author not found" });
-    }
-
-    // resizeing the image
-    const buffer = await sharp(req.file.buffer).resize({width:672,height:462,fit:'contain'}).toBuffer()
-     // S3 Integration
-     const params = {
-      Bucket:bucketName,
-      Key:req.file.originalname,
-      Body:buffer,
-      ContentType:req.file.mimetype
-    }
-
-    const command = new PutObjectCommand(params)
-    await s3.send(command)
-    console.log("post data",req.file)
-
-    author.posts.push({ title, image, description, category, });
-     
-    data = await author.save();
-    res.status(201).json({ message: "post added successfully", data });
-  } catch (err) {
-    res.status(500).json({ message: "server error", err });
-  }
- };
- 
-//  const addPosts = async (req, res) => {
-//   const { title, description, category,links} = req.body;
 //   try {
 //     const author = await Author.findOne({ email: req.params.email });
 //     if (!author) {
-//       return res.status(404).json({ message: "Author not found" });
-//     }
- 
-  
-//     let imageUrl = '';
-//     if (req.files && req.files.image) {
-//       const buffer = await sharp(req.files.image[0].buffer)
-//         .resize({ width: 672, height: 462, fit: 'contain' })
-//         .toBuffer();
-
-//       const params = {
-//         Bucket: bucketName,
-//         Key: req.files.image[0].originalname,
-//         Body: buffer,
-//         ContentType: req.files.image[0].mimetype
-//       };
-
-//       const command = new PutObjectCommand(params);
-//       await s3.send(command);
-//       imageUrl = req.files.image[0].originalname;
+//       return res.status(404).json({ message: "author not found" });
 //     }
 
-//     const documentUrls = [];
-//     if (req.files && req.files.document) {
-//       for (const doc of req.files.document) {
-//         const params = {
-//           Bucket: bucketName,
-//           Key: doc.originalname,
-//           Body: doc.buffer,
-//           ContentType: doc.mimetype
-//         };
-
-//         const command = new PutObjectCommand(params);
-//         await s3.send(command);
-//         documentUrls.push(doc.originalname);
-//       }
+//     // resizeing the image
+//     const buffer = await sharp(req.file.buffer).resize({width:672,height:462,fit:'contain'}).toBuffer()
+//      // S3 Integration
+//      const params = {
+//       Bucket:bucketName,
+//       Key:req.file.originalname,
+//       Body:buffer,
+//       ContentType:req.file.mimetype
 //     }
 
-//     // Parse links from form data
-//     const parsedLinks = links ? JSON.parse(links) : [];
-//     console.log("parsedLinks",parsedLinks)  
+//     const command = new PutObjectCommand(params)
+//     await s3.send(command)
+//     console.log("post data",req.file)
 
-//     // Add post to the author's posts array
-//     const postId = new mongoose.Types.ObjectId();
-//     author.posts.push({
-//       _id:postId,
-//       title,
-//       image: imageUrl,
-//       description,
-//       category,
-//       documents: documentUrls,
-//       links: parsedLinks
-//     });
-
-//     const data = await author.save();
-//     const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.authorEmail}/${postId}`;
-
-//     const notification = {
-//       postId:postId,
-//       user:author.authorname,
-//       email: author.authorEmail,
-//       message:`New post from ${author.authorname}: ${title}`,
-//       url:url,
-//       profile:author.profile || ""
-    
-//     };
-
-   
-//       // Update notifications for all followers
-//       await Author.updateMany(
-//         { email: { $in: author.followers } },
-//         { $push: { notifications: notification } }
-//       );
-
-//     res.status(201).json({ message: "Post added successfully", data });
+//     author.posts.push({ title, image, description, category, });
+     
+//     data = await author.save();
+//     res.status(201).json({ message: "post added successfully", data });
 //   } catch (err) {
-//     console.error("Error adding post:", err);  // Log full error
-//     res.status(500).json({ message: "Server error", error: err.message });
-// }
+//     res.status(500).json({ message: "server error", err });
+//   }
 // };
 
+const addPosts = async (req, res) => {
+  const { title, description, category,links} = req.body;
 
+  try {
+    const author = await Author.findOne({ email: req.params.email });
+    if (!author) {
+      return res.status(404).json({ message: "Author not found" });
+    }
 
+    let imageUrl = '';
+    if (req.files && req.files.image) {
+      const buffer = await sharp(req.files.image[0].buffer)
+        .resize({ width: 672, height: 462, fit: 'contain' })
+        .toBuffer();
+
+      const params = {
+        Bucket: bucketName,
+        Key: req.files.image[0].originalname,
+        Body: buffer,
+        ContentType: req.files.image[0].mimetype
+      };
+
+      const command = new PutObjectCommand(params);
+      await s3.send(command);
+      imageUrl = req.files.image[0].originalname;
+    }
+
+    const documentUrls = [];
+    if (req.files && req.files.document) {
+      for (const doc of req.files.document) {
+        const params = {
+          Bucket: bucketName,
+          Key: doc.originalname,
+          Body: doc.buffer,
+          ContentType: doc.mimetype
+        };
+
+        const command = new PutObjectCommand(params);
+        await s3.send(command);
+        documentUrls.push(doc.originalname);
+      }
+    }
+
+    // Parse links from form data
+    const parsedLinks = links ? JSON.parse(links) : [];
+    console.log("parsedLinks",parsedLinks)  
+
+    author.posts.push({
+      title,
+      image: imageUrl,
+      description,
+      category,
+      documents: documentUrls,
+      links: parsedLinks
+    });
+
+    const data = await author.save();
+    res.status(201).json({ message: "Post added successfully", data });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
 
 
 // const updatePost = async (req, res) => {
