@@ -656,14 +656,14 @@ function AddPost() {
                   value={currentLinkTitle}
                   onChange={(e) => setCurrentLinkTitle(e.target.value)}
                   placeholder="Link Title"
-                  className="w-1/2 px-3 py-2 bg-gray-800 border border-gray-600 rounded-md"
+                  className="w-1/2 px-3 py-2 bg-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 border border-gray-600 rounded-md"
                 />
                 <input
                   type="url"
                   value={currentLinkUrl}
                   onChange={(e) => setCurrentLinkUrl(e.target.value)}
                   placeholder="Link URL"
-                  className="w-1/2 px-3 py-2 bg-gray-800 border border-gray-600 rounded-md"
+                  className="w-1/2 px-3 py-2 bg-gray-800 border focus:outline-none focus:ring-blue-500 focus:border-blue-500 border-gray-600 rounded-md"
                 />
                 <button
                   type="button"

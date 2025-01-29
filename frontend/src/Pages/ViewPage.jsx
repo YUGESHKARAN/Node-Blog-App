@@ -469,8 +469,25 @@ getComments();
                 >
                   Show More
                 </span>
+               
               </>
             )}
+             <h1 className={`${singlePostData.documents?.length>0?'text-sm mt-4 text-gray-200':'hidden'}`}>Source Documents & Links:</h1>
+                <div className="flex-col md:flex w-full items-start mt-2 gap-2">
+      
+                {
+                 singlePostData.documents&& singlePostData.documents.map((doc, index) => (
+                    <a key={index} href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`} className="text-xs flex justify-start items-start text-gray-200 gap-1 mb-2 md:mb-0 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center text-black hover:bg-gray-200 transition-all duration-200 justify-center"> {doc} </p> </a>
+
+                    ))
+                }
+                 {
+                 singlePostData.links&& singlePostData.links.map((link, index) => (
+                    <a key={index} href={`${link.url}`} className="text-xs flex justify-start items-start text-gray-200 mb-2 md:mb-0 gap-1 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center text-black hover:bg-gray-200 transition-all duration-200 justify-center"> {link.title} </p> </a>
+
+                    ))
+                }
+                </div>
           </div>
 
           {/* Comment Section */}

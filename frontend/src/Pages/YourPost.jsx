@@ -232,7 +232,7 @@ function YourPost() {
                     {data.description.slice(0, 100)}...
                   </p>
                 </div>
-                <h1 className={`${data.documents?.length>0?'text-xs text-gray-200':'hidden'}`}>Source Documents & Links:</h1>
+                {/* <h1 className={`${data.documents?.length>0?'text-xs text-gray-200':'hidden'}`}>Source Documents & Links:</h1>
                 <div className="flex-col md:flex w-full items-start mt-2 gap-2">
       
                 {
@@ -247,7 +247,7 @@ function YourPost() {
 
                     ))
                 }
-                </div>
+                </div> */}
 
                 {/* <h1 className={`${data.links?.length>0?'text-xs text-gray-200':'hidden'}`}>Source Links:</h1>
                 <div className="flex w-full items-start mt-2 gap-2">

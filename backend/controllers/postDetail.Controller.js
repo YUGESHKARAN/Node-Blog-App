@@ -119,13 +119,13 @@ const getCategoryPosts = async (req, res) => {
 
 const addPosts = async (req, res) => {
   const { title, description, category,links} = req.body;
-
   try {
     const author = await Author.findOne({ email: req.params.email });
     if (!author) {
       return res.status(404).json({ message: "Author not found" });
     }
-
+ 
+  
     let imageUrl = '';
     if (req.files && req.files.image) {
       const buffer = await sharp(req.files.image[0].buffer)
@@ -164,7 +164,10 @@ const addPosts = async (req, res) => {
     const parsedLinks = links ? JSON.parse(links) : [];
     console.log("parsedLinks",parsedLinks)  
 
+    // Add post to the author's posts array
+    const postId = new mongoose.Types.ObjectId();
     author.posts.push({
+      _id:postId,
       title,
       image: imageUrl,
       description,
@@ -174,6 +177,23 @@ const addPosts = async (req, res) => {
     });
 
     const data = await author.save();
+    const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.authorEmail}/${postId}`
+
+    const notification = {
+      postId,
+      user,
+      email: author.authorEmail,
+      message:`New post from ${author.authorname}: ${title}`,
+      url:url,
+      profile:profile
+    
+    };
+
+    await Author.updateMany(
+      { email: { $in: author.followers } },
+      { $push: { notification: { $each: notification } } }
+    );
+
     res.status(201).json({ message: "Post added successfully", data });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });

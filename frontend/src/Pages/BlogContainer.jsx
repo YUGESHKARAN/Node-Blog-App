@@ -411,9 +411,41 @@ function BlogContainer() {
     setSelectedImage(null);
   };
 
+  const test = [
+    {
+      "cat":"Data Science"
+    },
+    {
+      "cat":"Machine Learning"
+    },
+    {
+      "cat":"Computer Vision"
+    },
+    {
+      "cat":"IoT"
+    },
+    {
+      "cat":"Gen AI"
+    },
+   
+ 
+   
+  ]
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-8">
-      <div className="flex w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">
+      <div className="flex-col w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">
+      <div className="flex md:max-w-5xl md:w-fit w-fit scrollbar-hide mx-auto items-center justify-start gap-3 mb-5 overflow-x-auto ">
+          {getUniqueCategories(posts).map((data, index) => (
+            <div
+              key={index}
+              onClick={()=>setPostCategory(data)}
+              className="w-fit text-nowrap cursor-pointer rounded-md bg-gray-800 text-white  text-md px-3 py-1 hover:bg-gray-700 transition-all duration-200"
+            >
+              {data}
+            </div>
+          ))}
+        </div>
         {/* Search and Filter Section */}
         <div className="w-full flex items-center gap-2 justify-center">
           <div className="md:w-72 w-52 flex border border-gray-600 rounded-xl p-2 bg-gray-800 justify-center gap-2 items-center my-4">
@@ -440,6 +472,8 @@ function BlogContainer() {
           </select>
         </div>
 
+      
+
         {/* Back Button */}
         <div
           className={`w-full flex h-8 ${
@@ -455,8 +489,11 @@ function BlogContainer() {
             </button>
           )}
         </div>
+  
+      
 
         {/* Posts Grid */}
+        <div className="flex w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">
         {loader ? (
           <div className="flex-col items-center justify-center">
             <MagnifyingGlass
@@ -562,8 +599,7 @@ function BlogContainer() {
             // </div>
             <div
               key={index}
-              className="lg:w-3/12 w-80 bg-gray-800 md:pb-2 flex flex-col 
-  shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
+              className="lg:w-3/12 w-80 bg-gray-800 md:pb-2 flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
             >
               <div className="flex mb-2 gap-2 items-center">
                 <img
@@ -621,7 +657,7 @@ function BlogContainer() {
                 </p>
               </div>
 
-              <h1
+              {/* <h1
                 className={`${
                   data.documents?.length > 0
                     ? "text-xs text-gray-200"
@@ -644,7 +680,7 @@ function BlogContainer() {
 
                     ))
                 }
-                </div>
+                </div> */}
 
               <div className="flex justify-between items-center mt-2">
                 <div className="flex gap-3 items-center">
@@ -695,7 +731,9 @@ function BlogContainer() {
               </div>
             </div>
           ))
-        )}
+        )}   
+       </div>
+
       </div>
       {/* Image Modal */}
       {selectedImage && (
