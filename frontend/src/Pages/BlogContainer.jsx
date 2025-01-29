@@ -435,16 +435,17 @@ function BlogContainer() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-8">
       <div className="flex-col w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">
-      <div className="flex md:max-w-5xl md:w-fit w-fit scrollbar-hide mx-auto items-center justify-start gap-3 mb-5 overflow-x-auto ">
+      <div className="flex md:max-w-5xl md:w-fit  scrollbar-hide mx-auto items-center justify-start gap-3 mb-5 overflow-x-auto ">
           {getUniqueCategories(posts).map((data, index) => (
             <div
               key={index}
               onClick={()=>setPostCategory(data)}
-              className="w-fit text-nowrap cursor-pointer rounded-md bg-gray-800 text-white  text-md px-3 py-1 hover:bg-gray-700 transition-all duration-200"
+              className="w-fit text-nowrap cursor-pointer  rounded-md bg-gray-800 text-white  text-sm px-3 py-2 hover:bg-gray-700 transition-all duration-200"
             >
               {data}
             </div>
-          ))}
+          ))} 
+          
         </div>
         {/* Search and Filter Section */}
         <div className="w-full flex items-center gap-2 justify-center">
