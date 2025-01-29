@@ -115,9 +115,9 @@ const getCategoryPosts = async (req, res) => {
 //   } catch (err) {
 //     res.status(500).json({ message: "server error", err });
 //   }
-// };
+//  };
 
-const addPosts = async (req, res) => {
+ const addPosts = async (req, res) => {
   const { title, description, category,links} = req.body;
   try {
     const author = await Author.findOne({ email: req.params.email });
@@ -181,24 +181,90 @@ const addPosts = async (req, res) => {
 
     const notification = {
       postId,
-      user,
+      user:author.authorname,
       email: author.authorEmail,
       message:`New post from ${author.authorname}: ${title}`,
       url:url,
-      profile:profile
+      profile:author.profile || ""
     
     };
 
-    await Author.updateMany(
-      { email: { $in: author.followers } },
-      { $push: { notification: { $each: notification } } }
-    );
+   
+      // Update notifications for all followers
+      await Author.updateMany(
+        { email: { $in: author.followers } },
+        { $push: { notifications: notification } }
+      );
 
     res.status(201).json({ message: "Post added successfully", data });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+
+// const addPosts = async (req, res) => {
+//   const { title, description, category,links} = req.body;
+
+//   try {
+//     const author = await Author.findOne({ email: req.params.email });
+//     if (!author) {
+//       return res.status(404).json({ message: "Author not found" });
+//     }
+
+//     let imageUrl = '';
+//     if (req.files && req.files.image) {
+//       const buffer = await sharp(req.files.image[0].buffer)
+//         .resize({ width: 672, height: 462, fit: 'contain' })
+//         .toBuffer();
+
+//       const params = {
+//         Bucket: bucketName,
+//         Key: req.files.image[0].originalname,
+//         Body: buffer,
+//         ContentType: req.files.image[0].mimetype
+//       };
+
+//       const command = new PutObjectCommand(params);
+//       await s3.send(command);
+//       imageUrl = req.files.image[0].originalname;
+//     }
+
+//     const documentUrls = [];
+//     if (req.files && req.files.document) {
+//       for (const doc of req.files.document) {
+//         const params = {
+//           Bucket: bucketName,
+//           Key: doc.originalname,
+//           Body: doc.buffer,
+//           ContentType: doc.mimetype
+//         };
+
+//         const command = new PutObjectCommand(params);
+//         await s3.send(command);
+//         documentUrls.push(doc.originalname);
+//       }
+//     }
+
+//     // Parse links from form data
+//     const parsedLinks = links ? JSON.parse(links) : [];
+//     console.log("parsedLinks",parsedLinks)  
+
+//     author.posts.push({
+//       title,
+//       image: imageUrl,
+//       description,
+//       category,
+//       documents: documentUrls,
+//       links: parsedLinks
+//     });
+
+//     const data = await author.save();
+//     res.status(201).json({ message: "Post added successfully", data });
+//   } catch (err) {
+//     res.status(500).json({ message: "Server error", error: err.message });
+//   }
+// };
 
 
 // const updatePost = async (req, res) => {
