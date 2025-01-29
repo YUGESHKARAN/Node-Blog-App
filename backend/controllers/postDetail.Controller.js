@@ -209,12 +209,12 @@ const addPosts = async (req, res) => {
     const data = await author.save();
 
     // 🌟 **Re-add the notification system**
-    const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.authorEmail}/${postId}`;
+    const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.email}/${postId}`;
 
     const notification = {
       postId: postId,
       user: author.authorname,
-      email: author.authorEmail,
+      email: author.email,
       message: `New post from ${author.authorname}: ${title}`,
       url: url,
       profile: author.profile || ""
