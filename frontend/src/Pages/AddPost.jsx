@@ -393,6 +393,7 @@ function AddPost() {
       });
 
       const botResponse = response.data.content || "No response received.";
+      console.log("botResponse", botResponse);
       typewriterEffect(botResponse, "bot");
     } catch (error) {
       console.error("Error fetching response:", error);
@@ -440,24 +441,47 @@ function AddPost() {
     addWord();
   };
 
+  // useEffect(() => {
+  //   const incommingMessage = messages.filter(
+  //     (msg) => msg.direction === "incoming"
+  //   );
+  //   if (incommingMessage.length > 1) {
+  //     const lastMessage = incommingMessage[incommingMessage.length - 1].message;
+  //     const titleMatch = lastMessage.match(/^Title:\s*(.*)$/m); // Match the title line
+  //     const descriptionStart = lastMessage.indexOf("\n\n") + 2; // Find where the description starts
+
+  //     if (titleMatch) {
+  //       setTitle(titleMatch[1].trim()); // Extract and set the title
+  //     }
+
+  //     if (descriptionStart > 1) {
+  //       setDescription(lastMessage.slice(descriptionStart).trim()); // Extract and set the description
+  //     }
+  //   }
+  // }, [messages]);
+
+
   useEffect(() => {
     const incommingMessage = messages.filter(
       (msg) => msg.direction === "incoming"
     );
+  
     if (incommingMessage.length > 1) {
       const lastMessage = incommingMessage[incommingMessage.length - 1].message;
-      const titleMatch = lastMessage.match(/^Title:\s*(.*)$/m); // Match the title line
-      const descriptionStart = lastMessage.indexOf("\n\n") + 2; // Find where the description starts
-
-      if (titleMatch) {
-        setTitle(titleMatch[1].trim()); // Extract and set the title
-      }
-
-      if (descriptionStart > 1) {
-        setDescription(lastMessage.slice(descriptionStart).trim()); // Extract and set the description
-      }
+  
+      // Extract content inside double quotes
+      const match = lastMessage.match(/"([^"]+)"/);
+      const messageContent = match ? match[1] : lastMessage;
+  
+      // Extract hashtags
+      const hashtagsMatch = lastMessage.match(/#\w+/g);
+      const hashtags = hashtagsMatch ? hashtagsMatch.join(" ") : "";
+  
+      // Combine message with hashtags
+      setDescription(`${messageContent} ${hashtags}`);
     }
   }, [messages]);
+  
 
   const onImageChange = (e) => {
     setImage(e.target.files[0]);
