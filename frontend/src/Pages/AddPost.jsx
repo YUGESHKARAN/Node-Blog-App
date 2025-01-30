@@ -469,16 +469,8 @@ function AddPost() {
     if (incommingMessage.length > 1) {
       const lastMessage = incommingMessage[incommingMessage.length - 1].message;
   
-      // Extract content inside double quotes
-      const match = lastMessage.match(/"([^"]+)"/);
-      const messageContent = match ? match[1] : lastMessage;
-  
-      // Extract hashtags
-      const hashtagsMatch = lastMessage.match(/#\w+/g);
-      const hashtags = hashtagsMatch ? hashtagsMatch.join(" ") : "";
-  
       // Combine message with hashtags
-      setDescription(`${messageContent} ${hashtags}`);
+      setDescription(lastMessage);
     }
   }, [messages]);
   
