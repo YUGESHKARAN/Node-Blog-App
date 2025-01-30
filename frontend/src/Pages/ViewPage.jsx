@@ -389,6 +389,20 @@ getComments();
   const handleCloseModal = () => {
     setSelectedImage(null);
   };
+
+   // Function to wrap hashtags with a span
+  const renderTextWithHashtags = (text) => {
+    return text.split(/(\s+#\w+)/g).map((word, index) =>
+      word.startsWith(" #") ? (
+        <span key={index} className="text-md text-white font-italy font-bold">
+          {word}
+        </span>
+      ) : (
+        word
+      )
+    );
+  };
+  
 // console.log('messages--------------',messages)
 // console.log('singlepost data--------------',singlePostData)
   return (
@@ -449,7 +463,7 @@ getComments();
           <div className="w-full text-justify mt-2  text-xs leading-relaxed text-gray-300 text-md">
             {singlePostData.description && showContent ? (
               <>
-                {singlePostData.description} <br />{" "}
+                {renderTextWithHashtags( singlePostData.description)} <br />{" "}
                 <span
                   className="text-xs text-yellow-500 cursor-pointer mt-1"
                   onClick={() => setShowContent(false)}
@@ -460,8 +474,10 @@ getComments();
             ) : (
               <>
                 {" "}
-                {singlePostData.description &&
-                  singlePostData.description.slice(0, 60)}
+                {
+                singlePostData.description &&
+                 renderTextWithHashtags(singlePostData.description.slice(0, 60))
+                 }
                 ... <br />{" "}
                 <span
                   className="text-xs text-yellow-500 cursor-pointer "
