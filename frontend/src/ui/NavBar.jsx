@@ -239,17 +239,19 @@ function NavBar() {
                 <RiUser3Line className='text-xl text-[#0be881]' /> Hi,{username}  
             </p>
 
-            <button onClick={toggleSidebar} className="lg:hidden mr-2 text-white">
+            <div className='transition-all duration-200 hover:text-white'>
+                <div className='flex items-center '>
+                    <IoMdNotifications
+                    onClick={()=>{setShowNotification(!showNotefication)}}
+                     className='text-lg cursor-pointer text-white'/><sup className={`${note.length>0?'text-[10px] bg-red-500 w-4 h-4 flex items-center justify-center rounded-full text-white':'text-[10px]  flex items-center justify-center rounded-full text-white'}`}>{note.length>0?note.length:''}</sup>
+                </div>
+            </div>
+            
+
+            <button onClick={toggleSidebar} className="lg:hidden ml-2 text-white">
                 ☰
             </button>
-            <div className='transition-all duration-200 hover:text-white'>
-                    <div className='flex items-center '>
-                        <IoMdNotifications
-                        onClick={()=>{setShowNotification(!showNotefication)}}
-                         className='text-lg cursor-pointer text-white'/><sup className={`${note.length>0?'text-[10px] bg-red-500 w-4 h-4 flex items-center justify-center rounded-full text-white':'text-[10px]  flex items-center justify-center rounded-full text-white'}`}>{note.length>0?note.length:''}</sup>
-                    </div>
-                </div>
-            
+               
 
             {/* Sidebar */}
             <div
@@ -287,7 +289,7 @@ function NavBar() {
                     </li>
                     <li className='mx-auto'>
                         <a href="" onClick={exit}>
-                            <IoLogOut className='text-3xl'/>
+                            <IoLogOut className='text-3xl text-red-400'/>
                         </a>
                     </li>
                 </ul>
