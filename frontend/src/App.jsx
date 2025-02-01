@@ -24,6 +24,10 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/changePassword" element={<ChangePassword/>} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/viewpage/:email/:id"
+            element={<ViewPage/>}
+          />
 
           {/* Protected Route */}
           <Route
@@ -39,10 +43,10 @@ function App() {
             element={<ProtectedRoute element={<ViewEditPost/>} />}
           />
 
-            <Route
+            {/* <Route
             path="/viewpage/:email/:id"
             element={<ProtectedRoute element={<ViewPage/>} />}
-          />
+          /> */}
            <Route
             path="/profile"
             element={<ProtectedRoute element={<ProfilePage/>} />}
