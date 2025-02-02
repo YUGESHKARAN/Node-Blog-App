@@ -209,12 +209,12 @@ const addPosts = async (req, res) => {
     const data = await author.save();
 
     // 🌟 **Re-add the notification system**
-    const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.email}/${postId}`;
+    const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.authorEmail}/${postId}`;
 
     const notification = {
       postId: postId,
-      user: author.authorname,
-      email: author.email,
+      user: author.authorname,  // Ensure the 'user' field is populated
+      authorEmail: author.authorEmail,
       message: `New post from ${author.authorname}: ${title}`,
       url: url,
       profile: author.profile || ""
@@ -223,14 +223,17 @@ const addPosts = async (req, res) => {
     // **Update notifications for all followers**
     await Author.updateMany(
       { email: { $in: author.followers } },
-      { $push: { notification: notification } }
+      { $push: { notifications: notification } }
     );
 
     res.status(201).json({ message: "Post added successfully", data });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
+    console.log(err)
   }
 };
+
+
 
 
 

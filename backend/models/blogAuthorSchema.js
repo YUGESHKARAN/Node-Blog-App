@@ -35,8 +35,8 @@ const postSchema = new mongoose.Schema({
   links: {
     type: [
       {
-        title: { type: String, required: true }, // Title of the link
-        url: { type: String, required: true },  // URL of the link
+        title: { type: String, required: false }, // Title of the link
+        url: { type: String, required: false },  // URL of the link
       },
     ],
     default: [],

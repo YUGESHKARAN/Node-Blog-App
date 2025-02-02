@@ -742,7 +742,7 @@ function AddPost() {
           </form>
         ) : (
           <div className="md:w-9/12 p-3 h-96 rounded-lg md:p-10 mx-auto">
-            <MainContainer className="rounded-lg w-9/12 mx-auto text-xs">
+            <MainContainer className="rounded-lg w-9/12 mx-auto md:text-sm text-xs">
               <ChatContainer>
                 <MessageList
                   typingIndicator={
