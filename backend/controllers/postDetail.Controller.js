@@ -149,9 +149,10 @@ const getCategoryPosts = async (req, res) => {
 
 const addPosts = async (req, res) => {
   const { title, description, category, links } = req.body;
+  
+  const author = await Author.findOne({ email: req.params.email });
 
   try {
-    const author = await Author.findOne({ email: req.params.email });
     if (!author) {
       return res.status(404).json({ message: "Author not found" });
     }
@@ -206,15 +207,15 @@ const addPosts = async (req, res) => {
       links: parsedLinks
     });
 
-    const data = await author.save();
+  
 
     // 🌟 **Re-add the notification system**
-    const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.authorEmail}/${postId}`;
+    const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.email}/${postId}`;
 
     const notification = {
       postId: postId,
-      user: author.authorname,  // Ensure the 'user' field is populated
-      authorEmail: author.authorEmail,
+      user:author.authorname,  // Ensure the 'user' field is populated
+      authorEmail: author.email,
       message: `New post from ${author.authorname}: ${title}`,
       url: url,
       profile: author.profile || ""
@@ -225,6 +226,7 @@ const addPosts = async (req, res) => {
       { email: { $in: author.followers } },
       { $push: { notifications: notification } }
     );
+    const data = await author.save();
 
     res.status(201).json({ message: "Post added successfully", data });
   } catch (err) {

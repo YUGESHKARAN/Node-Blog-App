@@ -6,11 +6,11 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const messageSchema = new mongoose.Schema({
   user: {
     type: String,
-    required: true,
+    required: false,
   },
   message: {
     type: String,
-    required: true,
+    required: false,
   },
   profile:{
     type:String,

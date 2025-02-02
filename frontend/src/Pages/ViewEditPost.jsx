@@ -132,6 +132,7 @@ function ViewEditPost() {
   const deletePost = async() => {
     try{
       const response = axios.delete(`https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`);
+      // const response = axios.delete(`http://localhost:3000/blog/posts/${email}/${PostId}`);
       console.log("deleted response",response);
       toast.success('post deleted successfully') ;
       navigate("/home");
