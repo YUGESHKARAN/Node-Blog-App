@@ -623,7 +623,7 @@ getComments();
       {/* Image Modal */}
       {selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className="relative">
+          <div className="">
             <img
               src={selectedImage}
               alt="Selected"
@@ -631,7 +631,7 @@ getComments();
             />
             <button
               onClick={handleCloseModal}
-              className="absolute top-0 right-10"
+              className="absolute top-10 right-10"
             >
               <IoClose className="text-2xl text-white" />
             </button>

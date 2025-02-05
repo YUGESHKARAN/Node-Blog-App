@@ -639,15 +639,14 @@ function AddPost() {
                 className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               >
                 <option value="Education">Education</option>
-                <option value="Food">Food</option>
-                <option value="Technology">Technology</option>
-                <option value="Job">Job</option>
-                <option value="Agriculture">Agriculture</option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Hospitality">Hospitality</option>
-                <option value="Entertainment">Entertainment</option>
-                <option value="Intrenship">Intrenship</option>
-                <option value="Exam">Exam</option>
+                <option value="GenAI">GenAI</option>
+                <option value="Data Science">Data Science</option>
+                <option value="Blockchain">Blockchain</option>
+                <option value="AI/ML">AI/ML</option>
+                <option value="Cyber Security">Cyber Security</option>
+                <option value="IoT ">IoT</option>
+                <option value="Embedded System">Embedded System</option>
+                <option value="Web Development">Web Development</option>   
               </select>
             </div>
             <div>

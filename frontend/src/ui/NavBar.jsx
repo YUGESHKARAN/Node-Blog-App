@@ -256,40 +256,40 @@ function NavBar() {
             {/* Sidebar */}
             <div
                 ref={sidebarRef}
-                className={`${isSidebarOpen ? 'fixed right-0 top-0 h-full w-64 shadow-xl' : 'fixed right-[-300px] top-0 h-full w-64 shadow-xl'} bg-gray-800 text-white transition-all duration-300 z-50`}
+                className={`${isSidebarOpen ? 'fixed right-0 top-0 h-full w-64 shadow-xl' : 'fixed right-[-300px] top-0 h-full w-64 shadow-xl'} bg-gray-800 text-white transition-all duration-1000 z-50`}
             >
                 <ul className='w-full flex flex-col gap-10 text-center mt-10'>
                     <li className='transition-all duration-200 mx-auto'>
-                        <Link to="/home" className='flex items-center justify-start w-24'>
+                        <Link to="/home" className='flex items-center hover:text-gray-400 transition-all duration-200  hover:text-gray-400 transition-all duration-200 justify-start w-24'>
                             <IoHome className='text-xl mr-3'/> Home
                         </Link>
                     </li>
 
                     <li className='transition-all mx-auto duration-200'>
-                        <Link to="/yourposts" className='flex items-center justify-start'>
+                        <Link to="/yourposts" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
                             <MdDataObject  className='text-xl mr-3'/>Your Posts
                         </Link>
                     </li>
 
                     <li className='transition-all mx-auto duration-200'>
-                        <Link to="/authors" className='flex items-center justify-start'>
+                        <Link to="/authors" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
                             <IoPeople className='text-xl mr-3'/>Authors
                         </Link>
                     </li>
 
                     <li className='transition-all mx-auto duration-200'>
-                        <Link to="/addPost" className='flex items-center justify-start'>
+                        <Link to="/addPost" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
                             <MdPostAdd className='text-xl mr-3'/>Add Post
                         </Link>
                     </li>
                     <li className='transition-all mx-auto duration-200'>
-                        <Link to="/profile" className='flex items-center justify-start'>
+                        <Link to="/profile" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
                             <FaUserAlt className='text-xl mr-3'/>My Profile
                         </Link>
                     </li>
                     <li className='mx-auto'>
                         <a href="" onClick={exit}>
-                            <IoLogOut className='text-3xl text-red-400'/>
+                            <IoLogOut className='text-3xl text-gray-400'/>
                         </a>
                     </li>
                 </ul>

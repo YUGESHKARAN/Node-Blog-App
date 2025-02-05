@@ -224,7 +224,7 @@ const addPosts = async (req, res) => {
     // **Update notifications for all followers**
     await Author.updateMany(
       { email: { $in: author.followers } },
-      { $push: { notifications: notification } }
+      { $push: { notification: notification } }
     );
     const data = await author.save();
 
