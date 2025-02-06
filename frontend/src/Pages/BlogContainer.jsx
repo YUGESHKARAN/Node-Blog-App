@@ -411,31 +411,18 @@ function BlogContainer() {
     setSelectedImage(null);
   };
 
-  const test = [
-    {
-      "cat":"Data Science"
-    },
-    {
-      "cat":"Machine Learning"
-    },
-    {
-      "cat":"Computer Vision"
-    },
-    {
-      "cat":"IoT"
-    },
-    {
-      "cat":"Gen AI"
-    },
-   
  
-   
-  ]
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-8">
       <div className="flex-col w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">
       <div className="flex md:max-w-5xl md:w-fit  scrollbar-hide mx-auto items-center justify-start gap-3 mb-5 overflow-x-auto ">
+      <div
+              onClick={()=>setPostCategory('')}
+              className="w-fit text-nowrap cursor-pointer  rounded-md bg-gray-800 text-white  text-sm px-3 py-2 hover:bg-gray-700 transition-all duration-200"
+            >
+              All
+            </div>
           {getUniqueCategories(posts).map((data, index) => (
             <div
               key={index}
@@ -476,7 +463,7 @@ function BlogContainer() {
       
 
         {/* Back Button */}
-        <div
+        {/* <div
           className={`w-full flex h-8 ${
             postCategory ? "justify-between" : "justify-end"
           } mb-5`}
@@ -489,7 +476,7 @@ function BlogContainer() {
               Back
             </button>
           )}
-        </div>
+        </div> */}
   
       
 

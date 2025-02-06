@@ -246,7 +246,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="text-blue-600 text-md font-semibold w-full h-screen  bg-black flex justify-center items-center">
+    <div className="text-md font-semibold w-full h-screen  bg-black flex justify-center items-center">
       <div className={`${loader?'hidden':'bg-gray-800 w-11/12 max-w-md p-8 rounded-md'}`}>
         <h2 className="text-center mb-6  text-white text-xl">{title}</h2>
         <form className={`md:w-96 w-full ${forgotPassword?'space-y-3':'space-y-8'} mx-auto md:p-4`}>
