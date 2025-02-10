@@ -235,7 +235,7 @@ function NavBar() {
             </ul>
 
             {/* Mobile Hamburger Button */}
-            <p className='text-white flex w-full lg:hidden  font-semibold items-center gap-1 mr-3 text-sm'>
+            <p className='text-white flex justify-end w-full lg:hidden  font-semibold items-center gap-1 mr-3 text-sm'>
                 <RiUser3Line className='text-xl text-[#0be881]' /> Hi,{username}  
             </p>
 
@@ -319,7 +319,7 @@ function NavBar() {
                          to={data.url}
                          className='flex-col items-start justify-center'>
                            <p className='text-xs text-white font-semibold '>{data.user}</p>
-                           <p className='text-[10px] text-gray-200'>{data.message?data.message.slice(0,5):'got notification'}...</p>
+                           <p className='text-[10px] text-gray-200'>{data.message?data.message:'got notification'}...</p>
                          </Link>
  
                          <div
