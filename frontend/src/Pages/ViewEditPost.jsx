@@ -221,11 +221,11 @@ function ViewEditPost() {
           action=""
           className={`${
         edit
-              ? "flex flex-col text-white rounded-md space-y-4 items-center md:mb-12 justify-center p-5 w-11/12  gap-1 m-auto  "
+              ? "flex flex-col text-white rounded-md space-y-4  mb-10  md:mb-12 justify-center p-5 w-11/12  gap-1 m-auto  "
               : "hidden"
           }`}
         >
-          <h1 className="text-center text-xl">Edit Your Post</h1>
+          <h1 className="md:text-3xl text-xl font-bold mb-3 text-left w-full">Edit Your Post</h1>
 
           <div className="w-11/12 mt-1">
             <label htmlFor="title" className="text-md  font-semibold ">
@@ -406,7 +406,7 @@ function ViewEditPost() {
 
           <button
             type="submit"
-            className="px-3 mt-5 md:mt-0 py-1  bg-orange-500 text-sm md:text-base text-[#f7f1e3] hover:bg-orange-400 transition-all duration-200 cursor-pointer rounded-md"
+            className="px-3 mt-5 md:mt-0 py-1 w-fit  bg-orange-500 text-sm md:text-base text-[#f7f1e3] hover:bg-orange-400 transition-all duration-200 cursor-pointer rounded-md"
           >
             EDIT POST{" "}
           </button>

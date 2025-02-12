@@ -447,7 +447,7 @@ function BlogContainer() {
             />
           </div>
 
-          <select
+          {/* <select
             onChange={(e) => setPostCategory(e.target.value)}
             className="border md:w-fit w-16 h-7 text-xs md:text-base rounded-lg border-gray-600 bg-gray-800 text-white cursor-pointer"
           >
@@ -457,7 +457,7 @@ function BlogContainer() {
                 {category}
               </option>
             ))}
-          </select>
+          </select> */}
         </div>
 
       

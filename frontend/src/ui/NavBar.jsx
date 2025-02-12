@@ -204,7 +204,7 @@ function NavBar() {
             </div>
 
             {/* Desktop Menu */}
-            <ul className='lg:flex justify-evenly text-base hidden font-semibold text-gray-300 w-2/5 items-center gap-10'>
+            <ul className='lg:flex justify-start text-base hidden font-semibold text-gray-300 w-2/5  items-center gap-10'>
                 <li className='transition-all duration-200 hover:text-white'>
                     <Link to="/home" className='flex items-center gap-1'>
                         <IoHome className='text-xl'/>Home
