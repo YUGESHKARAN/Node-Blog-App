@@ -375,7 +375,8 @@ function AddPost() {
   const [isTyping, setIsTyping] = useState(false);
   const [chatbot, setChatbot] = useState(false);
 
-  const backendEndpoint = "https://blog-chat-backend.vercel.app/generate-content";
+  // const backendEndpoint = "https://blog-chat-backend.vercel.app/generate-content";
+  const backendEndpoint = "http://127.0.0.1:5000/generate-content";
 
   const handleSend = async (message) => {
     const newMessage = {
@@ -570,7 +571,7 @@ function AddPost() {
     setDocuments(files);
   };
   
-  console.log("links",links)
+  // console.log("links",links)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">

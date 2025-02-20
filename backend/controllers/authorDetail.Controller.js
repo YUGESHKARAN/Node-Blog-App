@@ -20,6 +20,7 @@ const s3 = new S3Client({
 })
 
 const getAllAuthor = async (req, res) => {
+  
   try {
     const authors = await Author.find({});
     res.json(authors);
@@ -170,40 +171,50 @@ const deleteAuthor = async (req, res) => {
 
 const updateFollowers = async (req, res) => {
   try {
-    const { email } = req.params;
-    const { emailAuthor } = req.body;
+    const { email } = req.params; // The author being followed/unfollowed
+    const { emailAuthor } = req.body; // The follower's email
 
-    // Find the author by email
+    // Find both authors
     const author = await Author.findOne({ email });
+    const followerAuthor = await Author.findOne({ email: emailAuthor });
 
-    // If author doesn't exist, send a 404 error
-    if (!author) {
+    if (!author || !followerAuthor) {
       return res.status(404).json({ message: 'Author not found' });
     }
 
-    // Check if the emailAuthor is already in the followers array
+    // If already following, unfollow
     if (author.followers.includes(emailAuthor)) {
-      author.followers = author.followers.filter(follower=>follower!==emailAuthor);
-      await author.save()
-      return res.status(200).json({ message: 'unfollowed successfully',followers:author.followers });
+      author.followers = author.followers.filter(follower => follower !== emailAuthor);
+      followerAuthor.following = followerAuthor.following.filter(following => following !== email);
+
+      await author.save();
+      await followerAuthor.save();
+
+      return res.status(200).json({
+        message: 'Unfollowed successfully',
+        followers: author.followers,
+        following: followerAuthor.following,
+      });
     }
 
-    // Add the emailAuthor to the followers array
+    // If not following, follow
     author.followers.push(emailAuthor);
+    followerAuthor.following.push(email);
 
-    // Save the author document with the updated followers array
     await author.save();
+    await followerAuthor.save();
 
-    // Respond with success and the updated followers array
     return res.status(200).json({
       message: 'Author followed successfully',
       followers: author.followers,
+      following: followerAuthor.following,
     });
+
   } catch (err) {
-    // If there is a server error, return a 500 error
     return res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
+
 
 // otp
 const otpGenerator = require('otp-generator');

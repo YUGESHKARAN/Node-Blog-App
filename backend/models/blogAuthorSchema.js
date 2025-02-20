@@ -156,6 +156,10 @@ const authorSchema = new mongoose.Schema({
      type:[String],
      default:[]
   },
+  following: {
+    type: [String], // Emails of authors the user follows
+    default: []
+  },
   posts: [postSchema], // Array of posts linked to the author
   notification:[notificationSchema],
   otp: { type: String }, // OTP for password reset
