@@ -69,7 +69,7 @@ const addFollower = async(userEmail) =>{
   }
 }
 
-const recommendaedAutors = authors.filter((author)=>recommendation.includes(author.email)).slice(0,1)
+const recommendaedAutors = authors.filter((author)=>recommendation.includes(author.email))
 
 console.log("authors",authors);
 
@@ -106,7 +106,7 @@ console.log("authors",authors);
                         :
                         <button
                         onClick={()=>{addFollower(author.email)}}
-                         className='w-fit mx-auto px-4 py-0.5 rounded-lg text-xs  bg-gray-800 text-white'>Follow +</button>
+                         className='w-fit mx-auto px-4 py-0.5 rounded-lg text-xs text-nowrap bg-gray-800 text-white'>Follow +</button>
                         }
                       </div>
                   </div>
