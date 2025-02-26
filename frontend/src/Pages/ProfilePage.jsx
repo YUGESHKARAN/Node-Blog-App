@@ -197,6 +197,8 @@ function ProfilePage() {
   const [authorName, setAuthorName] = useState("");
   const [authorEmail, setAuthorEmail] = useState("");
   const [image, setImage] = useState('');
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
   const navigate = useNavigate();
 
   const deleteAuthor = async () => {
@@ -225,6 +227,9 @@ function ProfilePage() {
         setAuthorEmail(authorData.email);
         setAuthor(response.data);
         setImage(response.data.profile);
+        setFollowers(authorData.followers);
+        setFollowing(authorData.following);
+
       } catch (err) {
         console.error(err);
       }
@@ -293,7 +298,24 @@ function ProfilePage() {
               <HiOutlineUserCircle className="text-center text-[#786fa6] shadow-xl bg-white rounded-3xl border-4 border-orange-500 mx-auto text-9xl" />
             </div>
           )}
+                <div className="flex items-center gap-4 justify-start ">  
+              <div>
+              <label htmlFor="image" className="block text-green-500 text-sm font-medium text-gray-300">
+                Followers
+              </label>
+              <p className="w-full md:text-base text-sm text-center">{followers?followers.length:''}</p>
+              </div>
+
+              <div>
+              <label htmlFor="image" className="block text-sm text-green-500 font-medium text-gray-300">
+                Following
+              </label>
+              <p className="w-full  md:text-base text-sm  text-center">{followers?following.length:''}</p>
+              </div>
+
+            </div>
           <form onSubmit={handleSubmit} className="space-y-8 w-full md:w-1/2">
+          
             <div>
               <label htmlFor="authorName" className="block text-sm font-medium text-gray-300">
                 Author Name
@@ -334,6 +356,8 @@ function ProfilePage() {
                 className="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 text-xs md:file:text-sm file:text-xs file:text-white hover:file:bg-orange-600"
               />
             </div>
+
+      
             <div>
               <button
                 type="submit"

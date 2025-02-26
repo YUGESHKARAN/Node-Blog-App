@@ -131,6 +131,8 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { TbMessageChatbotFilled } from "react-icons/tb";
+import { VscCopilot } from "react-icons/vsc";
+import { GoCopilot } from "react-icons/go";
 function HomePage() {
   const username = localStorage.getItem("username");
   const [posts, setPosts] = useState([]);
@@ -172,7 +174,7 @@ function HomePage() {
   // Chatbot
   const [messages, setMessages] = useState([
     {
-      "message": "Hi Chief, admin of Blog Browser here. How can I help?",
+      "message": "Hi Chief, Blog Copilot is here. How can I help?",
       sender: "bot",
       direction: "incoming",
     },
@@ -181,6 +183,7 @@ function HomePage() {
   const [chatbot, setChatbot] = useState(false);
 
   const backendEndpoint = "https://mongodb-rag.onrender.com/query-rag";
+  // const backendEndpoint = "http://127.0.0.1:3000/query-rag";
 
   // const handleSend = async (message) => {
   //   const newMessage = {
@@ -350,13 +353,13 @@ function HomePage() {
       <div 
       onClick={()=>{setChatbot(!chatbot)}}
       className={`${email==='yugeshkaran01@gmail.com'?'fixed md:right-10 cursor-pointer  md:bottom-10 right-5 bottom-5':'hidden'}`}>
-        <TbMessageChatbotFilled className="md:text-3xl text-2xl" />
+        <GoCopilot   className="md:text-xl text-xl rounded-full font-bold" />
       </div>
       <div className={`${chatbot?'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50':'hidden'}`}>
         <div className="flex-col w-full"> 
 
-          <MainContainer className="rounded-lg h-96 md:w-1/2 w-9/12 mx-auto  bg-gray-700 md:text-sm text-xs">
-            <ChatContainer className="bg-gray-800">
+      {/* <MainContainer className="rounded-lg h-96 md:w-1/2 w-9/12 mx-auto  bg-gradient-to-br from-gray-900 to-gray-800 md:text-sm text-xs">
+            <ChatContainer className="bg-gray-900">
               <MessageList
                 typingIndicator={
                   isTyping && (
@@ -390,7 +393,42 @@ function HomePage() {
               
             </ChatContainer>
             
-          </MainContainer>
+          </MainContainer> */}
+
+        <MainContainer className="rounded-lg h-96 md:w-1/2 w-9/12 mx-auto bg-gradient-to-br from-gray-900 to-gray-800 md:text-lg text-xs shadow-lg">
+          <ChatContainer className="bg-gray-900 rounded-lg">
+            <MessageList
+              typingIndicator={
+                isTyping && (
+                  <TypingIndicator
+                    className="bg-gray-900 w-full text-gray-400"
+                    content="Copilot is typing..."
+                  />
+                )
+              }
+              className="bg-gray-900 text-gray-200 p-4"
+            >
+              {messages.map((msg, idx) => (
+                <Message
+                  className="mb-4 text-white"
+                  key={idx}
+                  model={{
+                    message: msg.message,
+                    sentTime: "just now",
+                    sender: msg.sender,
+                    direction: msg.direction,
+                  }}
+                />
+              ))}
+            </MessageList>
+            
+            <MessageInput
+              placeholder="Type a message..."
+              onSend={handleSend}
+              className="bg-gray-800 text-white rounded-lg p-2"
+            />
+          </ChatContainer>
+        </MainContainer>
 
           <div
             onClick={() => setChatbot(!chatbot)}

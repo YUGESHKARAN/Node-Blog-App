@@ -79,7 +79,7 @@ console.log("authors",authors);
 
         { recommendaedAutors.length>0 && 
         <div className='w-11/12  h-auto mx-auto flex-col  items-center justify-center mt-10'>
-            <h2 className='w-full text-white text-left text-sm text-green-400 md:text-3xl font-semibold'>Recommended</h2>
+            <h2 className='w-full  text-left text-sm text-green-400 md:text-3xl font-semibold'>Recommended</h2>
             <div
               className={`flex justify-start w-full items-center gap-2 overflow-x-auto scrollbar-hide mt-3`}
             >

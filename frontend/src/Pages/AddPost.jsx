@@ -594,7 +594,7 @@ function AddPost() {
             <img 
               onClick={() => setChatbot(!chatbot)}
               src={Chatbot}
-              className="ml-2 rounded-full w-7 h-7 md:w-9 md:h-9"
+              className="ml-2 cursor-pointer rounded-full w-7 h-7 md:w-9 md:h-9"
               alt="Chatbot"
             />
           </div>

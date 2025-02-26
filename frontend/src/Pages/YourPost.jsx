@@ -123,7 +123,27 @@ function YourPost() {
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  ">
       <NavBar />
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-8">
-        <div className="flex w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">
+        <div className="flex w-11/12  flex-wrap justify-center h-auto mx-auto">
+        <div className="flex md:max-w-5xl md:w-fit  scrollbar-hide mx-auto items-center justify-start gap-3 mb-5 overflow-x-auto ">
+      <div
+              onClick={()=>setPostCategory('')}
+              className="w-fit text-nowrap cursor-pointer  rounded-md bg-gray-800 text-white  text-sm px-3 py-2 hover:bg-gray-700 transition-all duration-200"
+            >
+              All
+            </div>
+          {getUniqueCategories(posts).map((data, index) => (
+            <div
+              key={index}
+              onClick={()=>setPostCategory(data)}
+              className="w-fit text-nowrap cursor-pointer  rounded-md bg-gray-800 text-white  text-sm px-3 py-2 hover:bg-gray-700 transition-all duration-200"
+            >
+              {data}
+            </div>
+          ))} 
+          
+        </div>
+
+         
           {/* Search and Filter Section */}
           <div className="w-full flex items-center gap-2 justify-center">
             <div className="md:w-72 w-52 flex border border-gray-600 rounded-xl p-2 bg-gray-800 justify-center gap-2 items-center my-4">
@@ -137,7 +157,7 @@ function YourPost() {
               />
             </div>
 
-            <select
+            {/* <select
               onChange={(e) => setPostCategory(e.target.value)}
               className="border md:w-fit w-16 h-7 text-xs md:text-base rounded-lg border-gray-600 bg-gray-800 text-white cursor-pointer"
             >
@@ -147,11 +167,13 @@ function YourPost() {
                   {category}
                 </option>
               ))}
-            </select>
+            </select> */}
+
+
           </div>
 
           {/* Back Button */}
-          <div
+          {/* <div
             className={`w-full flex h-8 ${
               postCategory ? "justify-between" : "justify-end"
             } mb-5`}
@@ -164,7 +186,9 @@ function YourPost() {
                 Back
               </button>
             )}
-          </div>
+          </div> */}
+
+        <div className="flex w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">
 
           {/* Posts Grid */}
           {loader ? (
@@ -315,7 +339,12 @@ function YourPost() {
               </div>
             ))
           )}
+
+         </div>
+
         </div>
+
+
         {/* Image Modal */}
         {selectedImage && (
           <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">

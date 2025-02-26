@@ -481,7 +481,7 @@ function BlogContainer() {
       
 
         {/* Posts Grid */}
-        <div className="flex w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">
+        <div className="flex w-11/12 md:gap-16 flex-wrap justify-center md:mt-5 h-auto mx-auto">
         {loader ? (
           <div className="flex-col items-center justify-center">
             <MagnifyingGlass
