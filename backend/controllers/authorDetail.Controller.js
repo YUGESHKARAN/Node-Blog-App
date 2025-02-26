@@ -61,9 +61,9 @@ const getSingleAuthor = async (req, res) => {
 
 const addAuthor = async (req, res) => {
   const { authorname, password, email, post } = req.body;
-  if(!email.enwith('@dsuniversity.ac.in'))
+  if(!email.endsWith('@dsuniversity.ac.in'))
   {
-    return res.status(400).json({message:"Use university email ID"})
+    return res.status(400).json({message:"Use university email"})
   }
   try {
     const authorExist = await Author.findOne({ email });
