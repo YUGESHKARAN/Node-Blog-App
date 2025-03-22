@@ -267,7 +267,7 @@ function NavBar() {
 
                     <li className='transition-all mx-auto duration-200'>
                         <Link to="/yourposts" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
-                            <MdDataObject  className='text-xl mr-3'/>Your Posts
+                            <MdDataObject  className='text-xl mr-3'/>My Posts
                         </Link>
                     </li>
 
