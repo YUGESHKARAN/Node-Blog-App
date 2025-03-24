@@ -315,7 +315,7 @@ function HomePage() {
           <Link to='/yourposts'>
           <div className="text-center flex-col justify-center">
             <h1 className="md:text-3xl text-sm text-white">{yourPost.length}</h1>
-            <h3 className="text-xs md:text-sm lg:text-2xl font-semibold text-orange-400">Your Posts</h3>
+            <h3 className="text-xs md:text-sm lg:text-2xl font-semibold text-orange-400">My Posts</h3>
           </div>
           </Link>
           
