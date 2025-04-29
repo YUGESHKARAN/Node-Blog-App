@@ -9,7 +9,7 @@ const connectToDatabase = async () => {
   }
 
   console.log("Establishing new database connection");
-  await mongoose.connect("mongodb+srv://yugeshkaran01:GEMBkFW5Ny5wi4ox@blog.adtwl.mongodb.net/Blog-Data?retryWrites=true&w=majority&appName=blog", {
+  await mongoose.connect("mongodb+srv://yugeshkaran01:GEMBkFW5Ny5wi4ox@blog.adtwl.mongodb.net/Blog?retryWrites=true&w=majority&appName=blog", {
     maxPoolSize: 10, // Optional: set a pool size
     serverSelectionTimeoutMS: 5000 // Set a timeout for server selection
   });
