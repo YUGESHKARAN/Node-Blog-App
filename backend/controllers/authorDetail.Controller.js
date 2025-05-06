@@ -368,6 +368,103 @@ const notificationAuthorDeleteAll = async (req, res) => {
 };
 
 
+// user: {
+//   type: String,
+//   required: true,
+// },
+// title: {
+//   type: String,
+//   required: true,
+// },
+// link:{
+// type: [String],
+// default: []
+// },
+// deliveredTo:{
+// enum: ['all',"community",'coordinators'],
+// default: 'coordinators'
+// },
+// message: {
+//   type: String,
+//   required: true,
+// },
+// profile:{
+//   type:String,
+//   required:false
+// },
+// authorEmail: {
+//   type: String,
+//   required: true,
+// },
+
+
+const addAnnouncement = async (req, res) => {
+  const { email } = req.params; // The author's email from the URL
+  const { user, title, message, links, deliveredTo} = req.body; // Title and description from the request body
+  const profile = req.file ? req.file.originalname : ''; // Image from the uploaded file
+
+  try {
+    // Find the author by email
+    const author = await Author.findOne({ email });
+    if (!author) {
+      return res.status(404).json({ message: 'Author not found' });
+    }
+    if(req.file)
+      {
+          // S3 Integration
+      const params = {
+        Bucket:bucketName,
+        Key:req.file.originalname,
+        Body:req.file.buffer,
+        ContentType:req.file.mimetype
+      }
+  
+      const command = new PutObjectCommand(params)
+        await s3.send(command)
+      }
+   const parsedLinks = links ? JSON.parse(links) : [];
+    // Create a new announcement object
+    const newAnnouncement = {
+      user: user,
+      title:title,
+      message: message,
+      links: parsedLinks,
+      deliveredTo:deliveredTo,
+      profile: profile,
+    };
+  
+    let filter = {};
+    if (deliveredTo === 'coordinator') {
+      filter.role = 'coordinator';
+    }
+
+    // Find all matching authors
+    const recipients = await Author.find(filter);
+
+    // Push announcement to each recipient
+    for (const recipient of recipients) {
+      recipient.announcement = recipient.announcement || [];
+      recipient.announcement.push(newAnnouncement);
+      await recipient.save();
+    }
+
+    res.status(201).json({
+      message: 'Announcement added successfully',
+      announcement: newAnnouncement,
+      deliveredTo: filter.role || 'all'
+    });
+
+
+    res.status(201).json({
+      message: 'Announcement added successfully',
+      announcement: newAnnouncement,
+    });
+  } catch (error) {
+    console.error('Error adding announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 
 module.exports = {
@@ -383,5 +480,6 @@ module.exports = {
   resetPassword,
   notificationAuthor,
   notificationAuthorDelete,
-  notificationAuthorDeleteAll
+  notificationAuthorDeleteAll,
+  addAnnouncement
 };

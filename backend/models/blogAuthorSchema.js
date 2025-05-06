@@ -131,6 +131,57 @@ const notificationSchema = new mongoose.Schema(
   }
 )
 
+const announcementSchema = new mongoose.Schema(
+  {
+    user: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    links: {
+      type: [
+        {
+          title: { type: String, required: false }, // Title of the link
+          url: { type: String, required: false },  // URL of the link
+        },
+      ],
+      default: [],
+      validate: {
+        validator: function (v) {
+          // Ensure all entries have unique URLs
+          return Array.isArray(v) && new Set(v.map(link => link.url)).size === v.length;
+        },
+        message: "Links array must contain unique URLs",
+      },
+    },
+
+   deliveredTo:{
+     enum: ['all',"community",'coordinators'],
+     default: 'coordinators'
+   },
+   
+    message: {
+      type: String,
+      required: true,
+    },
+    profile:{
+      type:String,
+      required:false
+    },
+    authorEmail: {
+      type: String,
+      required: true,
+    },
+    timestamp: {
+      type: Date,
+      default: Date.now,
+    },
+  }
+)
+
 // Author schema for storing authors and their posts
 const authorSchema = new mongoose.Schema({
   authorname: {
@@ -147,6 +198,8 @@ const authorSchema = new mongoose.Schema({
     type: [String],
     default: []
   },
+
+  announcementSchema: [announcementSchema],
 
   password: {
     type: String,
@@ -173,6 +226,7 @@ const authorSchema = new mongoose.Schema({
   },
   posts: [postSchema], // Array of posts linked to the author
   notification:[notificationSchema],
+  
   otp: { type: String }, // OTP for password reset
   otpExpiresAt: { type: Date } // Expiry time for the OTP
 });

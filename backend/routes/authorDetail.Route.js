@@ -15,7 +15,8 @@ const {
   resetPassword,
   notificationAuthor,
   notificationAuthorDelete,
-  notificationAuthorDeleteAll
+  notificationAuthorDeleteAll,
+  addAnnouncement
 } = require("../controllers/authorDetail.Controller");
 
 //handle author data: name, email, password
@@ -45,6 +46,7 @@ router.put("/:email",upload.single('profile'), updateAuthor);
 router.put("/password/:email", updateAPassword);
 
 router.post("/", addAuthor);
+
 router.put("/follow/:email",updateFollowers);
 
 router.delete("/:email", deleteAuthor);
@@ -53,5 +55,8 @@ router.post('/reset-password', resetPassword);
 router.get('/notification',notificationAuthor);
 router.delete('/notification/delete',notificationAuthorDelete);
 router.delete('/notification/deleteall',notificationAuthorDeleteAll);
+
+
+router.post("/annnouncement/:email",upload.single('profile'),addAnnouncement);
 
 module.exports = router;
