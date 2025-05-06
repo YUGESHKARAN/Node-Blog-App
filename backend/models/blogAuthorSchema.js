@@ -137,6 +137,17 @@ const authorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  role: {
+    type: String,
+    enum: ['student', 'coordinator', 'admin'],
+    default: 'student'
+  },
+  community: {
+    type: [String],
+    default: []
+  },
+
   password: {
     type: String,
     required: true,

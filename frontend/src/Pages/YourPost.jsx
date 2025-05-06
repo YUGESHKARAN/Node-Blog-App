@@ -156,37 +156,9 @@ function YourPost() {
                 className="bg-transparent focus:outline-none w-full text-sm text-white placeholder-gray-400"
               />
             </div>
-
-            {/* <select
-              onChange={(e) => setPostCategory(e.target.value)}
-              className="border md:w-fit w-16 h-7 text-xs md:text-base rounded-lg border-gray-600 bg-gray-800 text-white cursor-pointer"
-            >
-              <option value="">All</option>
-              {getUniqueCategories(posts).map((category, index) => (
-                <option key={index} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select> */}
-
-
           </div>
 
-          {/* Back Button */}
-          {/* <div
-            className={`w-full flex h-8 ${
-              postCategory ? "justify-between" : "justify-end"
-            } mb-5`}
-          >
-            {postCategory && (
-              <button
-                className="bg-gray-600 px-3 py-1 text-sm font-semibold text-white rounded-lg hover:bg-gray-700"
-                onClick={() => setPostCategory("")}
-              >
-                Back
-              </button>
-            )}
-          </div> */}
+     
 
         <div className="flex w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">
 
