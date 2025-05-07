@@ -399,8 +399,7 @@ const notificationAuthorDeleteAll = async (req, res) => {
 
 
 const addAnnouncement = async (req, res) => {
-  const { email } = req.params; // The author's email from the URL
-  const { user, title, message, links, deliveredTo} = req.body; // Title and description from the request body
+  const { user, title, message, links, deliveredTo,email} = req.body; // Title and description from the request body
   const profile = req.file ? req.file.originalname : ''; // Image from the uploaded file
 
   try {
@@ -431,10 +430,11 @@ const addAnnouncement = async (req, res) => {
       links: parsedLinks,
       deliveredTo:deliveredTo,
       profile: profile,
+      authorEmail:email
     };
   
     let filter = {};
-    if (deliveredTo === 'coordinator') {
+    if (deliveredTo === 'coordinators') {
       filter.role = 'coordinator';
     }
 
@@ -448,11 +448,11 @@ const addAnnouncement = async (req, res) => {
       await recipient.save();
     }
 
-    res.status(201).json({
-      message: 'Announcement added successfully',
-      announcement: newAnnouncement,
-      deliveredTo: filter.role || 'all'
-    });
+    // res.status(201).json({
+    //   message: 'Announcement added successfully',
+    //   announcement: newAnnouncement,
+    //   deliveredTo: filter.role || 'all'
+    // });
 
 
     res.status(201).json({

@@ -159,10 +159,11 @@ const announcementSchema = new mongoose.Schema(
     },
 
    deliveredTo:{
+    type: String,
      enum: ['all',"community",'coordinators'],
-     default: 'coordinators'
+     default: 'all'
    },
-   
+
     message: {
       type: String,
       required: true,
@@ -199,7 +200,7 @@ const authorSchema = new mongoose.Schema({
     default: []
   },
 
-  announcementSchema: [announcementSchema],
+  announcement: [announcementSchema],
 
   password: {
     type: String,

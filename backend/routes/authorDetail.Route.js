@@ -57,6 +57,6 @@ router.delete('/notification/delete',notificationAuthorDelete);
 router.delete('/notification/deleteall',notificationAuthorDeleteAll);
 
 
-router.post("/annnouncement/:email",upload.single('profile'),addAnnouncement);
+router.post("/annnouncement",upload.single('profile'),addAnnouncement);
 
 module.exports = router;
