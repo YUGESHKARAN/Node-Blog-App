@@ -204,8 +204,8 @@ function AddPost() {
   
     try {
       const response = await axios.post(
-        `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
-        // `http://localhost:3000/blog/posts/${email}`,
+        // `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
+        `http://localhost:3000/blog/posts/${email}`,
         formData,
         {
           headers: {
@@ -239,7 +239,7 @@ function AddPost() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
       <NavBar />
-      <div className="container min-h-screen mx-auto py-8 px-4">
+      <div className="container min-h-screen mx-auto md:w-1/2 mx-auto w-11/12 py-8 px-4">
         <h1 className="md:text-3xl text-xl font-bold mb-6">Add New Post</h1>
         <div className="md:w-96 px-4 mx-auto flex items-center mb-4 justify-center overflow-x-hidden">
           <ReactTyped
@@ -302,7 +302,6 @@ function AddPost() {
                 onChange={(e) => setCategory(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               >
-                <option value="Education">Education</option>
                 <option value="GenAI">GenAI</option>
                 <option value="Data Science">Data Science</option>
                 <option value="Blockchain">Blockchain</option>
@@ -311,6 +310,8 @@ function AddPost() {
                 <option value="IoT ">IoT</option>
                 <option value="Embedded System">Embedded System</option>
                 <option value="Web Development">Web Development</option>   
+                <option value="Satellite Space Technology">Satellite Space Technology</option>   
+                <option value="Others">Others</option>   
               </select>
             </div>
             <div>
@@ -357,7 +358,7 @@ function AddPost() {
                       setCurrentLinkUrl("");
                     }
                   }}
-                  className="py-2 px-4 hover:bg-gray-500 bg-white text-gray-800 font-bold rounded-md transition duration-200"
+                  className="md:py-2 md:px-4 px-2 py-1 hover:bg-gray-500 bg-white text-gray-800 font-bold rounded-md transition duration-200"
                 >
                   Add
                 </button>
@@ -396,7 +397,7 @@ function AddPost() {
             <div>
               <button
                 type="submit"
-                className="w-full md:w-40 py-2 px-4 hover:bg-gray-500 bg-white text-gray-800 font-bold rounded-md transition duration-200"
+                className="w-full md:w-40 md:py-2 px-2 py-1 md:px-4 hover:bg-gray-500 bg-white text-gray-800 font-bold rounded-md transition duration-200"
                 disabled={loading}
               >
                 {loading ? "Submitting..." : "ADD POST"}

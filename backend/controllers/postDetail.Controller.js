@@ -52,7 +52,7 @@ const getAllPosts = async (req, res) => {
 
     res.status(200).json({ message: "All posts", posts: allPosts,count});
   } catch (err) {
-    res.send(500).json({ message: "server error" });
+    res.status(500).json({ message: "server error" });
   }
 };
 
@@ -79,7 +79,7 @@ const getCategoryPosts = async (req, res) => {
       .status(200)
       .json({ message: "Category posts", data: categoryPosts });
   } catch (err) {
-    res.send(500).json({ message: "server error" });
+    res.status(500).json({ message: "server error" });
   }
 };
 
@@ -149,20 +149,51 @@ const addPosts = async (req, res) => {
     // 🌟 **Re-add the notification system**
     const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.email}/${postId}`;
 
-    const notification = {
-      postId: postId,
-      user:author.authorname,  // Ensure the 'user' field is populated
-      authorEmail: author.email,
-      message: `New post from ${author.authorname}: ${title}`,
-      url: url,
-      profile: author.profile || ""
-    };
+  // Find community authors (excluding self)
+    const communityAuthors = await Author.find({
+      community: { $in: author.community },
+      email: { $ne: author.email }
+    }).select('email');
 
-    // **Update notifications for all followers**
-    await Author.updateMany(
-      { email: { $in: author.followers } },
-      { $push: { notification: notification } }
-    );
+    // Prepare sets
+    const followerSet = new Set(author.followers);
+    const communitySet = new Set();
+
+    for (const a of communityAuthors) {
+      if (!followerSet.has(a.email)) {
+        communitySet.add(a.email);
+      }
+    }
+
+    const combinedRecipients = [...followerSet, ...communitySet];
+
+    const bulkNotifications = combinedRecipients.map(email => {
+      const isFollower = followerSet.has(email);
+      const message = isFollower
+        ? `New post from ${author.authorname}: ${title}`
+        : `${author.authorname} from your community posted: ${title}`;
+
+      const notification = {
+        postId,
+        user: author.authorname,
+        authorEmail: author.email,
+        message,
+        url,
+        profile: author.profile || ""
+      };
+
+      return {
+        updateOne: {
+          filter: { email },
+          update: { $push: { notification } }
+        }
+      };
+    });
+
+    if (bulkNotifications.length > 0) {
+      await Author.bulkWrite(bulkNotifications);
+    }
+
     const data = await author.save();
 
     res.status(201).json({ message: "Post added successfully", data });

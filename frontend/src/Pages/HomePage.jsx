@@ -16,13 +16,17 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { TbMessageChatbotFilled } from "react-icons/tb";
 import { VscCopilot } from "react-icons/vsc";
 import { GoCopilot } from "react-icons/go";
+import { MdAppSettingsAlt } from "react-icons/md";
+import { RiAdminFill } from "react-icons/ri";
 function HomePage() {
   const username = localStorage.getItem("username");
+
   const [posts, setPosts] = useState([]);
   const [categoryCount, setCategoryCount] = useState(0);
   const [authors, setAuthors] = useState([]);
   const [yourPost, setYourPost] = useState(0);
   const email = localStorage.getItem('email');
+  const role = localStorage.getItem('role');
 
   const getAuthors = async () => {
     try {
@@ -186,28 +190,48 @@ function HomePage() {
   
   // console.log('your posts', yourPost);
   // console.log('email', email);
+  console.log("role localstorage", role)
 
   return (
     <div className="min-h-screen relative bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 text-white">
       <NavBar />
 
-      <div className="md:text-2xl text-xl mb-10 font-bold text-center mt-5">Welcome to Blog Browser!</div>
+      {/* <div className="md:text-2xl text-xl mb-10 font-bold text-center mt-5">Welcome to Blog Browser!</div> */}
+      <div className="md:text-2xl text-xl mb-10 font-bold text-center mt-5">{role.charAt(0).toUpperCase() + role.slice(1)} Dashboard</div>
 
       <div className="grid grid-cols-8 gap-1.5 md:gap-3 w-11/12 md:w-9/12 my-5 mx-auto">
         <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
+
+
+         {
+           role==='admin'? <Link to='/control'>
+          <div className="text-center flex-col items-center justify-center">
+              <h1 className="md:text-3xl w-full mb-1 mx-auto  text-white"> <MdAppSettingsAlt className="text-center mx-auto"/>  </h1> 
+            <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Controls</h3>
+          </div>
+          </Link>:
+          role==='coordinator'?
           <Link to='/yourposts'>
           <div className="text-center flex-col justify-center">
             <h1 className="md:text-3xl text-sm text-white">{yourPost.length}</h1>
-            <h3 className="text-xs md:text-sm lg:text-2xl font-semibold text-orange-400">My Posts</h3>
+            <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">My Posts</h3>
+          </div>
+          </Link>:
+            <Link to='/community'>
+          <div className="text-center flex-col justify-center">
+            <h1 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">My Tech</h1>
+            <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Community</h3>
           </div>
           </Link>
+          
+          }
           
         </div>
 
         <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
           <div className="text-center flex-col justify-center">
             <h1 className="md:text-3xl text-sm text-white">{posts.length}</h1>
-            <h3 className="text-xs md:text-sm lg:text-2xl font-semibold text-orange-400">Total Posts</h3>
+            <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Total Posts</h3>
           </div>
         </div>
 
@@ -215,7 +239,7 @@ function HomePage() {
           <Link to='/authors'>
             <div className="text-center flex-col justify-center">
               <h1 className="md:text-3xl text-sm text-white">{authors.length}</h1>
-              <h3 className="text-xs md:text-sm lg:text-2xl font-semibold text-orange-400">Authors</h3>
+              <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Authors</h3>
             </div>
           </Link>
         </div>
@@ -224,7 +248,7 @@ function HomePage() {
         
           <div className="text-center flex-col justify-center">
             <h1 className="md:text-3xl text-sm text-white">{categoryCount}</h1>
-            <h3 className="text-xs md:text-sm lg:text-2xl font-semibold text-orange-400">Categories</h3>
+            <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Categories</h3>
           </div>
         </div>
       </div>

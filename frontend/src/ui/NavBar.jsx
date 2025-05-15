@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect,useContext } from 'react';
 import { useAuth } from "../AuthContext";
 import { Link } from 'react-router-dom';
-import { MdDataObject, MdLogout, MdPostAdd } from 'react-icons/md';
+import { MdAnnouncement, MdDataObject, MdGroups, MdLogout, MdPostAdd } from 'react-icons/md';
 import { IoHome, IoLogOut, IoPeople } from 'react-icons/io5';
 import { FaUserAlt } from 'react-icons/fa';
 import bloglogo from '../assets/bloglogo.png';
@@ -9,6 +9,7 @@ import { RiUser3Line } from 'react-icons/ri';
 import { IoIosClose, IoMdNotifications } from 'react-icons/io';
 import { GlobalStateContext } from '../GlobalStateContext';
 import axios from 'axios';
+import { TfiAnnouncement } from 'react-icons/tfi';
 
 function NavBar() {
     const { logout } = useAuth();
@@ -18,12 +19,14 @@ function NavBar() {
     const { notification,setNotification } = useContext(GlobalStateContext);
     const username = localStorage.getItem("username");
     const userEmail = localStorage.getItem("email");
+    const role = localStorage.getItem("role");
     const[showNotefication,setShowNotification] = useState(false)
     const[socket,setSocket] = useState(null)
     const exit = () => {
         localStorage.removeItem("username");
         localStorage.removeItem("email");
         localStorage.removeItem("message");
+        localStorage.removeItem("role");
         logout();
     };
 
@@ -94,7 +97,7 @@ function NavBar() {
 
 
     return (
-        <div className='flex relative justify-between items-center h-16 bg-gray-900 mb-2 px-5'>
+        <div className='flex relative justify-between items-center  h-16 bg-gray-900 mb-2 px-5'>
             <div className='md:text-xl text-sm w-1/2 md:w-1/5 font-bold text-white'>
                 <Link to='/home'>
                     <img src={bloglogo} className='w-10 md:w-30 rounded-full' alt="Blog Logo" />
@@ -102,21 +105,35 @@ function NavBar() {
             </div>
 
             {/* Desktop Menu */}
-            <ul className='lg:flex justify-start text-base hidden font-semibold text-gray-300 w-2/5  items-center gap-10'>
+            <ul className='lg:flex justify-start text-base hidden font-semibold text-gray-300 w-3/5  items-center gap-10'>
                 <li className='transition-all duration-200 hover:text-white'>
                     <Link to="/home" className='flex items-center gap-1'>
                         <IoHome className='text-xl'/>Home
                     </Link>
                 </li>
                 <li className='transition-all duration-200 hover:text-white'>
-                    <Link to="/addPost" className='flex items-center gap-1'>
+                    {role==='coordinator'&&
+                     <Link to="/addPost" className='flex items-center gap-1'>
                         <MdPostAdd className='text-2xl'/> Add Post
+                    </Link>}
+                </li>
+             
+                <li className='transition-all duration-200 hover:text-white'>
+                 
+                     <Link to="/community" className='flex items-center gap-1'>
+                        <MdGroups className='text-2xl'/> Tech Communities
                     </Link>
                 </li>
+                
                 <li className='transition-all duration-200 hover:text-white'>
                     <Link to="/profile" className='flex items-center gap-1'>
                         <FaUserAlt className='text-lg'/>My Profile
                     </Link>
+                </li>
+                <li className='transition-all duration-200 hover:text-white'>
+                        <Link to="/announcement" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
+                            <MdAnnouncement className='text-xl  mr-3'/> Announcement
+                        </Link>
                 </li>
             
                 <li>
@@ -156,6 +173,14 @@ function NavBar() {
                             <IoHome className='text-xl mr-3'/> Home
                         </Link>
                     </li>
+                    {
+                        role==='student'&&
+                        <li className='transition-all text-left duration-200 mx-auto'>
+                        <Link to="/community" className='flex items-center hover:text-gray-400 transition-all duration-200  hover:text-gray-400 transition-all duration-200 justify-start w-fit'>
+                            <MdGroups className='text-xl mr-3'/> Tech Communities
+                        </Link>
+                    </li>
+                    }
 
                     <li className='transition-all mx-auto duration-200'>
                         <Link to="/yourposts" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
@@ -169,14 +194,22 @@ function NavBar() {
                         </Link>
                     </li>
 
-                    <li className='transition-all mx-auto duration-200'>
+                  {
+                    role==='coordinator'&&   <li className='transition-all mx-auto duration-200'>
                         <Link to="/addPost" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
                             <MdPostAdd className='text-xl mr-3'/>Add Post
                         </Link>
                     </li>
+                  }
                     <li className='transition-all mx-auto duration-200'>
                         <Link to="/profile" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
                             <FaUserAlt className='text-xl mr-3'/>My Profile
+                        </Link>
+                    </li>
+
+                      <li className='transition-all mx-auto duration-200'>
+                        <Link to="/announcement" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
+                            <MdAnnouncement className='text-xl mr-3'/>Announcement
                         </Link>
                     </li>
                     <li className='mx-auto'>

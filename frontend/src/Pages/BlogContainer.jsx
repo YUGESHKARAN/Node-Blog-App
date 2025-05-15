@@ -116,7 +116,7 @@ function BlogContainer() {
   };
 
  
-
+console.log("posts", posts);  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-8">
       <div className="flex-col w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">

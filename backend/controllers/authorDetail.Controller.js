@@ -25,7 +25,7 @@ const getAllAuthor = async (req, res) => {
     const authors = await Author.find({});
     res.json(authors);
   } catch (err) {
-    res.send("Error" + err);
+    res.status("Error" + err);
   }
 };
 
@@ -43,7 +43,7 @@ const getProfile = async (req,res) => {
   }
   catch(err)
   {
-    res.send("Error",err)
+    res.status("Error",err)
   }
 }
 
@@ -55,7 +55,7 @@ const getSingleAuthor = async (req, res) => {
     }
     res.json(author);
   } catch (err) {
-    res.send("Error" + err);
+    res.status("Error" + err);
   }
 };
 
@@ -91,7 +91,7 @@ const addAuthor = async (req, res) => {
 };
 
 const updateAuthor = async (req, res) => {
-  const { authorname, email } = req.body;
+  const { authorname, email, role, techcommunity } = req.body;
   const profile = req.file ? req.file.originalname : '';
   try {
     const author = await Author.findOne({ email: req.params.email });
@@ -120,6 +120,20 @@ const updateAuthor = async (req, res) => {
     // Object.assign(post, { title, image, description, category });
     author.authorname =authorname;
     author.email = email;
+    if (role)
+    {
+      author.role = role;
+    } 
+
+        // Toggle community membership
+    if (techcommunity) {
+      const index = author.community.indexOf(techcommunity);
+      if (index === -1) {
+        author.community.push(techcommunity); // Add if not exists
+      } else {
+        author.community.splice(index, 1); // Remove if exists
+      }
+    }
     data = await author.save();
     res.status(201).json({ message: "author updated successfully", data });
 
@@ -168,7 +182,7 @@ const deleteAuthor = async (req, res) => {
     }
     res.json({ message: "author deleted successfully", author: author });
   } catch (err) {
-    res.send("error" + err);
+    res.status("error" + err);
   }
 };
 
@@ -304,7 +318,7 @@ const notificationAuthor = async(req,res)=>{
   }
   catch(err)
   {
-    console.error('Error fetching notifications:', error);
+    console.error('Error fetching notifications:', err);
     res.status(500).json({ message: 'Server error' });
   }
 }
@@ -368,39 +382,13 @@ const notificationAuthorDeleteAll = async (req, res) => {
 };
 
 
-// user: {
-//   type: String,
-//   required: true,
-// },
-// title: {
-//   type: String,
-//   required: true,
-// },
-// link:{
-// type: [String],
-// default: []
-// },
-// deliveredTo:{
-// enum: ['all',"community",'coordinators'],
-// default: 'coordinators'
-// },
-// message: {
-//   type: String,
-//   required: true,
-// },
-// profile:{
-//   type:String,
-//   required:false
-// },
-// authorEmail: {
-//   type: String,
-//   required: true,
-// },
-
-
 const addAnnouncement = async (req, res) => {
-  const { user, title, message, links, deliveredTo,email} = req.body; // Title and description from the request body
-  const profile = req.file ? req.file.originalname : ''; // Image from the uploaded file
+  console.log("announcement route hit");
+
+  const { user, title, message, links, deliveredTo, email, profile } = req.body;
+
+  console.log("announcement msg", message);
+  console.log("announcement email", email);
 
   try {
     // Find the author by email
@@ -408,35 +396,41 @@ const addAnnouncement = async (req, res) => {
     if (!author) {
       return res.status(404).json({ message: 'Author not found' });
     }
-    if(req.file)
-      {
-          // S3 Integration
-      const params = {
-        Bucket:bucketName,
-        Key:req.file.originalname,
-        Body:req.file.buffer,
-        ContentType:req.file.mimetype
+
+    // Safe parsing of links
+    let parsedLinks = [];
+    try {
+      parsedLinks = links ? JSON.parse(links) : [];
+      if (!Array.isArray(parsedLinks)) {
+        parsedLinks = [];
       }
-  
-      const command = new PutObjectCommand(params)
-        await s3.send(command)
-      }
-   const parsedLinks = links ? JSON.parse(links) : [];
+    } catch (e) {
+      parsedLinks = [];
+    }
+
     // Create a new announcement object
     const newAnnouncement = {
-      user: user,
-      title:title,
-      message: message,
+      user,
+      title,
+      message,
       links: parsedLinks,
-      deliveredTo:deliveredTo,
-      profile: profile,
-      authorEmail:email
+      deliveredTo,
+      profile,
+      authorEmail: email
     };
-  
+
     let filter = {};
     if (deliveredTo === 'coordinators') {
-      filter.role = 'coordinator';
+      filter.role = { $in: ['coordinator', 'admin'] };
     }
+    else if (deliveredTo === 'community') {
+      // Match authors with at least one shared community
+      filter.community = { $in: author.community };
+    } else {
+      return res.status(400).json({ message: 'Invalid deliveredTo value' });
+    }
+
+   
 
     // Find all matching authors
     const recipients = await Author.find(filter);
@@ -444,16 +438,13 @@ const addAnnouncement = async (req, res) => {
     // Push announcement to each recipient
     for (const recipient of recipients) {
       recipient.announcement = recipient.announcement || [];
-      recipient.announcement.push(newAnnouncement);
-      await recipient.save();
+
+      // Validate object before pushing
+      if (typeof newAnnouncement === 'object' && newAnnouncement !== null) {
+        recipient.announcement.push(newAnnouncement);
+        await recipient.save();
+      }
     }
-
-    // res.status(201).json({
-    //   message: 'Announcement added successfully',
-    //   announcement: newAnnouncement,
-    //   deliveredTo: filter.role || 'all'
-    // });
-
 
     res.status(201).json({
       message: 'Announcement added successfully',
@@ -462,6 +453,107 @@ const addAnnouncement = async (req, res) => {
   } catch (error) {
     console.error('Error adding announcement:', error);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
+const deleteAnnouncement = async (req, res) => {
+  const { announcementId } = req.params;
+
+  try {
+    // Find the author who has the announcement and remove it
+    const result = await Author.updateOne(
+      { "announcement._id": announcementId },
+      { $pull: { announcement: { _id: announcementId } } }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ message: "Announcement not found" });
+    }
+
+    res.status(200).json({ message: "Announcement deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to delete announcement", error: err.message });
+  }
+};
+
+
+const updateRole = async (req, res) => {
+
+  const { email, role } = req.body;
+
+  try {
+    console.log("logged");
+    
+    const author = await Author.findOne({ email });
+    if (!author) {
+      return res.status(404).json({ message: "Author not found" });
+    }
+    
+    author.role = role;
+    await author.save();  
+    res.status(200).json({ message: "Role updated successfully", author }); 
+  }
+  catch(err)
+  {
+    res.status(500).json({ message: "Error updating role", error: err.message }); 
+  }
+}
+
+const updateTechCommunity = async(req,res)=>{
+
+  const { email, techcommunity } = req.body;
+  console.log("community called")
+ 
+  try {
+    const author = await Author.findOne({ email });
+
+    if (!author) {
+      return res.status(404).json({ message: "Author not found" });
+    }
+     
+    // Toggle community membership
+    if (techcommunity) {
+      const index = author.community.indexOf(techcommunity);
+      if (index === -1) {
+        author.community.push(techcommunity); // Add if not exists
+      } else {
+        author.community.splice(index, 1); // Remove if exists
+      }
+    }
+
+    author.email = email;
+    data = await author.save();
+    res.status(201).json({ message: "author updated successfully", data });
+
+  } catch (err) {
+    res.status(500).json({ message: "server error" });
+  }
+}
+
+const updateTechCommunityCoordinator = async (req, res) => {
+  const { email, techCommunities } = req.body; // techCommunities should be an array of strings
+  console.log("communities called", email);
+
+  try {
+    const author = await Author.findOne({ email });
+
+    if (!author) {
+      return res.status(404).json({ message: "Author not found" });
+    }
+
+      if (Array.isArray(techCommunities)) {
+      // Replace all existing communities with the new ones
+      author.community = techCommunities;
+    }
+
+    const data = await author.save();
+    res.status(201).json({ message: "Author updated successfully", data });
+
+  } catch (err) {
+    console.error("Update Error:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -481,5 +573,9 @@ module.exports = {
   notificationAuthor,
   notificationAuthorDelete,
   notificationAuthorDeleteAll,
-  addAnnouncement
+  addAnnouncement,
+  deleteAnnouncement,
+  updateRole,
+  updateTechCommunity,
+  updateTechCommunityCoordinator
 };

@@ -16,7 +16,12 @@ const {
   notificationAuthor,
   notificationAuthorDelete,
   notificationAuthorDeleteAll,
-  addAnnouncement
+  addAnnouncement,
+  deleteAnnouncement,
+  updateRole,
+  updateTechCommunity,
+  updateTechCommunityCoordinator
+  
 } = require("../controllers/authorDetail.Controller");
 
 //handle author data: name, email, password
@@ -57,6 +62,10 @@ router.delete('/notification/delete',notificationAuthorDelete);
 router.delete('/notification/deleteall',notificationAuthorDeleteAll);
 
 
-router.post("/annnouncement",upload.single('profile'),addAnnouncement);
+router.post("/announcement/add",upload.none(),addAnnouncement);
+router.delete('/announcements/:announcementId', deleteAnnouncement);
+router.put("/control/updateRole",upload.none(),updateRole);
+router.put("/control/updateCommunity",updateTechCommunity);
+router.put("/control/coordinatorUpdate",updateTechCommunityCoordinator);
 
 module.exports = router;

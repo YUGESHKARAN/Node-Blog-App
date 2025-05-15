@@ -26,7 +26,8 @@ function LoginPage() {
 
     try {
       // Send a POST request to the updated API endpoint
-      const response = await axios.post("https://node-blog-app-seven.vercel.app/blog/login", formData);
+      // const response = await axios.post("https://node-blog-app-seven.vercel.app/blog/login", formData);
+      const response = await axios.post("http://localhost:3000/blog/login", formData);
       // console.log("response",response.data.message)
       if (response.status === 200) {
         setSuccess("Login successful!");
@@ -34,6 +35,8 @@ function LoginPage() {
         localStorage.setItem("username", response.data.author.authorname);
         localStorage.setItem("email", response.data.author.email);
         localStorage.setItem("message",response.data.message); // Assuming role is predefined
+        localStorage.setItem("role",response.data.author.role); // Assuming role is predefined
+        localStorage.setItem("profile",response.data.author.profile); // Assuming role is predefined
         setLoader(true);
          // Delay navigation by 2 seconds
         setTimeout(() => {

@@ -14,6 +14,9 @@ import Authors from "./Pages/Authors.jsx";
 import ChangePassword from "./auth/ChangePassword.jsx";
 import YourPost from "./Pages/YourPost.jsx";
 import { GlobalStateProvider } from "./GlobalStateContext.jsx";
+import Announcement from "./Pages/Announcement.jsx";
+import Control from "./Pages/Control.jsx";
+import TechCommunity from "./Pages/TechCommunity.jsx";
 function App() {
   return (
     <AuthProvider>
@@ -58,6 +61,21 @@ function App() {
            <Route
             path="/yourposts"
             element={<ProtectedRoute element={<YourPost/>} />}
+          />
+
+          <Route
+            path="/announcement"
+            element={<ProtectedRoute element={<Announcement/>} />}
+          />
+
+            <Route
+            path="/control"
+            element={<ProtectedRoute element={<Control/>} />}
+          />
+
+           <Route
+            path="/community"
+            element={<ProtectedRoute element={<TechCommunity/>} />}
           />
         </Routes>
       </Router>

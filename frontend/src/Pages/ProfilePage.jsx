@@ -13,6 +13,7 @@ import Footer from "../ui/Footer";
 function ProfilePage() {
   const { logout } = useAuth();
   const email = localStorage.getItem("email");
+  const role = localStorage.getItem("role");
   const [author, setAuthor] = useState({});
   const [authorName, setAuthorName] = useState("");
   const [authorEmail, setAuthorEmail] = useState("");
@@ -93,6 +94,8 @@ function ProfilePage() {
     }
   };
 
+
+  console.log("author", author);
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
       <NavBar />
@@ -118,15 +121,18 @@ function ProfilePage() {
               <HiOutlineUserCircle className="text-center text-[#786fa6] shadow-xl bg-white rounded-3xl border-4 border-orange-500 mx-auto text-9xl" />
             </div>
           )}
+
+
                 <div className="flex items-center gap-4 justify-start ">  
-              <div>
+            <div className={`${author.role==='coordinator'?'':'hidden'} `}>
               <label htmlFor="image" className="block text-green-500 text-sm font-medium text-gray-300">
                 Followers
               </label>
               <p className="w-full md:text-base text-sm text-center">{followers?followers.length:''}</p>
               </div>
 
-              <div>
+
+              <div  className={`${author.role!=='admin'?'':'hidden'} `}>
               <label htmlFor="image" className="block text-sm text-green-500 font-medium text-gray-300">
                 Following
               </label>
@@ -165,6 +171,20 @@ function ProfilePage() {
                 
               />
             </div>
+
+             <div>
+              <label htmlFor="authorEmail" className="block text-sm font-medium text-gray-300">
+                Author Role
+              </label>
+              <input
+                type="email"
+                id="authorEmail"
+                value={role}
+                className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                readOnly
+                
+              />
+            </div>
             <div>
               <label htmlFor="image" className="block text-sm font-medium text-gray-300">
                 Profile Image
@@ -176,6 +196,27 @@ function ProfilePage() {
                 className="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 text-xs md:file:text-sm file:text-xs file:text-white hover:file:bg-orange-600"
               />
             </div>
+  
+             {/* 🧠 Tech Community Section - Redesigned */}
+            {author.community && author.community.length > 0 && (
+              <div className="mb-6 w-full text-center">
+                <label className="block text-sm font-semibold text-orange-400 mb-2">
+                  Tech Communities
+                </label>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {author.community.map((com, index) => (
+                    <span
+                      key={index}
+                      className="inline-block px-3 py-1 text-xs md:text-sm font-medium text-white bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full shadow-sm"
+                    >
+                      {com}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            
 
       
             <div>
