@@ -202,7 +202,7 @@ useEffect(()=>{
       {announcement.length === 0 ? (
         <p className={`${showAnnouncement?'hidden':'text-center text-gray-500'}`}>No announcements available.</p>
       ) : (
-        <div className={`${showAnnouncement?'hidden':'space-y-4 md:w-1/2 w-11/12 mx-auto'}`}>
+        <div className={`${showAnnouncement?'hidden':'space-y-4 md:w-1/2 w-11/12 min-h-screen mx-auto'}`}>
           {reversedAnnouncements
           .map((announcement) => (
             <div
