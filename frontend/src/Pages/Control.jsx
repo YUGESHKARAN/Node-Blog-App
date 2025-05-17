@@ -14,7 +14,7 @@ function Control() {
   const email = localStorage.getItem('email');
   const getAuthors = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:3000/blog/author');
+      const response = await axios.get('https://node-blog-app-seven.vercel.app/blog/author');
       setAuthors(response.data);
       setFilteredAuthors(response.data);
     } catch (err) {
@@ -43,7 +43,7 @@ function Control() {
 
     try {
       const response = await axios.put(
-        'http://127.0.0.1:3000/blog/author/control/updateRole',
+        'https://node-blog-app-seven.vercel.app/blog/author/control/updateRole',
         { role: roleToUpdate, email },
         {
           headers: {
@@ -89,7 +89,7 @@ const deleteAuthor = async (email) => {
 
     try {
       const response = await axios.delete(
-        `http://127.0.0.1:3000/blog/author/${email}`
+        `https://node-blog-app-seven.vercel.app/blog/author/${email}`
       );
     //   toast.success("Account deleted successfully");
      getAuthors();
@@ -103,7 +103,7 @@ const deleteAuthor = async (email) => {
  const getPosts = async () => {
    
     try {
-      const response = await axios.get("http://127.0.0.1:3000/blog/posts");
+      const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/posts");
       setPosts(response.data.posts);
     } 
     catch (err) {
@@ -167,7 +167,7 @@ const updateAssignedCommunities = async (email) => {
   const selectedCommunities = assignedCommunities[email] || [];
   console.log("selected commu",selectedCommunities)
   try {
-   const  response  =  await axios.put(`http://localhost:3000/blog/author/control/coordinatorUpdate`, {
+   const  response  =  await axios.put(`https://node-blog-app-seven.vercel.app/blog/author/control/coordinatorUpdate`, {
       techCommunities: selectedCommunities,
       email:email
     },

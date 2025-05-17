@@ -16,6 +16,7 @@ function Authors() {
     const authorsDetails = async() => {
         try{
             const response = await axios.get('https://node-blog-app-seven.vercel.app/blog/author/profiles/');
+            // const response = await axios.get('http://127.0.0.1:3000/blog/author/profiles/');
             setAuthors(response.data.filter((author)=>author.email!==email))
         }
         catch(err)
@@ -69,9 +70,10 @@ const addFollower = async(userEmail) =>{
   }
 }
 
-const recommendaedAutors = authors.filter((author)=>recommendation.includes(author.email))
+const recommendaedAutors = authors.filter((author)=>recommendation.includes(author.email)).filter(author => author.role === "coordinator"); 
 
 console.log("authors",authors);
+console.log("recommendaedAutors",recommendaedAutors);
 
   return (
     <div className='w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  '>
@@ -134,7 +136,9 @@ console.log("authors",authors);
               className={`grid place-items-center gap-4 mt-7 md:mt-20 grid-cols-2 lg:grid-cols-4`}
             >
                 {
-                 authors.map((author,index)=>(
+                 authors
+                 .filter(author => author.role === "coordinator")
+                 .map((author,index)=>(
                   <div
                   key={index}
                   className="md:h-64 h-64 w-40 md:w-9/12 pt-5 flex-col items-center rounded-lg shadow-lg bg-[#fff]/20">

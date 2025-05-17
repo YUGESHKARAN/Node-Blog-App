@@ -26,8 +26,8 @@ function LoginPage() {
 
     try {
       // Send a POST request to the updated API endpoint
-      // const response = await axios.post("https://node-blog-app-seven.vercel.app/blog/login", formData);
-      const response = await axios.post("http://localhost:3000/blog/login", formData);
+      const response = await axios.post("https://node-blog-app-seven.vercel.app/blog/login", formData);
+      // const response = await axios.post("http://localhost:3000/blog/login", formData);
       // console.log("response",response.data.message)
       if (response.status === 200) {
         setSuccess("Login successful!");

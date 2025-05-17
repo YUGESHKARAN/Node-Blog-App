@@ -22,11 +22,13 @@ function NavBar() {
     const role = localStorage.getItem("role");
     const[showNotefication,setShowNotification] = useState(false)
     const[socket,setSocket] = useState(null)
-    const exit = () => {
+
+    const exit =  () => {
+        localStorage.removeItem("role");
         localStorage.removeItem("username");
         localStorage.removeItem("email");
         localStorage.removeItem("message");
-        localStorage.removeItem("role");
+        
         logout();
     };
 

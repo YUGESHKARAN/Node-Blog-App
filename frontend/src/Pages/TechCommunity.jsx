@@ -12,7 +12,7 @@ function TechCommunity() {
 
  const getAuthorCommunity = async () => {
     try{
-        const response = await axios.get(`http://127.0.1:3000/blog/author/${email}`);
+        const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/${email}`);
         setAuthorCommunity(response.data.community);
     }
     catch(err)
@@ -24,7 +24,7 @@ function TechCommunity() {
  const getPosts = async () => {
    
     try {
-      const response = await axios.get("http://127.0.0.1:3000/blog/posts");
+      const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/posts");
       setPosts(response.data.posts);
     } 
     catch (err) {
@@ -73,7 +73,7 @@ const communities = groupByCommunity(posts);
 
 const updateCommunity = async(email,techCommunity)=>{
     try{
-         const response = await axios.put("http://127.0.0.1:3000/blog/author/control/updateCommunity",
+         const response = await axios.put("https://node-blog-app-seven.vercel.app/blog/author/control/updateCommunity",
          {
             email:email,
             techcommunity:techCommunity

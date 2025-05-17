@@ -37,7 +37,8 @@ const getProfile = async (req,res) => {
       email:author.email,
       postCount:author.posts.length,
       profile:author.profile,
-      followers:author.followers
+      followers:author.followers,
+      role:author.role,
     }))
     res.json(data);
   }

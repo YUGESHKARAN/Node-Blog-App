@@ -23,7 +23,7 @@ function Announcement() {
 
 const fetchAllAnnouncement = async()=>{
   try{
-    const response = await axios.get(`http://127.0.0.1:3000/blog/author/${email}`);
+    const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/${email}`);
     console.log("announcement",response.data.announcement)
     setAnnouncement(response.data.announcement)
   }
@@ -50,7 +50,7 @@ useEffect(()=>{
     formData.append("profile", profile);
 
     try {
-      const response = await axios.post(`http://localhost:3000/blog/author/announcement/add`, 
+      const response = await axios.post(`https://node-blog-app-seven.vercel.app/blog/author/announcement/add`, 
          formData,
          {
           headers: {
@@ -79,7 +79,7 @@ useEffect(()=>{
 
   const deleteAnnouncement = async (id) => {
     try{
-      const response = await axios.delete(`http://localhost:3000/blog/author/announcements/${id}`);
+      const response = await axios.delete(`https://node-blog-app-seven.vercel.app/blog/author/announcements/${id}`);
       console.log("response",response)
       fetchAllAnnouncement();
     }
@@ -87,6 +87,8 @@ useEffect(()=>{
       console.log("error",err)
     }
   }
+
+  const reversedAnnouncements = Array.isArray(announcement) ? [...announcement].reverse() : [];
 
   console.log("user email",email) 
   return (
@@ -201,7 +203,8 @@ useEffect(()=>{
         <p className={`${showAnnouncement?'hidden':'text-center text-gray-500'}`}>No announcements available.</p>
       ) : (
         <div className={`${showAnnouncement?'hidden':'space-y-4 md:w-1/2 w-11/12 mx-auto'}`}>
-          {announcement.map((announcement) => (
+          {reversedAnnouncements
+          .map((announcement) => (
             <div
               key={announcement._id}
               className="bg-white shadow-md rounded-lg p-4 border border-gray-200"
@@ -215,11 +218,11 @@ useEffect(()=>{
                 </span>
               </div>
              
-              <p className="text-gray-800 md:text-base text-sm mb-2">{announcement.message}</p>
+              <p className="text-gray-600 md:text-base font-semibold text-xs mb-2">{announcement.message}</p>
 
             
                 {announcement.links && announcement.links.length > 0 && (
-                  <div className="flex md:text-base text-xs  flex-wrap gap-2">
+                  <div className="flex md:text-base text-[10px]  flex-wrap gap-2">
                     {announcement.links.map((link, index) => (
                       <a
                         key={index}
@@ -235,8 +238,11 @@ useEffect(()=>{
                 )}
             
 
-              <div className="text-sm mt-2 text-gray-600">
-                <span>From: {announcement.user}</span> {' '} 
+              <div className="text-sm flex gap-2 items-center mt-2 text-gray-600">
+                <div>
+                  <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${announcement.profile}`} alt="" className='md:w-9 md:h-9 w-7 h-7 rounded-full object-center' />
+                </div>
+                <span className='font-semibold'> {announcement.user}</span> {' '} 
                 {/* <span>To: {announcement.deliveredTo}</span> */}
               </div>
             </div>

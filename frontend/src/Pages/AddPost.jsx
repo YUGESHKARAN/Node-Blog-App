@@ -204,8 +204,8 @@ function AddPost() {
   
     try {
       const response = await axios.post(
-        // `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
-        `http://localhost:3000/blog/posts/${email}`,
+        `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
+        // `http://localhost:3000/blog/posts/${email}`,
         formData,
         {
           headers: {
@@ -303,6 +303,7 @@ function AddPost() {
                 className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               >
                 <option value="GenAI">GenAI</option>
+                <option value="Design Thinking">Design Thinking</option>
                 <option value="Data Science">Data Science</option>
                 <option value="Blockchain">Blockchain</option>
                 <option value="AI/ML">AI/ML</option>
