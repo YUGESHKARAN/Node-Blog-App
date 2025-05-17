@@ -391,16 +391,17 @@ function ViewEditPost() {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-             <option value="Education">Education</option>
-             <option value="GenAI">GenAI</option>
-             <option value="Data Science">Data Science</option>
-             <option value="Blockchain">Blockchain</option>
-             <option value="AI/ML">AI/ML</option>
-             <option value="Cyber Security">Cyber Security</option>
-             <option value="IoT ">IoT</option>
-             <option value="Embedded System">Embedded System</option>
-             <option value="Web Development">Web Development</option>   
-             <option value="App Development">App Development</option>   
+                <option value="GenAI">GenAI</option>
+                <option value="Design Thinking">Design Thinking</option>
+                <option value="Data Science">Data Science</option>
+                <option value="Blockchain">Blockchain</option>
+                <option value="AI/ML">AI/ML</option>
+                <option value="Cyber Security">Cyber Security</option>
+                <option value="IoT ">IoT</option>
+                <option value="Embedded System">Embedded System</option>
+                <option value="Web Development">Web Development</option>   
+                <option value="Satellite Space Technology">Satellite Space Technology</option>   
+                <option value="Others">Others</option>   
             </select>
           </div>
 
