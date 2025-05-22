@@ -169,54 +169,55 @@ function NavBar() {
                 ref={sidebarRef}
                 className={`${isSidebarOpen ? 'fixed right-0 top-0 h-full w-64 shadow-xl' : 'fixed right-[-300px] top-0 h-full w-64 shadow-xl'} bg-gray-800 text-white transition-all duration-1000 z-50`}
             >
-                <ul className='w-full flex flex-col gap-10 text-center mt-10'>
-                    <li className='transition-all duration-200 mx-auto'>
+                <ul className='w-full  flex flex-col gap-10 text-center mt-10'>
+                    <li className='transition-all w-11/12 ml-10 duration-200 mx-auto'>
                         <Link to="/home" className='flex items-center hover:text-gray-400 transition-all duration-200  hover:text-gray-400 transition-all duration-200 justify-start w-24'>
-                            <IoHome className='text-xl mr-3'/> Home
+                            <IoHome className='text-xl mr-3  text-green-500'/> Home
                         </Link>
                     </li>
-                    {
-                        role==='student'&&
-                        <li className='transition-all text-left duration-200 mx-auto'>
+                  <li className='transition-all w-11/12 ml-10  text-left duration-200 mx-auto'>
                         <Link to="/community" className='flex items-center hover:text-gray-400 transition-all duration-200  hover:text-gray-400 transition-all duration-200 justify-start w-fit'>
-                            <MdGroups className='text-xl mr-3'/> Tech Communities
+                            <MdGroups className='text-xl mr-3 text-green-500'/> Tech Communities
                         </Link>
                     </li>
-                    }
 
-                    <li className='transition-all mx-auto duration-200'>
+                   {
+                    role==='coordinator' &&
+                    <li className='transition-all w-11/12 ml-10  mx-auto duration-200'>
                         <Link to="/yourposts" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
-                            <MdDataObject  className='text-xl mr-3'/>My Posts
+                            <MdDataObject  className='text-xl mr-3 text-green-500'/>My Posts
                         </Link>
                     </li>
+                   }
 
-                    <li className='transition-all mx-auto duration-200'>
+                    <li className='transition-all w-11/12 ml-10  mx-auto duration-200'>
                         <Link to="/authors" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
-                            <IoPeople className='text-xl mr-3'/>Authors
+                            <IoPeople className='text-xl mr-3 text-green-500'/>Authors
                         </Link>
                     </li>
 
                   {
-                    role==='coordinator'&&   <li className='transition-all mx-auto duration-200'>
+                    role==='coordinator' &&  
+                    <li className='transition-all w-11/12 ml-10  mx-auto duration-200'>
                         <Link to="/addPost" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
-                            <MdPostAdd className='text-xl mr-3'/>Add Post
+                            <MdPostAdd className='text-xl mr-3 text-green-500'/>Add Post
                         </Link>
                     </li>
                   }
-                    <li className='transition-all mx-auto duration-200'>
+                    <li className='transition-all w-11/12 ml-10  mx-auto duration-200'>
                         <Link to="/profile" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
-                            <FaUserAlt className='text-xl mr-3'/>My Profile
+                            <FaUserAlt className='text-xl mr-3 text-green-500'/>My Profile
                         </Link>
                     </li>
 
-                      <li className='transition-all mx-auto duration-200'>
+                      <li className='transition-all w-11/12 ml-10  mx-auto duration-200'>
                         <Link to="/announcement" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
-                            <MdAnnouncement className='text-xl mr-3'/>Announcement
+                            <MdAnnouncement className='text-xl mr-3 text-green-500'/>Announcement
                         </Link>
                     </li>
                     <li className='mx-auto'>
                         <a href="" onClick={exit}>
-                            <IoLogOut className='text-3xl text-gray-400'/>
+                            <IoLogOut className='text-3xl text-red-600'/>
                         </a>
                     </li>
                 </ul>

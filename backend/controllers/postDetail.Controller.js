@@ -36,6 +36,8 @@ const getAllPosts = async (req, res) => {
       authorname: author.authorname,
       authoremail: author.email,
       profie:author.profile||'',
+      role:author.role, 
+      community:author.community,
       
     }))); // extract posts alone
 

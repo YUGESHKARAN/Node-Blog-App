@@ -9,6 +9,8 @@ function TechCommunity() {
  const email = localStorage.getItem("email");
  const role = localStorage.getItem("role");
  const [authorCommunity, setAuthorCommunity] = useState([]);
+ const [authors, setAuthors] = useState([]);
+//  const [communities, setCommunities] = useState([]);
 
  const getAuthorCommunity = async () => {
     try{
@@ -33,43 +35,71 @@ function TechCommunity() {
   
   };
 
+
+  const getAuthors = async () => {
+   
+    try {
+      const response = await axios.get("http://127.0.0.1:3000/blog/author");
+      setAuthors(response.data);
+    } 
+    catch (err) {
+      console.error("Error fetching posts:", err);
+    }
+  
+  };
     useEffect(() => {
             getPosts();
             getAuthorCommunity();
+            getAuthors(); 
      }, []);
 
 
+
+
+      // Get unique categories
+  const getUniqueCategories = (posts) => {
+    return [...new Set(posts.map((post) => post.category))];
+  };
+  const categories = getUniqueCategories(posts);
+
+
+
     //  get Tech community array
- function groupByCommunity(data) {
-  const communityMap = {};
+function getCategoryStats(authors, categoryname) {
+  let followerscount = 0;
+  let authorcount = 0;
+  let postscount = 0;
 
-  data.forEach(item => {
-    const category = item.category || "Uncategorized";
-    const author = item.authoremail;
-
-    if (!communityMap[category]) {
-      communityMap[category] = {
-        communityName: category,
-        Authors: new Set(),
-        Posts: 0
-      };
+  authors.forEach(author => {
+    if (author.community.includes(categoryname)) {
+      if (author.role === 'student') {
+        followerscount++;
+      } else if (author.role === 'coordinator') {
+        authorcount++;
+      }
     }
+      const matchingPosts = author.posts?.filter(
+        (post) => post.category === categoryname
+      ) || [];
 
-    communityMap[category].Authors.add(author);
-    communityMap[category].Posts += 1;
+      postscount += matchingPosts.length;
   });
 
-  // Convert to array and count unique authors
-  const result = Object.values(communityMap).map(item => ({
-    communityName: item.communityName,
-    Authors: item.Authors.size,
-    Posts: item.Posts
-  }));
-
-  return result;
+  return {
+    categoryname,
+    followerscount,
+    authorcount,
+    postscount
+  };
 }
 
-const communities = groupByCommunity(posts);
+
+// const communities = getCategoryStats(authors, categories);
+const communities = categories.map((category) => getCategoryStats(authors, category));
+
+
+
+
 
 const updateCommunity = async(email,techCommunity)=>{
     try{
@@ -86,9 +116,12 @@ const updateCommunity = async(email,techCommunity)=>{
       }
         );
         if (response.status === 201) {
-        getPosts();
-        getAuthorCommunity();
+        await  getPosts();
+        await  getAuthorCommunity();
+        window.location.reload();
        }
+
+      
     }
     catch(err)
     {
@@ -96,8 +129,18 @@ const updateCommunity = async(email,techCommunity)=>{
     }
 }
 
+// useEffect(()=>{
+//     const categories = getUniqueCategories(posts);
+//     const comm = categories.map((category) => getCategoryStats(authors, category));
+//     setCommunities(comm);
+// },[authorCommunity])
+
+
 console.log("authorCommunity",authorCommunity)  
-console.log("communities",communities)  
+// console.log("communities",communities)  ;
+console.log("authors",authors)  ;
+console.log("categories",categories)  ;
+console.log("role",role)  ;
 
 
   return (
@@ -114,16 +157,16 @@ console.log("communities",communities)
         className="bg-gray-800 p-6 rounded-2xl shadow-lg flex  justify-between hover:shadow-xl transition-shadow duration-300"
         >
         <div>
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-2">{item.communityName}</h2>
+            <h2 className="text-xl md:text-2xl font-bold text-white mb-2">{item.categoryname}</h2>
             <ul className="text-gray-300 space-y-1 text-sm">
             <li>
-                <span className="text-xs md:text-sm font-medium text-white">Authors:</span> {item.Authors}
+                <span className="text-xs md:text-sm font-medium text-white">Authors:</span> {item.authorcount}
             </li>
             <li>
-                <span className="text-xs md:text-sm font-medium text-white">Posts:</span> {item.Posts}
+                <span className="text-xs md:text-sm font-medium text-white">Posts:</span> {item.postscount}
             </li>
             <li>
-                <span className="text-xs md:text-sm font-medium text-white">Followers:</span> {item.followers}
+                <span className="text-xs md:text-sm font-medium text-white">Followers:</span> {item.followerscount}
             </li>
             </ul>
         </div>
@@ -134,20 +177,20 @@ console.log("communities",communities)
         
         type="button"
         // disable if already joined
-        className={`${authorCommunity.includes(item.communityName)?'mt-6 self-start text-sm md:text-base font-semibold transition-colors duration-200 px-4 py-2 rounded-lg bg-orange-600 text-white cursor-pointer ':'hidden'}`}>
-        {authorCommunity.includes(item.communityName) && 'Coordinator' }
+        className={`${authorCommunity.includes(item.categoryname)?'mt-6 self-start text-sm md:text-base font-semibold transition-colors duration-200 px-4 py-2 rounded-lg bg-orange-600 text-white cursor-pointer ':'hidden'}`}>
+        {authorCommunity.includes(item.categoryname) && 'Coordinator' }
         </button>:
         
             <button
-            onClick={() => updateCommunity(email, item.communityName)}
+            onClick={() => updateCommunity(email, item.categoryname)}
             type="button"
-            // disabled={authorCommunity.includes(item.communityName)} // disable if already joined
+            // disabled={authorCommunity.includes(item.categoryname)} // disable if already joined
             className={`mt-6 self-start text-sm md:text-base font-semibold transition-colors duration-200 px-4 py-2 rounded-lg 
-                ${authorCommunity.includes(item.communityName) 
+                ${authorCommunity.includes(item.categoryname) 
                 ? 'bg-green-600 text-white cursor-pointer' 
                 : 'bg-white text-gray-800 hover:bg-gray-500'} `}
             >
-            {authorCommunity.includes(item.communityName) ? 'Joined' : 'Join'}
+            {authorCommunity.includes(item.categoryname) ? 'Joined' : 'Join'}
             </button>
         }
       
@@ -162,3 +205,209 @@ console.log("communities",communities)
 }
 
 export default TechCommunity
+
+
+
+// import React,{useState, useEffect} from 'react'
+// import NavBar from '../ui/NavBar'
+// import axios from 'axios'   
+// function TechCommunity() {
+
+//  const [posts, setPosts] = useState([]); 
+
+//  const username = localStorage.getItem("username");
+//  const email = localStorage.getItem("email");
+//  const role = localStorage.getItem("role");
+//  const [authorCommunity, setAuthorCommunity] = useState([]);
+//  const [authors, setAuthors] = useState([]);
+
+//  const getAuthorCommunity = async () => {
+//     try{
+//         const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/${email}`);
+//         setAuthorCommunity(response.data.community);
+//     }
+//     catch(err)
+//     {
+//         console.log("error",err)    
+//      }
+//     }
+//   // Fetch posts from API
+//  const getPosts = async () => {
+   
+//     try {
+//       const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/posts");
+//       setPosts(response.data.posts);
+//     } 
+//     catch (err) {
+//       console.error("Error fetching posts:", err);
+//     }
+  
+//   };
+
+//    const getAuthors = async () => {
+   
+//     try {
+//       const response = await axios.get("http://127.0.0.1:3000/blog/author");
+//       setAuthors(response.data);
+//     } 
+//     catch (err) {
+//       console.error("Error fetching posts:", err);
+//     }
+  
+//   };
+
+//     useEffect(() => {
+//             getPosts();
+//             getAuthorCommunity();
+//             getAuthors();
+//      }, []);
+
+
+//     //  get Tech community array
+// function getCategorySummary(authors, posts) {
+//   const resultMap = {};
+
+//   // Step 1: Count posts per category
+//   posts.forEach(post => {
+//     const category = post.category;
+//     if (category) {
+//       if (!resultMap[category]) {
+//         resultMap[category] = {
+//           categoryName: category,
+//           authorsCount: 0,
+//           followersCount: 0,
+//           postsCount: 0
+//         };
+//       }
+//       resultMap[category].postsCount += 1;
+//     }
+//   });
+
+//   // Step 2: Count authors and followers per category from authors array
+//   authors.forEach(author => {
+//     const { role, community, followers } = author;
+
+//     if (Array.isArray(community)) {
+//       community.forEach(category => {
+//         if (!resultMap[category]) {
+//           resultMap[category] = {
+//             categoryName: category,
+//             authorsCount: 0,
+//             followersCount: 0,
+//             postsCount: 0
+//           };
+//         }
+
+//         // Count author for category
+//         resultMap[category].authorsCount += 1;
+
+//         // Only add followersCount if author role is student
+//         if (role === "student") {
+//           resultMap[category].followersCount += (Array.isArray(followers) ? followers.length : 0);
+//         }
+//       });
+//     }
+//   });
+
+//   return Object.values(resultMap);
+// }
+
+
+
+
+// const communities = getCategorySummary(authors, posts);
+
+// const updateCommunity = async(email,techCommunity)=>{
+//     try{
+//          const response = await axios.put("https://node-blog-app-seven.vercel.app/blog/author/control/updateCommunity",
+//          {
+//             email:email,
+//             techcommunity:techCommunity
+//          },
+//          {
+//           headers: {
+//              'Content-Type': 'application/json',
+//           },
+        
+//       }
+//         );
+//         if (response.status === 201) {
+//         getPosts();
+//         getAuthorCommunity();
+//         getCategorySummary(authors, posts); 
+//        }
+//     }
+//     catch(err)
+//     {
+//         console.log("error",err)
+//     }
+// }
+
+// console.log("authorCommunity",authorCommunity)  
+// console.log("authors",authors)  
+// console.log("communities",communities)  
+// console.log("posts",posts)  
+
+
+//   return (
+//    <div className="min-h-screen relative bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+
+//       <NavBar/>
+
+//       <div>
+//         <h1 className="text-xl md:text-3xl font-bold text-center mt-10">Tech Communities</h1>
+//    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+//     {communities.map((item, index) => (
+//         <div
+//         key={index}
+//         className="bg-gray-800 p-6 rounded-2xl shadow-lg flex  justify-between hover:shadow-xl transition-shadow duration-300"
+//         >
+//         <div>
+//             <h2 className="text-xl md:text-2xl font-bold text-white mb-2">{item.categoryName}</h2>
+//             <ul className="text-gray-300 space-y-1 text-sm">
+//             <li>
+//                 <span className="text-xs md:text-sm font-medium text-white">Authors:</span> {item.authorsCount}
+//             </li>
+//             <li>
+//                 <span className="text-xs md:text-sm font-medium text-white">Posts:</span> {item.postsCount}
+//             </li>
+//             <li>
+//                 <span className="text-xs md:text-sm font-medium text-white">Followers:</span> {item.followersCount}
+//             </li>
+//             </ul>
+//         </div>
+      
+        
+//       {role ==='coordinator' || role ==='admin'?
+//        <button
+        
+//         type="button"
+//         // disable if already joined
+//         className={`${authorCommunity.includes(item.categoryName)?'mt-6 self-start text-sm md:text-base font-semibold transition-colors duration-200 px-4 py-2 rounded-lg bg-orange-600 text-white cursor-pointer ':'hidden'}`}>
+//         {authorCommunity.includes(item.categoryName) && 'Coordinator' }
+//         </button>:
+        
+//             <button
+//             onClick={() => updateCommunity(email, item.categoryName)}
+//             type="button"
+//             // disabled={authorCommunity.includes(item.categoryName)} // disable if already joined
+//             className={`mt-6 self-start text-sm md:text-base font-semibold transition-colors duration-200 px-4 py-2 rounded-lg 
+//                 ${authorCommunity.includes(item.categoryName) 
+//                 ? 'bg-green-600 text-white cursor-pointer' 
+//                 : 'bg-white text-gray-800 hover:bg-gray-500'} `}
+//             >
+//             {authorCommunity.includes(item.categoryName) ? 'Joined' : 'Join'}
+//             </button>
+//         }
+      
+//         </div>
+//     ))}
+//     </div>
+
+//       </div>
+
+//     </div>
+//   )
+// }
+
+// export default TechCommunity
