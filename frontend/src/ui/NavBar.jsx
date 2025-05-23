@@ -113,6 +113,14 @@ function NavBar() {
                         <IoHome className='text-xl'/>Home
                     </Link>
                 </li>
+
+                 <li className='transition-all duration-200 hover:text-white'>
+                 
+                     <Link to="/community" className='flex items-center gap-1'>
+                        <MdGroups className='text-2xl'/> Tech Communities
+                    </Link>
+                </li>
+
                 <li className='transition-all duration-200 hover:text-white'>
                     {role==='coordinator'&&
                      <Link to="/addPost" className='flex items-center gap-1'>
@@ -120,12 +128,6 @@ function NavBar() {
                     </Link>}
                 </li>
              
-                <li className='transition-all duration-200 hover:text-white'>
-                 
-                     <Link to="/community" className='flex items-center gap-1'>
-                        <MdGroups className='text-2xl'/> Tech Communities
-                    </Link>
-                </li>
                 
                 <li className='transition-all duration-200 hover:text-white'>
                     <Link to="/profile" className='flex items-center gap-1'>
@@ -233,7 +235,7 @@ function NavBar() {
                          className='text-[10px] px-2   rounded-md text-black bg-white'>Clear All</button>
                     </div>
             
-                   {note.map((data,index)=>(
+                   {[...note].reverse().map((data,index)=>(
                     <div 
                     key={index}
                     

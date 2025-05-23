@@ -39,7 +39,7 @@ function TechCommunity() {
   const getAuthors = async () => {
    
     try {
-      const response = await axios.get("http://127.0.0.1:3000/blog/author");
+      const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/author");
       setAuthors(response.data);
     } 
     catch (err) {
@@ -247,7 +247,7 @@ export default TechCommunity
 //    const getAuthors = async () => {
    
 //     try {
-//       const response = await axios.get("http://127.0.0.1:3000/blog/author");
+//       const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/author");
 //       setAuthors(response.data);
 //     } 
 //     catch (err) {

@@ -213,6 +213,8 @@ function AddPost() {
           },
         }
       );
+
+      console.log("adding post response", response.data);
   
       // Reset form
       setTitle("");

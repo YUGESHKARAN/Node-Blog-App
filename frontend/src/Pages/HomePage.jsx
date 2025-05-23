@@ -13,11 +13,8 @@ import {
   TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import { TbMessageChatbotFilled } from "react-icons/tb";
-import { VscCopilot } from "react-icons/vsc";
 import { GoCopilot } from "react-icons/go";
 import { MdAppSettingsAlt } from "react-icons/md";
-import { RiAdminFill } from "react-icons/ri";
 function HomePage() {
   const username = localStorage.getItem("username");
 
@@ -31,7 +28,8 @@ function HomePage() {
   const getAuthors = async () => {
     try {
       const response = await axios.get('https://node-blog-app-seven.vercel.app/blog/author');
-      setAuthors(response.data);
+      // const result = response.data.filter((author) => author.email !== email);
+      setAuthors(response.data.filter((author) => author.email !== email).filter(author => author.role === "coordinator"));
       console.log("authors", response.data);
     } catch (err) {
       console.error(err);
@@ -187,10 +185,10 @@ function HomePage() {
     addWord();
   };
 
-  
-  // console.log('your posts', yourPost);
+ // console.log('your posts', yourPost);
   // console.log('email', email);
-  console.log("role localstorage", role)
+  console.log("role localstorage", role);
+  console.log("authors", authors);  
 
   return (
     <div className="min-h-screen relative bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 text-white">
