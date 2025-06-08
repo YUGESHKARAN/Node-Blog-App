@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import NavBar from '../ui/NavBar';
 import { RiChatDeleteFill, RiDeleteBack2Fill } from 'react-icons/ri';
+import Footer from '../ui/Footer';
 // import { format } from 'date-fns';
 function Announcement() {
   const username = localStorage.getItem("username");
@@ -200,7 +201,7 @@ useEffect(()=>{
       </form>
 
       {announcement.length === 0 ? (
-        <p className={`${showAnnouncement?'hidden':'text-center text-gray-500'}`}>No announcements available.</p>
+        <p className={`${showAnnouncement?'hidden':'text-center min-h-screen text-gray-500'}`}>No announcements available.</p>
       ) : (
         <div className={`${showAnnouncement?'hidden':'space-y-4 md:w-1/2 w-11/12 min-h-screen mx-auto'}`}>
           {reversedAnnouncements
@@ -249,7 +250,7 @@ useEffect(()=>{
           ))}
         </div>
       )}
-
+   <Footer/>
     </div>
   );
 }

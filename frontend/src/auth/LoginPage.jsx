@@ -34,9 +34,9 @@ function LoginPage() {
         login(); // Assuming the useAuth() function updates the auth context
         localStorage.setItem("username", response.data.author.authorname);
         localStorage.setItem("email", response.data.author.email);
-        localStorage.setItem("message",response.data.message); // Assuming role is predefined
-        localStorage.setItem("role",response.data.author.role); // Assuming role is predefined
-        localStorage.setItem("profile",response.data.author.profile); // Assuming role is predefined
+        localStorage.setItem("message",response.data.message); 
+        localStorage.setItem("role",response.data.author.role); 
+        localStorage.setItem("profile",response.data.author.profile); 
         setLoader(true);
          // Delay navigation by 2 seconds
         setTimeout(() => {

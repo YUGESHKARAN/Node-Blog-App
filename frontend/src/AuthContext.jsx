@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Optionally, you can check if the message in localStorage indicates a successful login
+    // check if the message in localStorage indicates a successful login
     const message = localStorage.getItem("message");
     if (message === "Login Successfull") {
       login(); // Set user as authenticated
