@@ -98,18 +98,18 @@ useEffect(()=>{
       <NavBar/>
        <h2 className="md:text-4xl font-bold my-5 flex justify-between items-center text-xl w-11/12 md:w-1/2 mx-auto ">Announcements 
         {role!=='student' && !showAnnouncement?
-        <span onClick={()=> setShowAnnouncement(true)} className='text-xs cursor-pointer hover:bg-gray-700 bg-gray-800  text-white font-semibold rounded-md p-2'>
+        <span onClick={()=> setShowAnnouncement(true)} className='text-xs cursor-pointer hover:bg-gray-800 bg-gray-700  text-white font-semibold rounded-md p-2'>
           Add 
          </span>
          :
-         <span onClick={()=> setShowAnnouncement(false)} className={`${role!=='student'?'text-xs cursor-pointer hover:bg-gray-700 bg-gray-800 text-white font-semibold rounded-md p-2':'hidden'}`}>
+         <span onClick={()=> setShowAnnouncement(false)} className={`${role!=='student'?'text-xs cursor-pointer hover:bg-gray-800 bg-gray-700 text-white font-semibold rounded-md p-2':'hidden'}`}>
           back 
          </span>
          }
       </h2>
    
       {/* <h2 className="text-xl font-bold mb-4">Add Announcement</h2> */}
-      <form onSubmit={handleSubmit} className={`${showAnnouncement?'space-y-4  p-4 md:w-1/2 mx-auto w-11/12  rounded-lg ':"hidden"}`}>
+      <form onSubmit={handleSubmit} className={`${showAnnouncement?'space-y-4  p-4 md:w-1/2 mx-auto w-11/12  rounded-lg min-h-screen':"hidden"}`}>
         <div>
           <label className="block text-sm font-medium text-gray-300">Title</label>
           <input

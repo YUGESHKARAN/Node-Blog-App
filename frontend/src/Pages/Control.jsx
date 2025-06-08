@@ -208,7 +208,7 @@ useEffect(() => {
 
 // console.group("filteredAuthors",filteredAuthors)
 
-// console.log("authorCommunity",authorCommunity)
+// console.log("authorCommusnity",authorCommunity)
   return (
     <div className='w-full min-h-screen h-auto  bg-gradient-to-br from-gray-900 to-gray-700   relative'>
       <NavBar />
