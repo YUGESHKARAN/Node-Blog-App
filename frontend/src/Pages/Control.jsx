@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from '../ui/NavBar';
 import { MdDeleteForever } from 'react-icons/md';
+import Footer from '../ui/Footer';
 
 function Control() {
   const [authors, setAuthors] = useState([]);
@@ -209,7 +210,7 @@ useEffect(() => {
 
 // console.log("authorCommunity",authorCommunity)
   return (
-    <div className='w-full min-h-screen h-auto pb-10 bg-gradient-to-br from-gray-900 to-gray-700   relative'>
+    <div className='w-full min-h-screen h-auto  bg-gradient-to-br from-gray-900 to-gray-700   relative'>
       <NavBar />
       <h1 className='md:text-4xl font-bold my-5 text-white text-center text-xl w-11/12 mx-auto'>
         Blog Control Panel
@@ -399,7 +400,7 @@ useEffect(() => {
 
        <h1 className={`${roleFilter==='student' ||roleFilter=== ''?'text-center md:text-base text-lg font-bold  text-white':'hidden'}`}>Students</h1>
       {/* Author students */}
-      <div className={`${roleFilter==='student' || roleFilter===''?'h-auto mb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':'hidden'}`}>
+      <div className={`${roleFilter==='student' || roleFilter===''?'h-auto mb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':'hidden'} min-h-screen`}>
        {[
   // First, filter authors based on their roles
           ...filteredAuthors.filter((author) => author.role === 'student'),
@@ -439,8 +440,8 @@ useEffect(() => {
         ))}
 
       </div>
-
-
+    
+       <Footer/>
     </div>
   );
 }
