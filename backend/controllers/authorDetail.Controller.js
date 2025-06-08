@@ -427,9 +427,10 @@ const addAnnouncement = async (req, res) => {
     else if (deliveredTo === 'community') {
       // Match authors with at least one shared community
       filter.community = { $in: author.community };
-    } else {
-      return res.status(400).json({ message: 'Invalid deliveredTo value' });
-    }
+    } 
+    // else {
+    //   return res.status(400).json({ message: 'Invalid deliveredTo value' });
+    // }
 
    
 
