@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext} from "react";
-import blog1 from "../images/blog1.jpg";
+import blog1 from "../images/loading1.gif";
 import blog2 from "../images/blog48.jpg";
 import avatar1 from "../images/avatar1.jpg";
 import axios from "axios";

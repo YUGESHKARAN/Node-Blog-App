@@ -23,11 +23,12 @@ function AddPost() {
   const [category, setCategory] = useState("Education");
   const [image, setImage] = useState(null);
   const email = localStorage.getItem("email"); // Get email from local storage
+  const user = localStorage.getItem('username')
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [messages, setMessages] = useState([
     {
-      message: "Hello developer, I am here to convert your text to post content.",
+      message: `Hello ${user}, I’m here to transform your text into compelling post-ready content.`,
       sender: "bot",
       direction: "incoming",
     },
