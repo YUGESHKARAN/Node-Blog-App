@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext} from "react";
-import blog1 from "../images/loading1.gif";
+import blog1 from "../images/loading3.gif";
 import blog2 from "../images/blog48.jpg";
 import avatar1 from "../images/avatar1.jpg";
 import axios from "axios";
@@ -187,7 +187,7 @@ getComments();
                 ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`
                 : blog1
             }
-            className="w-full h-fit"
+            className="w-full h-fit bg-black"
             alt="Post"
             onClick={() =>
               handleImageClick(

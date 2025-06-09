@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { IoSearchOutline, IoEye, IoClose, IoShareSocial } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MagnifyingGlass } from "react-loader-spinner";
-import blog1 from "../images/blog1.jpg";
+import blog1 from "../images/img_not_found.png";
 import NavBar from "../ui/NavBar";
 import Footer from "../ui/Footer";
 import { BiLike, BiSolidLike } from "react-icons/bi";

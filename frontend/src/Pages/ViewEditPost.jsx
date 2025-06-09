@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import blog1 from "../images/blog1.jpg";
+import blog1 from "../images/img_not_found.png";
 import { useLocation } from "react-router-dom";
 import avatar1 from "../images/avatar1.jpg";
 import { useParams } from "react-router-dom";
@@ -206,7 +206,7 @@ function ViewEditPost() {
             </h3>
 
           <img
-            src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`}
+            src={singlePostData.image? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`:blog1}
             className="w-full h-fit"
             alt=""
           />
@@ -261,9 +261,8 @@ function ViewEditPost() {
               current Post
             </label>{" "}
             <br />
-           <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`} className="w-40" alt="" />
+           <img src={singlePostData.image? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`: blog1} className="w-40" alt="" />
           </div>
-
 
 
           <div className="w-11/12 mt-5">

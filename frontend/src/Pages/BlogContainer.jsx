@@ -9,7 +9,7 @@ import {
 } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MagnifyingGlass } from "react-loader-spinner";
-import blog1 from "../images/blog1.jpg";
+import blog1 from "../images/img_not_found.png";
 import { BiLike, BiSolidLike } from "react-icons/bi";
 
 function BlogContainer() {
