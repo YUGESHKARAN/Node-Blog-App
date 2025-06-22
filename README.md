@@ -4,34 +4,37 @@
 
 A modern, full-stack E-Learning platform **specially designed for individual universities and colleges** ,  focused on exchaning knowledge, help students/developers build and engage with tech communities. It allows developers to collaborate with each other and connect with people who share similar interests by posting technical content across multiple domains in the same university. This enables viewers to learn, grow, and clarify their doubts through the comment section. The platform features three distinct interfaces: Student, Coordinator, and Admin.
 
-**Student Interface** <br>
-Access and learn from technical content  <br>
+## Student Interface <br>
 
-Post comments and engage in discussions  <br>
+**-->** Access and learn from technical content  <br>
 
-Select and follow their preferred tech communities  <br>
+**-->** Post comments and engage in discussions  <br>
 
-Follow authors and receive updates  <br>
+**-->** Select and follow their preferred tech communities  <br>
 
-Get announcements from coordinators about upcoming events or live sessions  <br>
+**-->** Follow authors and receive updates  <br>
 
-Receive notifications about new posts from followed communities  <br>
+**-->** Get announcements from coordinators about upcoming events or live sessions  <br>
 
-**Coordinator Interface**  <br>
-Create and publish technical posts  <br>
+**-->** Receive notifications about new posts from followed communities  <br>
 
-AI powered content (grammer) checker.  <br>
+## Coordinator Interface <br>
 
-Plan and schedule announcements for live meetings and future events  <br>
+**-->**Create and publish technical posts  <br>
 
-They can edit or delete their respective posts  <br>
+**-->** AI powered content (grammer) checker.  <br>
 
-**Admin Interface**  <br>
-Manage and control the entire platform  <br>
+**-->** Plan and schedule announcements for live meetings and future events  <br>
 
-Verify and monitors the students and coordinators activities  <br>
+**-->** They can edit or delete their respective posts  <br>
 
-Oversee student and coordinator roles and permissions  <br>
+## Admin Interface <br>
+
+**-->** Manage and control the entire platform  <br>
+
+**-->** Verify and monitors the students and coordinators activities  <br>
+
+**-->** Oversee student and coordinator roles and permissions  <br>
 
 ---
 
