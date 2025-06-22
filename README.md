@@ -1,6 +1,7 @@
 # 📝 Node Blog App
 
-Welcome to the **Node Blog App**! 🚀  
+**Welcome to the **Node Blog App**!   **
+
 A modern, full-stack E-Learning platform **specially designed for individual universities and colleges** ,  focused on exchaning knowledge, help students/developers build and engage with tech communities. It allows developers to collaborate with each other and connect with people who share similar interests by posting technical content across multiple domains in the same university. This enables viewers to learn, grow, and clarify their doubts through the comment section. The platform features three distinct interfaces: Student, Coordinator, and Admin.
 
 **Student Interface**
