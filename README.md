@@ -20,7 +20,7 @@ A modern, full-stack E-Learning platform **specially designed for individual uni
 
 ## Coordinator Interface <br>
 
-**-->**Create and publish technical posts  <br>
+**-->** Create and publish technical posts  <br>
 
 **-->** AI powered content (grammer) checker.  <br>
 
