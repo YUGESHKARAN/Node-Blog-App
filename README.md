@@ -4,33 +4,34 @@
 
 A modern, full-stack E-Learning platform **specially designed for individual universities and colleges** ,  focused on exchaning knowledge, help students/developers build and engage with tech communities. It allows developers to collaborate with each other and connect with people who share similar interests by posting technical content across multiple domains in the same university. This enables viewers to learn, grow, and clarify their doubts through the comment section. The platform features three distinct interfaces: Student, Coordinator, and Admin.
 
-**Student Interface**
-Access and learn from technical content
+**Student Interface** <br>
+Access and learn from technical content  <br>
 
-Post comments and engage in discussions
+Post comments and engage in discussions  <br>
 
-Select and follow their preferred tech communities
+Select and follow their preferred tech communities  <br>
 
-Follow authors and receive updates
+Follow authors and receive updates  <br>
 
-Get announcements from coordinators about upcoming events or live sessions
+Get announcements from coordinators about upcoming events or live sessions  <br>
 
-Receive notifications about new posts from followed communities
+Receive notifications about new posts from followed communities  <br>
 
-**Coordinator Interface**
-Create and publish technical posts
+**Coordinator Interface**  <br>
+Create and publish technical posts  <br>
 
-AI powered content (grammer) checker.
+AI powered content (grammer) checker.  <br>
 
-Plan and schedule announcements for live meetings and future events
+Plan and schedule announcements for live meetings and future events  <br>
 
-They can edit or delete their respective posts
+They can edit or delete their respective posts  <br>
 
-**Admin Interface**
-Manage and control the entire platform
-Verify and monitors the students and coordinators activities
+**Admin Interface**  <br>
+Manage and control the entire platform  <br>
 
-Oversee student and coordinator roles and permissions
+Verify and monitors the students and coordinators activities  <br>
+
+Oversee student and coordinator roles and permissions  <br>
 
 ---
 
