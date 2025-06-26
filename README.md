@@ -126,9 +126,6 @@ Feel free to fork the repository and submit a pull request. For major changes, o
 
 ---
 
-
----
-
 ## 📬 Contact
 
 Created with ❤️ by [YUGESHKARAN](https://github.com/YUGESHKARAN)  
