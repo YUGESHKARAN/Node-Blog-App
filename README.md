@@ -99,7 +99,7 @@ npm install
    ```
 2. Start the backend server:
    ```bash
-   npm start
+   npm run dev
    ```
 
 ### Frontend Setup
@@ -112,7 +112,7 @@ npm install
 1. Create a `.env` file in the `frontend/` directory if needed (for API base URL or other secrets).
 2. Start the frontend development server:
    ```bash
-   npm start
+   npm run dev
    ```
 
 3. Visit [http://localhost:3000](http://localhost:3000) in your browser.
