@@ -20,6 +20,7 @@ function NavBar() {
     const username = localStorage.getItem("username");
     const userEmail = localStorage.getItem("email");
     const role = localStorage.getItem("role");
+    const profile = localStorage.getItem("profile");
     const[showNotefication,setShowNotification] = useState(false)
     const[socket,setSocket] = useState(null)
 
@@ -97,6 +98,26 @@ function NavBar() {
         }
     }
 
+    const notificationRef = useRef();
+
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (
+      notificationRef.current &&
+      !notificationRef.current.contains(event.target)
+    ) {
+      setShowNotification(false); // Close notification on outside click
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
+
+    // console.log("profile",profile)
+
 
     return (
         <div className='flex relative justify-between items-center  h-16 bg-gray-900 mb-2 px-5'>
@@ -149,7 +170,14 @@ function NavBar() {
 
             {/* Mobile Hamburger Button */}
             <p className='text-white flex justify-end w-full lg:hidden  font-semibold items-center gap-1 mr-3 text-sm'>
-                <RiUser3Line className='text-xl text-[#0be881]' /> Hi,{username}  
+                 <Link to="/profile" className='flex items-center gap-1'>
+                        {profile!=="undefined"? 
+                        <img 
+                         src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${profile}`}
+                         className='w-5 h-5 rounded-full object-contain'/>
+                        : <RiUser3Line className='text-xl text-[#0be881]' />} Hi,{username} 
+                    </Link>
+              
             </p>
 
             <div className='transition-all duration-200 hover:text-white'>
@@ -226,7 +254,7 @@ function NavBar() {
             </div>
 
             {/* notification */}
-            <div className={`${note.length>0&&showNotefication?'fixed top-14 flex-col right-2  justify-center rounded-md bg-gray-700 p-1 pb-4 z-30 md:w-72 scrollbar-hide w-44  overflow-y-scroll h-fit max-h-60':'hidden'}`}>
+            {/* <div className={`${note.length>0&&showNotefication?'fixed top-14 flex-col right-2  justify-center rounded-md bg-gray-700 p-1 pb-4 z-30 md:w-72 scrollbar-hide w-44  overflow-y-scroll h-fit max-h-60':'hidden'}`}>
            
                 <div className='relative flex-col  justify-start items-start h-auto w-full'>
                     <div className='w-full sticky right-0 top-0 z-30 flex'>
@@ -262,7 +290,65 @@ function NavBar() {
 
                    
                 </div>
-            </div>
+            </div> */}
+
+            <div
+               ref={notificationRef}
+                className={`${
+                    showNotefication
+                    ? 'fixed top-14 right-2 z-50 w-52 md:w-80 max-h-72 overflow-y-auto bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 shadow-2xl rounded-xl p-4 pt-0 space-y-3 transition-all duration-300 scrollbar-hide'
+                    : 'hidden'
+                }`}
+                >
+                {/* Header */}
+                <div className="flex items-center pt-3 justify-between sticky top-0 bg-gradient-to-br from-gray-800 to-gray-900 z-40 pb-2 border-b border-gray-700">
+                    <h2 className="md:text-sm text-xs font-semibold text-white tracking-wide">🔔 Notifications</h2>
+                    <button
+                    onClick={() => deleteAllNotification(userEmail)}
+                    className="text-xs font-medium text-gray-900 bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-md transition duration-200"
+                    >
+                    Clear All
+                    </button>
+                </div>
+
+                {/* Notification List */}
+                <div className="flex flex-col space-y-4">
+                    {[...note].reverse().map((data, index) => (
+                    <div
+                        key={index}
+                        className="relative flex items-start gap-3 p-2 bg-gray-800 rounded-md hover:bg-gray-700 transition-all duration-200 group"
+                    >
+                        {/* Profile */}
+                        <img
+                        src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
+                        alt="Profile"
+                        className="w-7 h-7 rounded-full border-2 border-green-500 object-contain shadow-sm"
+                        />
+
+                        {/* Content */}
+                        <Link to={data.url} className="flex-1 flex flex-col overflow-hidden">
+                        <p className="text-sm text-white font-semibold truncate">{data.user}</p>
+                        <p className="text-[10px] text-gray-300 truncate max-w-[200px]">
+                            {data.message || 'You got a notification'}...
+                        </p>
+                        </Link>
+
+                        {/* Delete Icon */}
+                        <div
+                        onClick={() => deleteSigleNotification(userEmail, data._id)}
+                        className="absolute top-1 right-1 text-gray-400 hover:text-red-500 cursor-pointer transition duration-200"
+                        >
+                        <IoIosClose size={18} />
+                        </div>
+                    </div>
+                    ))}
+                </div>
+
+                {/* Optional: No Notifications State */}
+                {note.length === 0 && (
+                    <div className="text-center text-gray-400 text-sm py-4">No notifications</div>
+                )}
+           </div>
 
 
         </div>

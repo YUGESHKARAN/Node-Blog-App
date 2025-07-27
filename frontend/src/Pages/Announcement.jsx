@@ -92,6 +92,7 @@ useEffect(()=>{
   const reversedAnnouncements = Array.isArray(announcement) ? [...announcement].reverse() : [];
 
   console.log("user email",email) 
+  console.log("Announcements",reversedAnnouncements)
   return (
     <div className="min-h-screen relative bg-gradient-to-r from-gray-900 to-gray-800 text-white">
 
@@ -111,7 +112,7 @@ useEffect(()=>{
       {/* <h2 className="text-xl font-bold mb-4">Add Announcement</h2> */}
       <form onSubmit={handleSubmit} className={`${showAnnouncement?'space-y-4  p-4 md:w-1/2 mx-auto w-11/12  rounded-lg min-h-screen':"hidden"}`}>
         <div>
-          <label className="block text-sm font-medium text-gray-300">Title</label>
+          <label className="block text-sm font-medium text-gray-300">Title  <span className="text-red-500">*</span></label>
           <input
             type="text"
             value={title}
@@ -121,7 +122,7 @@ useEffect(()=>{
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-300">Message</label>
+          <label className="block text-sm font-medium text-gray-300">Message  <span className="text-red-500">*</span></label>
           <textarea
             value={message}
             onChange={e => setMessage(e.target.value)}
@@ -183,7 +184,7 @@ useEffect(()=>{
         </div>
   
         <div>
-          <label className="block text-sm font-medium text-gray-300">Delivered To</label>
+          <label className="block text-sm font-medium text-gray-300">Delivered To  <span className="text-red-500">*</span></label>
           <select
             value={deliveredTo}
             onChange={e => setDeliveredTo(e.target.value)}
@@ -241,7 +242,7 @@ useEffect(()=>{
 
               <div className="text-sm flex gap-2 items-center mt-2 text-gray-600">
                 <div>
-                  <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${announcement.profile}`} alt="" className='md:w-9 md:h-9 w-7 h-7 rounded-full object-center' />
+                 {announcement?.profile!=="undefined"? <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${announcement.profile}`} alt="" className='md:w-9 md:h-9 w-7 h-7 rounded-full object-center' />:""}
                 </div>
                 <span className='font-semibold'> {announcement.user}</span> {' '} 
                 {/* <span>To: {announcement.deliveredTo}</span> */}

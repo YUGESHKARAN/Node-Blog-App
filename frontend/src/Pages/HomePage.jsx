@@ -195,7 +195,7 @@ function HomePage() {
       <NavBar />
 
       {/* <div className="md:text-2xl text-xl mb-10 font-bold text-center mt-5">Welcome to Blog Browser!</div> */}
-      <div className="md:text-2xl text-xl mb-10 font-bold text-center mt-5">{role.charAt(0).toUpperCase() + role.slice(1)} Dashboard</div>
+      <div className="md:text-2xl text-xl mb-10  font-bold text-center mt-5">{role.charAt(0).toUpperCase() + role.slice(1)} Dashboard</div>
 
       <div className="grid grid-cols-8 gap-1.5 md:gap-3 w-11/12 md:w-9/12 my-5 mx-auto">
         <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">

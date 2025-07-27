@@ -7,16 +7,9 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../ui/Footer";
 import Chatbot from "../images/chatbt.gif";
 import { ReactTyped } from "react-typed";
-import {
-  MainContainer,
-  ChatContainer,
-  MessageList,
-  Message,
-  MessageInput,
-  TypingIndicator,
-} from "@chatscope/chat-ui-kit-react";
-import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import glow from "../assets/glow.png"
 function AddPost() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -29,6 +22,11 @@ function AddPost() {
   const [messages, setMessages] = useState([
     {
       message: `Hello ${user}, I’m here to transform your text into compelling post-ready content.`,
+      sender: "bot",
+      direction: "incoming",
+    },
+      {
+      message: "After generating the content, click 'Back to Post' button. Your content will be automatically copied to the Description tab, feel free to edit it.",
       sender: "bot",
       direction: "incoming",
     },
@@ -106,24 +104,7 @@ function AddPost() {
     addWord();
   };
 
-  // useEffect(() => {
-  //   const incommingMessage = messages.filter(
-  //     (msg) => msg.direction === "incoming"
-  //   );
-  //   if (incommingMessage.length > 1) {
-  //     const lastMessage = incommingMessage[incommingMessage.length - 1].message;
-  //     const titleMatch = lastMessage.match(/^Title:\s*(.*)$/m); // Match the title line
-  //     const descriptionStart = lastMessage.indexOf("\n\n") + 2; // Find where the description starts
 
-  //     if (titleMatch) {
-  //       setTitle(titleMatch[1].trim()); // Extract and set the title
-  //     }
-
-  //     if (descriptionStart > 1) {
-  //       setDescription(lastMessage.slice(descriptionStart).trim()); // Extract and set the description
-  //     }
-  //   }
-  // }, [messages]);
 
 
   useEffect(() => {
@@ -131,7 +112,7 @@ function AddPost() {
       (msg) => msg.direction === "incoming"
     );
   
-    if (incommingMessage.length > 1) {
+    if (incommingMessage.length > 2) {
       const lastMessage = incommingMessage[incommingMessage.length - 1].message;
   
       // Combine message with hashtags
@@ -244,27 +225,36 @@ function AddPost() {
       <NavBar />
       <div className="container min-h-screen mx-auto md:w-1/2 mx-auto w-11/12 py-8 px-4">
         <h1 className="md:text-3xl text-xl font-bold mb-6">Add New Post</h1>
-        <div className="md:w-96 px-4 mx-auto flex items-center mb-4 justify-center overflow-x-hidden">
+       { !chatbot ?  
+       <div className="md:w-96 w-full px-4 mx-auto flex items-center mb-4 justify-center overflow-x-hidden">
           <ReactTyped
             strings={[
-              "Hello Author 🖐️🖐️🖐️",
-              "I am here to help you",
-              "Cook your blog with me !!",
+              "Generate post with AI"
             ]}
             typeSpeed={70}
             backSpeed={30}
-            className="text-base basis-4/5 flex items-center justify-center font-bold text-[#ffff]"
+            className="text-base text-xs basis-4/5 flex items-center justify-center font-bold text-[#ffff]"
             loop
           />
-          <div className="basis-1/5 flex items-center justify-center">
-            <img 
-              onClick={() => setChatbot(!chatbot)}
-              src={Chatbot}
-              className="ml-2 cursor-pointer rounded-full w-7 h-7 md:w-9 md:h-9"
-              alt="Chatbot"
-            />
-          </div>
+          <div
+       onClick={()=>setChatbot(true)}
+        className="bg-gradient-to-r bg-blur  rounded-md font-semibold from-purple-600 to-blue-500 md:px-4 md:py-2 px-2 flex item-center py-1 text-xs md:text-base hover:bg-purple-700 transition"
+
+         >
+          <img src={glow} className="w-4 h-4 " alt="" /> 
+         AI
         </div>
+         
+        </div>:
+        <div
+       onClick={()=>setChatbot(false)}
+        className="bg-gradient-to-r bg-blur w-fit rounded-md mb-2 from-purple-600 to-blue-500 md:px-4 md:py-2 px-3 py-1 text-xs md:text-base hover:bg-purple-700 transition"
+
+         >
+          Back to Post
+        </div>
+        
+          }
         {!chatbot ? (
           <form onSubmit={handleSubmit} className="space-y-10">
             <div>
@@ -409,37 +399,64 @@ function AddPost() {
             </div>
           </form>
         ) : (
-          <div className="md:w-9/12 p-3 h-96 rounded-lg md:p-10 mx-auto">
-            <MainContainer className="rounded-lg w-9/12 mx-auto md:text-sm text-xs">
-              <ChatContainer>
-                <MessageList
-                  typingIndicator={
-                    isTyping && (
-                      <TypingIndicator content="Chatbot is typing..." />
-                    )
-                  }
-                >
-                  {messages.map((msg, idx) => (
-                    <Message
-                      className="mb-4"
-                      key={idx}
-                      model={{
-                        message: msg.message,
-                        sentTime: "just now",
-                        sender: msg.sender,
-                        direction: msg.direction,
-                      }}
-                    />
-                  ))}
-                </MessageList>
-                <MessageInput
-                  placeholder="Type a message..."
-                  onSend={handleSend}
-                  className="bg-gray-800 text-white"
-                />
-              </ChatContainer>
-            </MainContainer>
-          </div>
+          <div className="md:w-9/12 p-3 scrollbar-hide h-96 rounded-lg md:p-10 mx-auto border border-gray-700 rounded-md bg-gray-8000 text-white flex flex-col">
+  {/* Chat Display Area */} 
+  <h1 className="text-xl flex mx-auto items-center text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent font-bold"><img src={glow} className="w-6 h-6 mr-1" alt="" /> AI Assistant</h1>
+  <div className="flex-1 overflow-y-auto scrollbar-hide space-y-4 p-4 ">
+    {isTyping && (
+      <div className="text-sm text-gray-400 italic">Chatbot is typing...</div>
+    )}
+    {messages.map((msg, idx) => (
+      <div
+        key={idx}
+        className={`flex ${
+          msg.direction === "outgoing" ? "justify-end" : "justify-start"
+        }`}
+      >
+        <div
+          className={`rounded-lg px-4 py-2 md:text-sm leading-relaxed max-w-xs md:max-w-md text-xs ${
+            msg.direction === "outgoing"
+              ? "bg-gray-700 text-white"
+              // :"bg-gradient-to-r bg-blur from-purple-700 to-blue-500 text-white"
+              :"bg-gray-800 text-white"
+
+               
+          }`}
+        >
+          {msg.message}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {/* Input Area */}
+  <div className="mt-4">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        const form = e.target;
+        const input = form.elements.message;
+        handleSend(input.value);
+        input.value = "";
+      }}
+      className="flex items-center bg-gray-800 border border-gray-700 rounded-md overflow-hidden"
+    >
+      <input
+        type="text"
+        name="message"
+        placeholder="Type a message..."
+        className="flex-1 md:px-4 md:py-2 px-3 py-1 md:text-sm text-xs bg-gray-800 text-white placeholder-gray-400 focus:outline-none"
+      />
+      <button
+        type="submit"
+        className="bg-gradient-to-r bg-blur from-purple-600 to-blue-500 md:px-4 md:py-2 px-3 py-1 text-xs md:text-base hover:bg-purple-700 transition"
+      >
+        Send
+      </button>
+    </form>
+  </div>
+</div>
+
         )}
       </div>
       <Footer />
