@@ -73,7 +73,8 @@ getComments();
   // Socket connection and message handling
   // "https://node-blog-app-x8tt.onrender.com
   useEffect(() => {
-    const newSocket = io("https://node-blog-app-x8tt.onrender.com", {
+    // const newSocket = io("https://node-blog-app-x8tt.onrender.com", {
+    const newSocket = io("https://web-socket-io-pzd4.onrender.com", {
       transports: ["polling"],
     });
     setSocket(newSocket);
@@ -252,7 +253,7 @@ getComments();
                 onClick={() => {
                   setViewComments(!viewComments);
                 }}
-                className="text-2xl text-white"
+                className="text-2xl cursor-pointer text-white"
               />
               {/* <div className="flex items-center gap-1/2">
               <MdOutlineInsertComment
@@ -265,7 +266,7 @@ getComments();
                 viewComments
                   ? "flex-col max-h-96 overflow-y-auto min-h-auto mb-2 items-start justify-start gap-2 mt-2"
                   : "flex-col  overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2 h-auto"
-              }`}
+              } scrollbar-hide`}
             >
               {messages.length > 0 ? (
                 viewComments ? (
