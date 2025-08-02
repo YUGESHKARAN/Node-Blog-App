@@ -80,57 +80,7 @@ const io = new Server(server, {
   transports: ["polling"],
 });
 
-// Socket.IO event handling
-// io.on("connection", (socket) => {
-//   console.log("A user connected:", socket.id);
 
-//   socket.on("joinPostRoom", (postId) => {
-//     console.log(`joinPostRoom event received with postId: ${postId}`);
-//     if (!postId) {
-//       console.error("Invalid postId received.");
-//       return;
-//     }
-//     socket.join(postId);
-//     console.log(`User joined room: ${postId}`);
-//   });
-
-//   socket.on("newMessage", async (data) => {
-//     const { postId, user, email, message } = data;
-//     try {
-//       // Find the post by ID
-      // const author = await Author.findOne({ "posts._id": postId }, { "posts.$": 1 });
-      // if (!author || !author.posts || author.posts.length === 0) {
-      //   console.error("Post not found");
-      //   return;
-      // }
-
-      // const authorProfile = await Author.findOne({ email });
-      // const profile = authorProfile?.profile || "";
-
-//       // Get the post and add the new message
-//       const post = author.posts[0];
-//       const newMessage = { user, message, profile };
-//       post.messages.push(newMessage);
-
-//       // Update the post with the new message
-//       await Author.updateOne(
-//         { "posts._id": postId },
-//         { $push: { "posts.$.messages": newMessage } }
-//       );
-
-//       // Emit the message to all clients in the room
-//       io.to(postId).emit("message", newMessage);
-//     } catch (error) {
-//       console.error("Error saving message:", error);
-//     }
-//   });
-
-//   socket.on("disconnect", () => {
-//     console.log("User disconnected:", socket.id);
-//   });
-// });
-
-//Map to store user email and their socket IDs
 
 const userSocketMap = new Map();
 

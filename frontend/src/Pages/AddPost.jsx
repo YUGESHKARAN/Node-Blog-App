@@ -238,7 +238,7 @@ function AddPost() {
           />
           <div
        onClick={()=>setChatbot(true)}
-        className="bg-gradient-to-r bg-blur  rounded-md font-semibold from-purple-600 to-blue-500 md:px-4 md:py-2 px-2 flex item-center py-1 text-xs md:text-base hover:bg-purple-700 transition"
+        className="bg-gradient-to-r bg-blur cursor-pointer  rounded-md font-semibold from-purple-600 to-blue-500 md:px-4 md:py-2 px-2 flex item-center py-1 text-xs md:text-base hover:bg-purple-700 transition"
 
          >
           <img src={glow} className="w-4 h-4 " alt="" /> 
@@ -248,7 +248,7 @@ function AddPost() {
         </div>:
         <div
        onClick={()=>setChatbot(false)}
-        className="bg-gradient-to-r bg-blur w-fit rounded-md mb-2 from-purple-600 to-blue-500 md:px-4 md:py-2 px-3 py-1 text-xs md:text-base hover:bg-purple-700 transition"
+        className="bg-gradient-to-r bg-blur w-fit cursor-pointer rounded-md mb-2 from-purple-600 to-blue-500 md:px-4 md:py-2 px-3 py-1 text-xs md:text-base hover:bg-purple-700 transition"
 
          >
           Back to Post

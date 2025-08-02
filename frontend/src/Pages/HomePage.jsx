@@ -255,11 +255,11 @@ function HomePage() {
         <BlogContainer />
       </div>
 
-      <div 
+      {/* <div 
       onClick={()=>{setChatbot(!chatbot)}}
       className={`${email==='yugeshkaran01@gmail.com'?'fixed md:right-10 cursor-pointer  md:bottom-10 right-5 bottom-5':'hidden'}`}>
         <GoCopilot   className="md:text-xl text-xl rounded-full font-bold" />
-      </div>
+      </div> */}
       <div className={`${chatbot?'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50':'hidden'}`}>
         <div className="flex-col w-full"> 
 
