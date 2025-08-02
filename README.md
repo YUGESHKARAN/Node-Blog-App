@@ -66,7 +66,7 @@ Node-Blog-App/
 
 ## 🛠️ Tech Stack
 
-- **Backend:** Node.js, Express, MongoDB, Mongoose, Passport.js
+- **Backend:** Node.js, Express, MongoDB, Mongoose.
 - **Frontend:** React.js, Tailwind CSS
 - **Image Storage:** AWS S3
 
@@ -116,6 +116,11 @@ npm install
    ```
 
 3. Visit [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Implementation of Other backend services
+1. Visit [web-Socket.io](https://github.com/YUGESHKARAN/web-socket.io.git) to check post comment implementation.
+2. Visit [blog_chat_app](https://github.com/YUGESHKARAN/blogChat-backend.git) to check post content manipulator.
+3. Visit [Recommendation-System](https://github.com/YUGESHKARAN/recommendation-system.git) to chack authors recommendation system.
 
 ---
 
