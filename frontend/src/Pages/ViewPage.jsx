@@ -130,17 +130,43 @@ getComments();
   };
 
    // Function to wrap hashtags with a span
-  const renderTextWithHashtags = (text) => {
-    return text.split(/(\s+#\w+)/g).map((word, index) =>
-      word.startsWith(" #") ? (
-        <span key={index} className="text-md text-white font-italy font-bold">
-          {word}
-        </span>
-      ) : (
-        word
-      )
-    );
-  };
+  // const renderTextWithHashtags = (text) => {
+  //   return text.split(/(\s+#\w+)/g).map((word, index) =>
+  //     word.startsWith(" #") ? (
+  //       <span key={index} className="text-md text-white font-italy font-bold">
+  //         {word}
+  //       </span>
+  //     ) : (
+  //       word
+  //     )
+  //   );
+  // };
+ const renderTextWithHashtags = (text) => {
+  if (!text) return null;
+
+  // Convert visible "\r\n" or "\\n" into real line breaks
+  const cleanedText = text.replace(/\\r\\n|\\n|\\r\n/g, '\n');
+
+  return cleanedText.split('\n').map((line, lineIndex) => (
+    <React.Fragment key={lineIndex}>
+      {line.split(/(\s+#\w+)/g).map((word, index) =>
+        word.startsWith(" #") ? (
+          <span key={index} className="text-md text-white font-italy font-bold">
+            {word}
+          </span>
+        ) : (
+          <React.Fragment key={index}>{word}</React.Fragment>
+        )
+      )}
+      <br />
+    </React.Fragment>
+  ));
+};
+
+
+
+
+
   
 // console.log('messages--------------',messages)
 // console.log('singlepost data--------------',singlePostData)
@@ -202,36 +228,13 @@ getComments();
           <div className="w-full text-justify mt-2  text-xs leading-relaxed text-gray-300 text-md">
             {singlePostData.description && showContent ? (
               <>
-                {renderTextWithHashtags( singlePostData.description)} <br />{" "}
-                <span
-                  className="text-xs text-yellow-500 cursor-pointer mt-1"
-                  onClick={() => setShowContent(false)}
-                >
-                  show Less
-                </span>{" "}
-              </>
-            ) : (
-              <>
-                {" "}
-                {
-                singlePostData.description &&
-                 renderTextWithHashtags(singlePostData.description.slice(0, 60))
-                 }
-                ... <br />{" "}
-                <span
-                  className="text-xs text-yellow-500 cursor-pointer "
-                  onClick={() => setShowContent(SiTruenas)}
-                >
-                  Show More
-                </span>
-               
-              </>
-            )}
-             <h1 className={`${singlePostData.documents?.length>0?'text-sm mt-4 text-gray-200':'hidden'}`}>Source Documents & Links:</h1>
-                <div className="flex-col md:flex w-full items-start mt-2 gap-2">
+              <span className="text-base leading-relaxed">{renderTextWithHashtags( singlePostData.description)}</span>  
+                
+                  <h1 className={`${singlePostData.documents && showContent ? 'md:text-lg mt-2 font-bold text-gray-100':'hidden'}`}>Source Documents & Links:</h1>
+                <div className={`${singlePostData.documents && showContent ?'flex-col md:flex w-full items-start mt-2 gap-2':'hidden'} mb-4`}>
       
                 {
-                 singlePostData.documents&& singlePostData.documents.map((doc, index) => (
+                 singlePostData.documents && showContent && singlePostData.documents.map((doc, index) => (
                     <a key={index} href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`} className="text-xs flex justify-start items-start text-gray-200 gap-1 mb-2 md:mb-0 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center text-black hover:bg-gray-200 transition-all duration-200 justify-center"> {doc} </p> </a>
 
                     ))
@@ -243,6 +246,31 @@ getComments();
                     ))
                 }
                 </div>
+                <span
+                  className="text-xs text-yellow-500 cursor-pointer"
+                  onClick={() => setShowContent(false)}
+                >
+                  show Less
+                </span>{" "}
+              </>
+            ) : (
+              <>
+                {" "}
+                {
+                singlePostData.description &&
+                 <span className="text-base leading-relaxed">{renderTextWithHashtags( singlePostData.description).slice(0,50)}</span>  
+                 }
+                ... <br />{" "}
+                <span
+                  className="text-xs text-yellow-500 mt-4 cursor-pointer "
+                  onClick={() => setShowContent(true)}
+                >
+                  Show More
+                </span>
+               
+              </>
+            )}
+           
           </div>
 
           {/* Comment Section */}

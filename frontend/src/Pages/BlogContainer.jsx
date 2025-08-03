@@ -115,6 +115,27 @@ function BlogContainer() {
     setSelectedImage(null);
   };
 
+   const renderTextWithHashtags = (text) => {
+    if (!text) return null;
+  
+    // Convert visible "\r\n" or "\\n" into real line breaks
+    const cleanedText = text.replace(/\\r\\n|\\n|\\r\n/g, '\n');
+  
+    return cleanedText.split('\n').map((line, lineIndex) => (
+      <React.Fragment key={lineIndex}>
+        {line.split(/(\s+#\w+)/g).map((word, index) =>
+          word.startsWith(" #") ? (
+            <span key={index} className="text-md text-white font-italy font-bold">
+              {word}
+            </span>
+          ) : (
+            <React.Fragment key={index}>{word}</React.Fragment>
+          )
+        )}
+        <br />
+      </React.Fragment>
+    ));
+  };
  
 console.log("posts", posts);  
   return (
@@ -231,10 +252,10 @@ console.log("posts", posts);
 
               <div className="min-h-28 h-auto py-4">
                 <h2 className="md:text-xl text-lg text-white font-bold">
-                  {data.title}
+                  {data.title && data.title.slice(0,25)}...
                 </h2>
                 <p className="text-xs text-gray-400 mt-2">
-                  {data.description.slice(0, 100)}...
+                  {renderTextWithHashtags(data.description.slice(0, 100))}...
                 </p>
               </div>
 

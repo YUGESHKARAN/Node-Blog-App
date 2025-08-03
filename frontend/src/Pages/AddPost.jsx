@@ -449,7 +449,7 @@ function AddPost() {
       />
       <button
         type="submit"
-        className="bg-gradient-to-r bg-blur from-purple-600 to-blue-500 md:px-4 md:py-2 px-3 py-1 text-xs md:text-base hover:bg-purple-700 transition"
+        className="bg-gradient-to-r bg-blur from-purple-600 to-blue-500 md:px-4 py-2 px-3  text-xs md:text-base hover:bg-purple-700 transition"
       >
         Send
       </button>
