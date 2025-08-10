@@ -22,6 +22,7 @@ function NavBar() {
     const role = localStorage.getItem("role");
     const profile = localStorage.getItem("profile");
     const[showNotefication,setShowNotification] = useState(false)
+    const [announcement,setAnnouncement]= useState([])
     const[socket,setSocket] = useState(null)
 
     const exit =  () => {
@@ -60,6 +61,7 @@ function NavBar() {
         try {
           const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/${userEmail}`);
           setNote(response.data.notification);
+          setAnnouncement(response.data.announcement)
         //   console.log("author email data", response.data.notification)
         } catch (error) {
           console.error('Error fetching notifications:', error);
@@ -87,6 +89,8 @@ function NavBar() {
     }
 
     const deleteAllNotification = async(userEmail) =>{
+       const confirm = window.confirm('Are you sure want to delete all the notifications');
+       if (!confirm) return;
         try{
            const response = await axios.delete(`https://node-blog-app-seven.vercel.app/blog/author/notification/deleteall?email=${userEmail}`)
 
@@ -157,7 +161,8 @@ useEffect(() => {
                 </li>
                 <li className='transition-all duration-200 hover:text-white'>
                         <Link to="/announcement" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
-                            <MdAnnouncement className='text-xl  mr-3'/> Announcement
+                            <MdAnnouncement className='text-xl  mr-1'/> 
+                            <sup className={`${announcement.length>0?'text-[10px] bg-green-600 w-4 h-4 flex items-center justify-center rounded-full text-white':'text-[10px]  flex items-center justify-center rounded-full text-white'}`}>{announcement.length>0?announcement.length:''}</sup>
                         </Link>
                 </li>
             
@@ -186,7 +191,18 @@ useEffect(() => {
                     onClick={()=>{setShowNotification(!showNotefication)}}
                      className='text-lg cursor-pointer text-white'/><sup className={`${note.length>0?'text-[10px] bg-red-500 w-4 h-4 flex items-center justify-center rounded-full text-white':'text-[10px]  flex items-center justify-center rounded-full text-white'}`}>{note.length>0?note.length:''}</sup>
                 </div>
+                
             </div>
+              {/* <div className='transition-all ml-2 duration-200 hover:text-white'>
+                <div className='flex items-center '>
+                    <Link to="/announcement" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
+                            <MdAnnouncement className='text-lg text-white mr-1'/> 
+                            <sup className={`${announcement.length>0?'text-[10px] bg-green-600 w-4 h-4 flex items-center justify-center rounded-full text-white':'text-[10px]  flex items-center justify-center rounded-full text-white'}`}>{announcement.length>0?announcement.length:''}</sup>
+                        </Link>
+                </div>
+                
+            </div> */}
+
             
 
             <button onClick={toggleSidebar} className="lg:hidden ml-2 text-white">
@@ -242,7 +258,8 @@ useEffect(() => {
 
                       <li className='transition-all w-11/12 ml-10  mx-auto duration-200'>
                         <Link to="/announcement" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
-                            <MdAnnouncement className='text-xl mr-3 text-green-500'/>Announcement
+                            <MdAnnouncement className='text-2xl mr-1 text-white'/>
+                           <sup className={`${announcement.length>0?'text-[10px] bg-green-600 w-4 h-4 flex items-center justify-center rounded-full text-white':'text-[10px]  flex items-center justify-center rounded-full text-white'}`}>{announcement.length>0?announcement.length:''}</sup>
                         </Link>
                     </li>
                     <li className='mx-auto'>
