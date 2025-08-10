@@ -5,6 +5,20 @@ const { v4: uuidv4 } = require('uuid'); // For generating unique IDs
 const mongoose = require("mongoose");
 
 const sharp = require('sharp');
+dotenv = require("dotenv");
+dotenv.config();
+// import nodemailer from "nodemailer";
+
+const nodemailer = require('nodemailer')
+
+const transporter = nodemailer.createTransport({
+  service: process.env.EMAIL_PROVIDER, // Or your preferred email provider
+  auth: {
+    user: process.env.EMAIL_USER, // Your email
+    pass: process.env.EMAIL_PASS  // Your email password or app password
+  }
+});
+
 
 // s3 integration
 const { S3Client,PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
@@ -195,6 +209,27 @@ const addPosts = async (req, res) => {
     if (bulkNotifications.length > 0) {
       await Author.bulkWrite(bulkNotifications);
     }
+
+    // 🌟 Send email to all recipients
+    if (combinedRecipients.length > 0) {
+      const emailSubject = `New post from ${author.authorname}`;
+      const emailHtml = `
+        <h3>${author.authorname} has posted a new blog!</h3>
+        <p><strong>Title:</strong> ${title}</p>
+        <p>${description}</p>
+        <p><a href="${url}">Click here to view the post</a></p>
+      `;
+
+      for (const recipient of combinedRecipients) {
+        await transporter.sendMail({
+          from: `"${author.authorname}" <${process.env.EMAIL_USER}>`,
+          to: recipient,
+          subject: emailSubject,
+          html: emailHtml
+        });
+      }
+    }
+
 
     const data = await author.save();
 

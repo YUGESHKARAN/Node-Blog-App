@@ -38,6 +38,7 @@ function AddPost() {
   const [chatbot, setChatbot] = useState(false);
 
   const backendEndpoint = "https://blog-chat-backend.vercel.app/generate-content";
+
   // const backendEndpoint = "http://127.0.0.1:5000/generate-content";
 
   const handleSend = async (message) => {
@@ -189,6 +190,7 @@ function AddPost() {
         `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
         // `http://localhost:3000/blog/posts/${email}`,
         formData,
+        
         {
           headers: {
             "Content-Type": "multipart/form-data",

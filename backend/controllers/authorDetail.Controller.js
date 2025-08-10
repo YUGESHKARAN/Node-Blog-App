@@ -4,6 +4,19 @@ const Author = require("../models/blogAuthorSchema");
 const { S3Client,PutObjectCommand } = require("@aws-sdk/client-s3");
 require('dotenv').config()
 
+// import nodemailer from "nodemailer";
+
+const nodemailer = require('nodemailer')
+const otpGenerator = require('otp-generator');
+
+const transporter = nodemailer.createTransport({
+  service: process.env.EMAIL_PROVIDER, // Or your preferred email provider
+  auth: {
+    user: process.env.EMAIL_USER, // Your email
+    pass: process.env.EMAIL_PASS  // Your email password or app password
+  }
+});
+
 
 const bucketName = process.env.BUCKET_NAME;
 const bucketRegion = process.env.BUCKET_REGION;
@@ -236,8 +249,7 @@ const updateFollowers = async (req, res) => {
 
 
 // otp
-const otpGenerator = require('otp-generator');
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 
 const sendOtp = async (req, res) => {
   const { email } = req.body;
@@ -260,13 +272,13 @@ const sendOtp = async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'yugeshkaran01@gmail.com', // Replace with your email
-        pass: 'scwj nztr szjx ysdw' // Replace with your email password
+        user: process.env.EMAIL_USER, // Replace with your email
+        pass: process.env.EMAIL_PASS // Replace with your email password
       }
     });
 
     const mailOptions = {
-      from: 'yugeshkaran01@gmail.com',
+      from: process.env.EMAIL_PROVIDER,
       to: email,
       subject: 'Password Reset OTP',
       text: `Your OTP for password reset is ${otp}. It is valid for 15 minutes.`
@@ -445,6 +457,44 @@ const addAnnouncement = async (req, res) => {
       if (typeof newAnnouncement === 'object' && newAnnouncement !== null) {
         recipient.announcement.push(newAnnouncement);
         await recipient.save();
+      }
+    }
+    const url = 'https://blog-frontend-teal-ten.vercel.app/announcement';
+    // Extract URLs from parsedLinks (if they are objects with a "url" property)
+    const linkHtml = parsedLinks.length > 0
+      ? `<p>Links:<br>${parsedLinks
+          .map(link => {
+            if (typeof link === "string") {
+              return `<a href="${link}" target="_blank">${link}</a>`;
+            } else if (typeof link === "object" && link.url) {
+              return `<a href="${link.url}" target="_blank">${link.url}</a>`;
+            }
+            return "";
+          })
+          .join("<br>")}</p>`
+      : "";
+
+    // 📧 Send email to all recipients
+    if (recipients.length > 0) {
+      const emailSubject = `Announcement: ${title}`;
+      const emailHtml = `
+        <h3>New Announcement from ${user}</h3>
+        <p><strong>Title:</strong> ${title}</p>
+        <p>${message}</p>
+         ${linkHtml}
+        <p><a href="${url}">View Announcement</a></p>
+
+      `;
+
+      for (const recipient of recipients) {
+        if (recipient.email) {
+          await transporter.sendMail({
+            from: `"${user}" <${process.env.EMAIL_USER}>`,
+            to: recipient.email,
+            subject: emailSubject,
+            html: emailHtml
+          });
+        }
       }
     }
 

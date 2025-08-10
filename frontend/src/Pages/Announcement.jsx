@@ -52,6 +52,7 @@ useEffect(()=>{
 
     try {
       const response = await axios.post(`https://node-blog-app-seven.vercel.app/blog/author/announcement/add`, 
+      // const response = await axios.post(`http://localhost:3000/blog/author/announcement/add`, 
          formData,
          {
           headers: {
