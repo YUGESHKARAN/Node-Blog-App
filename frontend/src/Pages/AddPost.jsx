@@ -297,6 +297,8 @@ function AddPost() {
                 onChange={(e) => setCategory(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               >
+
+                <option value="">Select Domain</option>
                 <option value="GenAI">GenAI</option>
                 <option value="Design Thinking">Design Thinking</option>
                 <option value="Data Science">Data Science</option>
@@ -359,22 +361,30 @@ function AddPost() {
                   Add
                 </button>
               </div>
-              {links.length > 0 && (
-                <div className="mt-2 space-y-1">
-                  {links.map((link, index) => (
-                    <div key={index} className="flex justify-between items-center bg-gray-700 px-2 py-1 rounded-md">
-                      <span className="text-sm">{link.title}: {link.url}</span>
-                      <button
-                        type="button"
-                        onClick={() => setLinks(links.filter((_, i) => i !== index))}
-                        className="text-red-500 ml-2"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
+            {links.length > 0 && (
+    <div className="mt-2 space-y-1">
+      {links.map((link, index) => (
+        <div
+          key={`${link.title}-${index}`}
+          className="flex justify-between items-start bg-gray-700 px-2 py-1 rounded-md break-words"
+        >
+          <div className="text-sm break-all">
+           <span className="font-semibold mb-1"> {link.title}: </span> <br />{link.url}
+          </div>
+          <button
+            type="button"
+            onClick={() =>
+              setLinks((prevLinks) => prevLinks.filter((_, i) => i !== index))
+            }
+            className="text-red-500 text-xs ml-2 hover:text-red-700"
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+
             </div>
 
             <div>

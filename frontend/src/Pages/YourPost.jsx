@@ -186,7 +186,7 @@ function YourPost() {
             ).map((data, index) => (
               <div
                 key={index}
-                className="lg:w-3/12 md:w-80 w-80 bg-gray-800  md:pb-2 flex flex-col 
+                className="lg:w-3/12 md:w-80 w-11/12 mx-auto bg-gray-800  md:pb-2 flex flex-col 
               shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
               >
                  <div className="flex mb-2 gap-2 items-center">

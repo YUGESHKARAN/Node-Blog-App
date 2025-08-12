@@ -245,7 +245,7 @@ useEffect(() => {
 
      <h1 className={`${roleFilter==='admin' || roleFilter=== ''?'text-center text-base md:text-3xl mb-6 font-bold  text-white':'hidden'}`}>Admins</h1>
       {/* Author admin */}
-      <div className={`${roleFilter===''?'h-auto md:mb-16 mb-10   grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':roleFilter==='admin'?'min-h-screen md:mb-16 mb-10   grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':'hidden'}`}>
+      <div className={`${roleFilter===''?'h-auto md:mb-16 mb-10   grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':roleFilter==='admin'?'min-h-screen md:mb-16 mb-10 flex flex-col   md:grid  md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':'hidden'}`}>
        {[
   // First, filter authors based on their roles
           ...filteredAuthors.filter((author) => author.role === 'admin'),
@@ -325,7 +325,7 @@ useEffect(() => {
 
        <h1 className={`${roleFilter==='coordinator' ||roleFilter=== ''?'text-center text-base md:text-3xl mb-6 font-bold  text-white':'hidden'}`}>Coordinators</h1>
       {/* Author Coordinators */}
-      <div className={`${roleFilter===''?'h-auto md:mb-16 mb-10  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':roleFilter==='coordinator'?'min-h-screen h-auto md:mb-16 mb-10  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':'hidden'}`}>
+      <div className={`${roleFilter===''?'h-auto md:mb-16 mb-10  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':roleFilter==='coordinator'?'min-h-screen h-auto md:mb-16 mb-10 flex flex-col  md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':'hidden'}`}>
        {[
   // First, filter authors based on their roles
           ...filteredAuthors.filter((author) => author.role === 'coordinator'),
@@ -405,7 +405,7 @@ useEffect(() => {
 
        <h1 className={`${roleFilter==='student' ||roleFilter=== ''?'text-center text-base md:text-3xl mb-6 font-bold  text-white':'hidden'}`}>Students</h1>
       {/* Author students */}
-      <div className={`${roleFilter===''?'h-auto md:mb-16 mb-10  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':roleFilter==='student'?' min-h-screen h-auto md:mb-16 mb-10  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':'hidden'}`}>
+      <div className={`${roleFilter===''?'h-auto md:mb-16 mb-10  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':roleFilter==='student'?' min-h-screen h-auto md:mb-16 mb-10  flex flex-col   md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-11/12 mx-auto mt-2':'hidden'}`}>
        {[
   // First, filter authors based on their roles
           ...filteredAuthors.filter((author) => author.role === 'student'),

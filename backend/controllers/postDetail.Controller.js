@@ -210,6 +210,10 @@ const addPosts = async (req, res) => {
       await Author.bulkWrite(bulkNotifications);
     }
 
+    const data = await author.save();
+
+    res.status(201).json({ message: "Post added successfully", data });
+
     // 🌟 Send email to all recipients
     if (combinedRecipients.length > 0) {
       const emailSubject = `New post from ${author.authorname}`;
@@ -231,9 +235,9 @@ const addPosts = async (req, res) => {
     }
 
 
-    const data = await author.save();
+    // const data = await author.save();
 
-    res.status(201).json({ message: "Post added successfully", data });
+    // res.status(201).json({ message: "Post added successfully", data });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
     console.log(err)

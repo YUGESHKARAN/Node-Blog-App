@@ -169,7 +169,7 @@ getComments();
 
   
 // console.log('messages--------------',messages)
-// console.log('singlepost data--------------',singlePostData)
+console.log('singlepost data--------------',singlePostData)
   return (
     <div className="w-full min-h-screen h-auto relative bg-gradient-to-br from-gray-900 to-gray-800">
       <NavBar />
@@ -229,23 +229,8 @@ getComments();
             {singlePostData.description && showContent ? (
               <>
               <span className="text-base leading-relaxed">{renderTextWithHashtags( singlePostData.description)}</span>  
+             
                 
-                  <h1 className={`${singlePostData.documents && showContent ? 'md:text-lg mt-2 font-bold text-gray-100':'hidden'}`}>Source Documents & Links:</h1>
-                <div className={`${singlePostData.documents && showContent ?'flex-col md:flex w-full items-start mt-2 gap-2':'hidden'} mb-4`}>
-      
-                {
-                 singlePostData.documents && showContent && singlePostData.documents.map((doc, index) => (
-                    <a key={index} href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`} className="text-xs flex justify-start items-start text-gray-200 gap-1 mb-2 md:mb-0 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center text-black hover:bg-gray-200 transition-all duration-200 justify-center"> {doc} </p> </a>
-
-                    ))
-                }
-                 {
-                 singlePostData.links&& singlePostData.links.map((link, index) => (
-                    <a key={index} href={`${link.url}`} className="text-xs flex justify-start items-start text-gray-200 mb-2 md:mb-0 gap-1 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center text-black hover:bg-gray-200 transition-all duration-200 justify-center"> {link.title} </p> </a>
-
-                    ))
-                }
-                </div>
                 <span
                   className="text-xs text-yellow-500 cursor-pointer"
                   onClick={() => setShowContent(false)}
@@ -258,7 +243,7 @@ getComments();
                 {" "}
                 {
                 singlePostData.description &&
-                 <span className="text-base leading-relaxed">{renderTextWithHashtags( singlePostData.description).slice(0,50)}</span>  
+                 <span className="text-base leading-relaxed">{renderTextWithHashtags(singlePostData.description.slice(0,100))}</span>  
                  }
                 ... <br />{" "}
                 <span
@@ -267,9 +252,52 @@ getComments();
                 >
                   Show More
                 </span>
+
+                
+                 
                
               </>
             )}
+
+            <h1
+  className={`${
+    singlePostData.documents?.length == 0 && singlePostData.links?.length == 0
+      ? 'hidden'
+      : 'block mt-6 md:text-lg text-base font-semibold text-gray-100 border-b border-gray-700 pb-2'
+  }`}
+>
+  📎 Source Documents & Links
+</h1>
+
+<div className="flex flex-col md:flex-row md:flex-wrap mb-4 mt-3 gap-3 w-full">
+  {singlePostData.documents?.length > 0 &&
+    
+    singlePostData.documents.map((doc, index) => (
+      <a
+        key={index}
+        href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group w-fit flex items-center gap-2 px-4 py-1 md:py-2 bg-gray-200 rounded-lg shadow-sm hover:bg-gray-200 transition-all duration-200 text-sm font-medium text-gray-900"
+      >
+        📄 <span className="truncate max-w-xs">{doc}</span>
+      </a>
+    ))}
+
+  {singlePostData.links?.length > 0 &&
+    singlePostData.links.map((link, index) => (
+      <a
+        key={index}
+        href={link.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex items-center w-fit gap-2 px-4 py-1 md:py-2 bg-blue-100 rounded-lg shadow-sm hover:bg-blue-200 transition-all duration-200 text-sm font-medium text-blue-900"
+      >
+        🔗 <span className="truncate max-w-xs">{link.title}</span>
+      </a>
+    ))}
+</div>
+
            
           </div>
 
