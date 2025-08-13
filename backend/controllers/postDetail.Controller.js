@@ -100,56 +100,200 @@ const getCategoryPosts = async (req, res) => {
 };
 
 
+// const addPosts = async (req, res) => {
+//   const { title, description, category, links } = req.body;
+  
+//   const author = await Author.findOne({ email: req.params.email });
+
+//   try {
+//     if (!author) {
+//       return res.status(404).json({ message: "Author not found" });
+//     }
+
+//     let imageUrl = '';
+//     if (req.files && req.files.image) {
+//       const buffer = await sharp(req.files.image[0].buffer)
+//         .resize({ width: 672, height: 462, fit: 'contain' })
+//         .toBuffer();
+
+//       const params = {
+//         Bucket: bucketName,
+//         Key: req.files.image[0].originalname,
+//         Body: buffer,
+//         ContentType: req.files.image[0].mimetype
+//       };
+
+//       const command = new PutObjectCommand(params);
+//       await s3.send(command);
+//       imageUrl = req.files.image[0].originalname;
+//     }
+
+//     const documentUrls = [];
+//     if (req.files && req.files.document) {
+//       for (const doc of req.files.document) {
+//         const params = {
+//           Bucket: bucketName,
+//           Key: doc.originalname,
+//           Body: doc.buffer,
+//           ContentType: doc.mimetype
+//         };
+
+//         const command = new PutObjectCommand(params);
+//         await s3.send(command);
+//         documentUrls.push(doc.originalname);
+//       }
+//     }
+
+//     // Parse links from form data
+//     const parsedLinks = links ? JSON.parse(links) : [];
+//     console.log("parsedLinks", parsedLinks);
+
+//     // Create a new post
+//     const postId = new mongoose.Types.ObjectId(); // Generate a unique ID for the post
+//     author.posts.push({
+//       _id: postId,
+//       title,
+//       image: imageUrl,
+//       description,
+//       category,
+//       documents: documentUrls,
+//       links: parsedLinks
+//     });
+
+  
+
+//     // 🌟 **Re-add the notification system**
+//     const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.email}/${postId}`;
+
+//   // Find community authors (excluding self)
+//     const communityAuthors = await Author.find({
+//       community: { $in: author.community },
+//       email: { $ne: author.email }
+//     }).select('email');
+
+//     // Prepare sets
+//     const followerSet = new Set(author.followers);
+//     const communitySet = new Set();
+
+//     for (const a of communityAuthors) {
+//       if (!followerSet.has(a.email)) {
+//         communitySet.add(a.email);
+//       }
+//     }
+
+//     const combinedRecipients = [...followerSet, ...communitySet];
+
+//     const bulkNotifications = combinedRecipients.map(email => {
+//       const isFollower = followerSet.has(email);
+//       const message = isFollower
+//         ? `New post from ${author.authorname}: ${title}`
+//         : `${author.authorname} from your community posted: ${title}`;
+
+//       const notification = {
+//         postId,
+//         user: author.authorname,
+//         authorEmail: author.email,
+//         message,
+//         url,
+//         profile: author.profile || ""
+//       };
+
+//       return {
+//         updateOne: {
+//           filter: { email },
+//           update: { $push: { notification } }
+//         }
+//       };
+//     });
+
+//     if (bulkNotifications.length > 0) {
+//       await Author.bulkWrite(bulkNotifications);
+//     }
+
+//     const data = await author.save();
+
+//     res.status(201).json({ message: "Post added successfully", data });
+
+//     // 🌟 Send email to all recipients
+//     if (combinedRecipients.length > 0) {
+//       const emailSubject = `New post from ${author.authorname}`;
+//       const emailHtml = `
+//         <h3>${author.authorname} has posted a new blog!</h3>
+//         <p><strong>Title:</strong> ${title}</p>
+//         <p>${description}</p>
+//         <p><a href="${url}">Click here to view the post</a></p>
+//       `;
+
+//       for (const recipient of combinedRecipients) {
+//         await transporter.sendMail({
+//           from: `"${author.authorname}" <${process.env.EMAIL_USER}>`,
+//           to: recipient,
+//           subject: emailSubject,
+//           html: emailHtml
+//         });
+//       }
+//     }
+
+
+//     // const data = await author.save();
+
+//     // res.status(201).json({ message: "Post added successfully", data });
+//   } catch (err) {
+//     res.status(500).json({ message: "Server error", error: err.message });
+//     console.log(err)
+//   }
+// };
+
 const addPosts = async (req, res) => {
   const { title, description, category, links } = req.body;
-  
-  const author = await Author.findOne({ email: req.params.email });
 
   try {
+    const author = await Author.findOne({ email: req.params.email });
     if (!author) {
       return res.status(404).json({ message: "Author not found" });
     }
 
+    // --- Upload image ---
     let imageUrl = '';
-    if (req.files && req.files.image) {
+    if (req.files?.image?.length) {
       const buffer = await sharp(req.files.image[0].buffer)
         .resize({ width: 672, height: 462, fit: 'contain' })
         .toBuffer();
 
-      const params = {
+      await s3.send(new PutObjectCommand({
         Bucket: bucketName,
         Key: req.files.image[0].originalname,
         Body: buffer,
         ContentType: req.files.image[0].mimetype
-      };
+      }));
 
-      const command = new PutObjectCommand(params);
-      await s3.send(command);
       imageUrl = req.files.image[0].originalname;
     }
 
+    // --- Upload documents ---
     const documentUrls = [];
-    if (req.files && req.files.document) {
+    if (req.files?.document?.length) {
       for (const doc of req.files.document) {
-        const params = {
+        await s3.send(new PutObjectCommand({
           Bucket: bucketName,
           Key: doc.originalname,
           Body: doc.buffer,
           ContentType: doc.mimetype
-        };
-
-        const command = new PutObjectCommand(params);
-        await s3.send(command);
+        }));
         documentUrls.push(doc.originalname);
       }
     }
 
-    // Parse links from form data
-    const parsedLinks = links ? JSON.parse(links) : [];
-    console.log("parsedLinks", parsedLinks);
+    // --- Parse links safely ---
+    let parsedLinks = [];
+    try {
+      parsedLinks = links ? JSON.parse(links) : [];
+    } catch {
+      parsedLinks = [];
+    }
 
-    // Create a new post
-    const postId = new mongoose.Types.ObjectId(); // Generate a unique ID for the post
+    // --- Create post ---
+    const postId = new mongoose.Types.ObjectId();
     author.posts.push({
       _id: postId,
       title,
@@ -160,18 +304,14 @@ const addPosts = async (req, res) => {
       links: parsedLinks
     });
 
-  
-
-    // 🌟 **Re-add the notification system**
     const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.email}/${postId}`;
 
-  // Find community authors (excluding self)
+    // --- Find community authors (excluding self) ---
     const communityAuthors = await Author.find({
       community: { $in: author.community },
       email: { $ne: author.email }
     }).select('email');
 
-    // Prepare sets
     const followerSet = new Set(author.followers);
     const communitySet = new Set();
 
@@ -181,66 +321,81 @@ const addPosts = async (req, res) => {
       }
     }
 
+    // --- Combined recipients (followers + non-following community members) ---
     const combinedRecipients = [...followerSet, ...communitySet];
+    const followersSet = [...followerSet]
 
-    const bulkNotifications = combinedRecipients.map(email => {
-      const isFollower = followerSet.has(email);
-      const message = isFollower
-        ? `New post from ${author.authorname}: ${title}`
-        : `${author.authorname} from your community posted: ${title}`;
+    // --- Bulk notifications ---
+    if (combinedRecipients.length > 0) {
+      const bulkNotifications = combinedRecipients.map(email => {
+        const isFollower = followerSet.has(email);
+        const message = isFollower
+          ? `New post from ${author.authorname}: ${title}`
+          : `${author.authorname} from your community posted: ${title}`;
 
-      const notification = {
-        postId,
-        user: author.authorname,
-        authorEmail: author.email,
-        message,
-        url,
-        profile: author.profile || ""
-      };
-
-      return {
-        updateOne: {
-          filter: { email },
-          update: { $push: { notification } }
-        }
-      };
-    });
-
-    if (bulkNotifications.length > 0) {
+        return {
+          updateOne: {
+            filter: { email },
+            update: {
+              $push: {
+                notification: {
+                  postId,
+                  user: author.authorname,
+                  authorEmail: author.email,
+                  message,
+                  url,
+                  profile: author.profile || ""
+                }
+              }
+            }
+          }
+        };
+      });
       await Author.bulkWrite(bulkNotifications);
     }
 
+    // --- Save post ---
     const data = await author.save();
 
+    // ✅ Respond immediately (non-blocking email sending)
     res.status(201).json({ message: "Post added successfully", data });
 
-    // 🌟 Send email to all recipients
-    if (combinedRecipients.length > 0) {
-      const emailSubject = `New post from ${author.authorname}`;
-      const emailHtml = `
-        <h3>${author.authorname} has posted a new blog!</h3>
-        <p><strong>Title:</strong> ${title}</p>
-        <p>${description}</p>
-        <p><a href="${url}">Click here to view the post</a></p>
-      `;
+    // --- Send emails in background ---
+    if (followersSet.length > 0) {
+      const sendEmailsSequentially = async (recipients, subject, html) => {
+        for (const recipient of recipients) {
+          try {
+            await transporter.sendMail({
+              from: `"${author.authorname}" <${process.env.EMAIL_USER}>`,
+              to: recipient,
+              subject,
+              html
+            });
+            console.log(`📧 Email sent to ${recipient}`);
+            await new Promise(res => setTimeout(res, 200)); // short delay
+          } catch (err) {
+            console.error(`❌ Failed to send email to ${recipient}:`, err.message);
+          }
+          
+        }
+         console.log("📬 All emails processed.");
+      };
 
-      for (const recipient of combinedRecipients) {
-        await transporter.sendMail({
-          from: `"${author.authorname}" <${process.env.EMAIL_USER}>`,
-          to: recipient,
-          subject: emailSubject,
-          html: emailHtml
-        });
-      }
+      sendEmailsSequentially(
+        followersSet,
+        `New post from ${author.authorname}`,
+        `
+          <h3>${author.authorname} has posted a new blog!</h3>
+          <p><strong>Title:</strong> ${title}</p>
+          <p>${description}</p>
+          <p><a href="${url}">Click here to view the post</a></p>
+        `
+      );
     }
 
-
-    // const data = await author.save();
-
-    // res.status(201).json({ message: "Post added successfully", data });
   } catch (err) {
+    console.error("❌ Server error:", err);
     res.status(500).json({ message: "Server error", error: err.message });
-    console.log(err)
   }
 };
 

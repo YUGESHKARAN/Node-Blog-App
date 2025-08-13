@@ -366,7 +366,7 @@ function AddPost() {
       {links.map((link, index) => (
         <div
           key={`${link.title}-${index}`}
-          className="flex justify-between items-start bg-gray-700 px-2 py-1 rounded-md break-words"
+          className="flex justify-between items-start bg-gray-700 p-3 md:p-4 rounded-md break-words"
         >
           <div className="text-sm break-all">
            <span className="font-semibold mb-1"> {link.title}: </span> <br />{link.url}
@@ -415,9 +415,7 @@ function AddPost() {
   {/* Chat Display Area */} 
   <h1 className="text-xl flex mx-auto items-center text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent font-bold"><img src={glow} className="w-6 h-6 mr-1" alt="" /> AI Assistant</h1>
   <div className="flex-1 overflow-y-auto scrollbar-hide space-y-4 p-4 ">
-    {isTyping && (
-      <div className="text-sm text-gray-400 italic">Chatbot is typing...</div>
-    )}
+   
     {messages.map((msg, idx) => (
       <div
         key={idx}
@@ -436,10 +434,17 @@ function AddPost() {
           }`}
         >
           {msg.message}
+          
         </div>
+        
       </div>
+      
     ))}
+     {isTyping && (
+      <div className="text-sm text-gray-400 italic">Assistant is typing...</div>
+    )}
   </div>
+
 
   {/* Input Area */}
   <div className="mt-4">

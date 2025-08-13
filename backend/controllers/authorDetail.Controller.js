@@ -395,16 +395,125 @@ const notificationAuthorDeleteAll = async (req, res) => {
 };
 
 
+// const addAnnouncement = async (req, res) => {
+//   console.log("announcement route hit");
+
+//   const { user, title, message, links, deliveredTo, email, profile } = req.body;
+
+//   console.log("announcement msg", message);
+//   console.log("announcement email", email);
+
+//   try {
+//     // Find the author by email
+//     const author = await Author.findOne({ email });
+//     if (!author) {
+//       return res.status(404).json({ message: 'Author not found' });
+//     }
+
+//     // Safe parsing of links
+//     let parsedLinks = [];
+//     try {
+//       parsedLinks = links ? JSON.parse(links) : [];
+//       if (!Array.isArray(parsedLinks)) {
+//         parsedLinks = [];
+//       }
+//     } catch (e) {
+//       parsedLinks = [];
+//     }
+
+//     // Create a new announcement object
+//     const newAnnouncement = {
+//       user,
+//       title,
+//       message,
+//       links: parsedLinks,
+//       deliveredTo,
+//       profile,
+//       authorEmail: email
+//     };
+
+//     let filter = {};
+//     if (deliveredTo === 'coordinators') {
+//       filter.role = { $in: ['coordinator', 'admin'] };
+//     }
+//     else if (deliveredTo === 'community') {
+//       // Match authors with at least one shared community
+//       filter.community = { $in: author.community };
+//     } 
+//     // else {
+//     //   return res.status(400).json({ message: 'Invalid deliveredTo value' });
+//     // }
+
+   
+
+//     // Find all matching authors
+//     const recipients = await Author.find(filter);
+
+//     // Push announcement to each recipient
+//     for (const recipient of recipients) {
+//       recipient.announcement = recipient.announcement || [];
+
+//       // Validate object before pushing
+//       if (typeof newAnnouncement === 'object' && newAnnouncement !== null) {
+//         recipient.announcement.push(newAnnouncement);
+//         await recipient.save();
+//       }
+//     }
+//     const url = 'https://blog-frontend-teal-ten.vercel.app/announcement';
+//     // Extract URLs from parsedLinks (if they are objects with a "url" property)
+//     const linkHtml = parsedLinks.length > 0
+//       ? `<p>Links:<br>${parsedLinks
+//           .map(link => {
+//             if (typeof link === "string") {
+//               return `<a href="${link}" target="_blank">${link}</a>`;
+//             } else if (typeof link === "object" && link.url) {
+//               return `<a href="${link.url}" target="_blank">${link.url}</a>`;
+//             }
+//             return "";
+//           })
+//           .join("<br>")}</p>`
+//       : "";
+
+//     // 📧 Send email to all recipients
+//     if (recipients.length > 0) {
+//       const emailSubject = `Announcement: ${title}`;
+//       const emailHtml = `
+//         <h3>New Announcement from ${user}</h3>
+//         <p><strong>Title:</strong> ${title}</p>
+//         <p>${message}</p>
+//          ${linkHtml}
+//         <p><a href="${url}">View Announcement</a></p>
+
+//       `;
+
+//       for (const recipient of recipients) {
+//         if (recipient.email) {
+//           await transporter.sendMail({
+//             from: `"${user}" <${process.env.EMAIL_USER}>`,
+//             to: recipient.email,
+//             subject: emailSubject,
+//             html: emailHtml
+//           });
+//         }
+//       }
+//     }
+
+//     res.status(201).json({
+//       message: 'Announcement added successfully',
+//       announcement: newAnnouncement,
+//     });
+//   } catch (error) {
+//     console.error('Error adding announcement:', error);
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// };
+
 const addAnnouncement = async (req, res) => {
   console.log("announcement route hit");
 
   const { user, title, message, links, deliveredTo, email, profile } = req.body;
 
-  console.log("announcement msg", message);
-  console.log("announcement email", email);
-
   try {
-    // Find the author by email
     const author = await Author.findOne({ email });
     if (!author) {
       return res.status(404).json({ message: 'Author not found' });
@@ -414,14 +523,11 @@ const addAnnouncement = async (req, res) => {
     let parsedLinks = [];
     try {
       parsedLinks = links ? JSON.parse(links) : [];
-      if (!Array.isArray(parsedLinks)) {
-        parsedLinks = [];
-      }
-    } catch (e) {
+      if (!Array.isArray(parsedLinks)) parsedLinks = [];
+    } catch {
       parsedLinks = [];
     }
 
-    // Create a new announcement object
     const newAnnouncement = {
       user,
       title,
@@ -434,33 +540,33 @@ const addAnnouncement = async (req, res) => {
 
     let filter = {};
     if (deliveredTo === 'coordinators') {
-      filter.role = { $in: ['coordinator', 'admin'] };
-    }
-    else if (deliveredTo === 'community') {
-      // Match authors with at least one shared community
+      filter.role = { $in: ['coordinator'] };
+    } else if (deliveredTo === 'community') {
       filter.community = { $in: author.community };
-    } 
-    // else {
-    //   return res.status(400).json({ message: 'Invalid deliveredTo value' });
-    // }
-
-   
-
-    // Find all matching authors
-    const recipients = await Author.find(filter);
-
-    // Push announcement to each recipient
-    for (const recipient of recipients) {
-      recipient.announcement = recipient.announcement || [];
-
-      // Validate object before pushing
-      if (typeof newAnnouncement === 'object' && newAnnouncement !== null) {
-        recipient.announcement.push(newAnnouncement);
-        await recipient.save();
-      }
     }
+
+    // Get recipients
+    const recipients = await Author.find(filter).select('email');
+
+    // const recipientEmails = recipients.map(r => r.email).filter(Boolean);
+
+    const recipientEmails = recipients
+      .map(r => r.email)
+      .filter(Boolean) // remove null/undefined
+      .filter(recipientEmail => recipientEmail !== email); // remove sender email
+
+    // Bulk push announcements to DB
+    if (recipientEmails.length > 0) {
+      const bulkOps = recipients.map(r => ({
+        updateOne: {
+          filter: { email: r.email },
+          update: { $push: { announcement: newAnnouncement } }
+        }
+      }));
+      await Author.bulkWrite(bulkOps);
+    }
+
     const url = 'https://blog-frontend-teal-ten.vercel.app/announcement';
-    // Extract URLs from parsedLinks (if they are objects with a "url" property)
     const linkHtml = parsedLinks.length > 0
       ? `<p>Links:<br>${parsedLinks
           .map(link => {
@@ -474,40 +580,46 @@ const addAnnouncement = async (req, res) => {
           .join("<br>")}</p>`
       : "";
 
-    // 📧 Send email to all recipients
-    if (recipients.length > 0) {
-      const emailSubject = `Announcement: ${title}`;
-      const emailHtml = `
-        <h3>New Announcement from ${user}</h3>
-        <p><strong>Title:</strong> ${title}</p>
-        <p>${message}</p>
-         ${linkHtml}
-        <p><a href="${url}">View Announcement</a></p>
-
-      `;
-
-      for (const recipient of recipients) {
-        if (recipient.email) {
-          await transporter.sendMail({
-            from: `"${user}" <${process.env.EMAIL_USER}>`,
-            to: recipient.email,
-            subject: emailSubject,
-            html: emailHtml
-          });
-        }
-      }
-    }
-
+    // Respond immediately
     res.status(201).json({
       message: 'Announcement added successfully',
       announcement: newAnnouncement,
+      recipients: recipientEmails
     });
+
+    // Send emails sequentially after response
+    const sendEmailsSequentially = async () => {
+      console.log(`📨 Sending announcement emails to ${recipientEmails.length} recipients...`);
+      for (const recipient of recipientEmails) {
+        try {
+          await transporter.sendMail({
+            from: `"${user}" <${process.env.EMAIL_USER}>`,
+            to: recipient,
+            subject: `Announcement: ${title}`,
+            html: `
+              <h3>New Announcement from ${user}</h3>
+              <p><strong>Title:</strong> ${title}</p>
+              <p>${message}</p>
+              ${linkHtml}
+              <p><a href="${url}">View Announcement</a></p>
+            `
+          });
+          console.log(`✅ Email sent to: ${recipient}`);
+          await new Promise(res => setTimeout(res, 200)); // Prevent overload
+        } catch (err) {
+          console.error(`❌ Failed to send email to ${recipient}:`, err.message);
+        }
+      }
+      console.log("📬 All announcement emails processed.");
+    };
+
+    sendEmailsSequentially();
+
   } catch (error) {
     console.error('Error adding announcement:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 
 
 const deleteAnnouncement = async (req, res) => {

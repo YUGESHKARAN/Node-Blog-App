@@ -160,25 +160,25 @@ function YourPost() {
 
      
 
-        <div className="flex w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">
+        <div className="grid grid-cols-1 w-11/12 md:grid-cols-2 lg:grid-cols-4 md:gap-16 flex-wrap justify-center md:mt-5 h-auto mx-auto">
 
           {/* Posts Grid */}
           {loader ? (
-            <div className="flex-col items-center justify-center">
-              <MagnifyingGlass
-                visible={true}
-                height="100"
-                width="100"
-                ariaLabel="loading"
-                wrapperStyle={{ marginTop: "20px" }}
-                wrapperClass="magnifying-glass-wrapper"
-                glassColor="#4B5563"
-                color="#60A5FA"
-              />
-              <p className="text-sm md:text-lg font-semibold text-gray-400">
-                Loading Posts...
-              </p>
-            </div>
+         <div className="col-span-4 flex flex-col items-center justify-center">
+                     <MagnifyingGlass
+                       visible={true}
+                       height="100"
+                       width="100"
+                       ariaLabel="loading"
+                       wrapperStyle={{ marginTop: "20px" }}
+                       wrapperClass="magnifying-glass-wrapper"
+                       glassColor="#4B5563"
+                       color="#60A5FA"
+                     />
+                     <p className="text-sm md:text-lg font-semibold text-gray-400">
+                       Loading Posts...
+                     </p>
+                   </div>
           ) : (
             (postCategory === ""
               ? filterdPost
@@ -186,8 +186,7 @@ function YourPost() {
             ).map((data, index) => (
               <div
                 key={index}
-                className="lg:w-3/12 md:w-80 w-11/12 mx-auto bg-gray-800  md:pb-2 flex flex-col 
-              shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
+                className="w-11/12 mx-auto md:w-full bg-gray-800 md:pb-2 flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
               >
                  <div className="flex mb-2 gap-2 items-center">
                     <img
