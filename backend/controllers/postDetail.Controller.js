@@ -403,6 +403,8 @@ const addPosts = async (req, res) => {
 const updatePost = async (req, res) => {
   const { email, postId } = req.params;
   const { title, description, category,links } = req.body;
+  console.log("new changes", req.body)
+
   
   try {
     const author = await Author.findOne({ email });
@@ -436,9 +438,12 @@ const updatePost = async (req, res) => {
       imageUrl = req.files.image[0].originalname;
     }
 
+    console.log("image",imageUrl)
+
     // Handle document uploads
-    const documentUrls = [];
+    let documentUrls =post.documents || [];
     if (req.files && req.files.document) {
+      documentUrls = [];
       for (const doc of req.files.document) {
         const params = {
           Bucket: bucketName,
@@ -452,7 +457,33 @@ const updatePost = async (req, res) => {
         documentUrls.push(doc.originalname);
       }
     }
-const parsedLinks = links? JSON.parse(links):[];
+
+  console.log("old link", post.links);
+
+let parsedLinks = post.links;
+
+// if (links && JSON.parse(links).length > 0) {
+//   parsedLinks = Array.isArray(links) ? links : JSON.parse(links);
+// }
+//  else if (post.links && post.links.length > 0) {
+//   parsedLinks = post.links;
+// }
+if (links && JSON.parse(links).length > 0) {
+  try {
+    const parsed = typeof links === "string" ? JSON.parse(links) : links;
+
+    if (Array.isArray(parsed)) {
+      parsedLinks = parsed.map(link => ({
+        _id: new mongoose.Types.ObjectId(), // manually create if you want explicit IDs
+        title: (link.title || "").trim(),
+        url: (link.url || "").trim()
+      }));
+    }
+  } catch (err) {
+    console.error("Failed to parse links:", err);
+  }
+}
+console.log("links",parsedLinks)
     // Update post details
     Object.assign(post, { 
       title, 
@@ -470,6 +501,7 @@ const parsedLinks = links? JSON.parse(links):[];
       data: updatedPost 
     });
   } catch (err) {
+    console.error(err.errors); 
     res.status(500).json({ 
       message: "Server error", 
       error: err.message 
