@@ -255,32 +255,34 @@ const addPosts = async (req, res) => {
 
     // --- Upload image ---
     let imageUrl = '';
-    if (req.files?.image?.length) {
+    if (req.files && req.files.image) {
       const buffer = await sharp(req.files.image[0].buffer)
         .resize({ width: 672, height: 462, fit: 'contain' })
         .toBuffer();
 
+       const uniqueFilename = `${uuidv4()}-${req.files.image[0].originalname}`;
       await s3.send(new PutObjectCommand({
         Bucket: bucketName,
-        Key: req.files.image[0].originalname,
+        Key: uniqueFilename,
         Body: buffer,
         ContentType: req.files.image[0].mimetype
       }));
 
-      imageUrl = req.files.image[0].originalname;
+      imageUrl = uniqueFilename;
     }
 
     // --- Upload documents ---
     const documentUrls = [];
-    if (req.files?.document?.length) {
+    if (req.files && req.files.document) {
       for (const doc of req.files.document) {
+        const uniqueDocName = `${uuidv4()}-${doc.originalname}`;
         await s3.send(new PutObjectCommand({
           Bucket: bucketName,
-          Key: doc.originalname,
+          Key: uniqueDocName,
           Body: doc.buffer,
           ContentType: doc.mimetype
         }));
-        documentUrls.push(doc.originalname);
+        documentUrls.push(uniqueDocName);
       }
     }
 
@@ -425,17 +427,19 @@ const updatePost = async (req, res) => {
       const buffer = await sharp(req.files.image[0].buffer)
         .resize({ width: 672, height: 462, fit: 'contain' })
         .toBuffer();
+      
+        const uniqueFilename = `${uuidv4()}-${req.files.image[0].originalname}`;
 
       const params = {
         Bucket: bucketName,
-        Key: req.files.image[0].originalname,
+        Key: uniqueFilename,
         Body: buffer,
         ContentType: req.files.image[0].mimetype
       };
 
       const command = new PutObjectCommand(params);
       await s3.send(command);
-      imageUrl = req.files.image[0].originalname;
+      imageUrl = uniqueFilename;
     }
 
     console.log("image",imageUrl)
@@ -445,16 +449,17 @@ const updatePost = async (req, res) => {
     if (req.files && req.files.document) {
       documentUrls = [];
       for (const doc of req.files.document) {
+         const uniqueDocName = `${uuidv4()}-${doc.originalname}`;
         const params = {
           Bucket: bucketName,
-          Key: doc.originalname,
+          Key: uniqueDocName,
           Body: doc.buffer,
           ContentType: doc.mimetype
         };
 
         const command = new PutObjectCommand(params);
         await s3.send(command);
-        documentUrls.push(doc.originalname);
+        documentUrls.push(uniqueDocName);
       }
     }
 

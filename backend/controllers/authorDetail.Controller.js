@@ -4,6 +4,7 @@ const Author = require("../models/blogAuthorSchema");
 const { S3Client,PutObjectCommand } = require("@aws-sdk/client-s3");
 require('dotenv').config()
 
+const { v4: uuidv4 } = require('uuid');
 // import nodemailer from "nodemailer";
 
 const nodemailer = require('nodemailer')
@@ -117,17 +118,18 @@ const updateAuthor = async (req, res) => {
     
       if(req.file)
       {
+         const uniqueFilename = `${uuidv4()}-${profile}`;
           // S3 Integration
       const params = {
         Bucket:bucketName,
-        Key:profile,
+        Key:uniqueFilename,
         Body:req.file.buffer,
         ContentType:req.file.mimetype
       }
   
       const command = new PutObjectCommand(params)
         await s3.send(command)
-        author.profile = profile; 
+        author.profile = uniqueFilename; 
       }
       console.log("profile data",req.file)
 

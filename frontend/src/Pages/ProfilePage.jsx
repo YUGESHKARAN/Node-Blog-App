@@ -77,6 +77,7 @@ function ProfilePage() {
     try {
       const response = await axios.put(
         `https://node-blog-app-seven.vercel.app/blog/author/${email}`,
+        // `http://127.0.0.1:3000/blog/author/${email}`,
         formData,
         {
           headers: {

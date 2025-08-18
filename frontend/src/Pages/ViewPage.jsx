@@ -280,7 +280,7 @@ console.log('singlepost data--------------',singlePostData)
         rel="noopener noreferrer"
         className="group w-fit flex items-center gap-2 px-4 py-1 md:py-2 bg-gray-200 rounded-lg shadow-sm hover:bg-gray-200 transition-all duration-200 text-sm font-medium text-gray-900"
       >
-        📄 <span className="truncate max-w-xs">{doc}</span>
+        📄 <span className="truncate max-w-xs">{doc.split("-").slice(5).join("-")}</span>
       </a>
     ))}
 

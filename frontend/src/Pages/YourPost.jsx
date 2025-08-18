@@ -118,6 +118,7 @@ function YourPost() {
   };
 
   console.log("local email", email);
+  // console.log("your post",filterdPost)
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  ">
