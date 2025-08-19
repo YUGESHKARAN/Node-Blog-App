@@ -272,7 +272,7 @@ const sendOtp = async (req, res) => {
 
     // Send OTP via email
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service:process.env.EMAIL_PROVIDER,
       auth: {
         user: process.env.EMAIL_USER, // Replace with your email
         pass: process.env.EMAIL_PASS // Replace with your email password
