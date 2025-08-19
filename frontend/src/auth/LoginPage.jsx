@@ -17,11 +17,11 @@ function LoginPage() {
   const { login } = useAuth();
   const [passwordLabel, setPasswordLabel] = useState("Password");
   const[loader,setLoader] = useState(false)
-
+  const [loader2, setLoader2] = useState(false)
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-
+     setLoader2(true)
 
     try {
       // Send a POST request to the updated API endpoint
@@ -45,11 +45,15 @@ function LoginPage() {
     } catch (error) {
       setErrors({ apiError: error.response?.data?.message || "Login failed" });
     }
+    finally{
+      setLoader2(false)
+    }
   
   };
 
   const sendOtp = async (e, email) => {
     e.preventDefault();
+    setLoader2(true)
   console.log("otp email", email)
     try {
       const response = await axiosInstance.post('/blog/author/send-otp', {
@@ -61,6 +65,9 @@ function LoginPage() {
       }
     } catch (err) {
       console.log("Error", err);
+    }
+    finally{
+      setLoader2(false)
     }
   
   };
@@ -115,25 +122,27 @@ function LoginPage() {
           <button
             onClick={handleSubmit}
             type="submit"
+            disabled={loader2}
             className={`${
               forgotPassword
                 ? "hidden"
                 : "w-full bg-red-600 hover:bg-red-700 md:text-base text-sm transition-all duration-200 text-white font-bold py-2 px-4 rounded"
             }`}
           >
-            Login
+            {loader2?'Logging in...':'Login'}
           </button>
 
           <button
             onClick={(e) => sendOtp(e, formData.email)}
             type="submit"
+            disabled={loader2}
             className={`${
               forgotPassword
                 ? "w-full bg-red-600 hover:bg-red-700 md:text-base text-sm transition-all duration-200 text-white font-bold py-2 px-4 rounded"
                 : "hidden"
             }`}
           >
-            Send OTP
+            {loader2?'Sending OTP...':'Send OTP'}
           </button>
         </form>
 

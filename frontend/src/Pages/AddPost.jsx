@@ -42,6 +42,9 @@ function AddPost() {
   // const backendEndpoint = "http://127.0.0.1:5000/generate-content";
 
   const handleSend = async (message) => {
+    if(message.trim()==""){
+      return;
+    }
     const newMessage = {
       message,
       sender: "user",

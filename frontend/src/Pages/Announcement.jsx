@@ -19,6 +19,7 @@ function Announcement() {
   const [currentLinkUrl, setCurrentLinkUrl] = useState('');
   const [showAnnouncement, setShowAnnouncement]  = useState(false); 
   const [announcement, setAnnouncement] = useState([]); 
+  const [loading,setLoading] = useState(false)
   const role = localStorage.getItem("role");  
 
 
@@ -50,6 +51,7 @@ useEffect(()=>{
     formData.append("deliveredTo", deliveredTo);
     formData.append("email", email);
     formData.append("profile", profile);
+    setLoading(true)
 
     try {
       const response = await axiosInstance.post(`/blog/author/announcement/add`, 
@@ -70,6 +72,9 @@ useEffect(()=>{
       }
     } catch (error) {
       console.error("Error submitting announcement:", error);
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -192,8 +197,12 @@ useEffect(()=>{
 
           </select>
         </div>
-        <button type="submit" className="font-semibold hover:bg-gray-500 bg-white text-gray-800 transition-all duration-200 md:px-4 px-2 py-1 md:text-base text-sm md:py-2 rounded ">
-          Submit Announcement
+        <button 
+        type="submit" 
+        className="font-semibold hover:bg-gray-500 bg-white text-gray-800 transition-all duration-200 md:px-4 px-2 py-1 md:text-base text-sm md:py-2 rounded "
+        disabled={loading}
+        >
+          {loading?'Submitting':'Submit Announcement'}
         </button>
       </form>
 

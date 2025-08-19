@@ -20,6 +20,7 @@ function ProfilePage() {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const navigate = useNavigate();
+  const [loading,setLoaing] = useState(false)
 
   const deleteAuthor = async () => {
     const confirm = window.confirm('Are you sure want to delete your account');
@@ -63,7 +64,7 @@ function ProfilePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
-
+   setLoaing(true)
     const formData = new FormData();
     formData.append("authorname", authorName);
     localStorage.setItem('username', authorName);
@@ -76,7 +77,7 @@ function ProfilePage() {
     try {
       const response = await axiosInstance.put(
         `/blog/author/${email}`,
-        // `http://127.0.0.1:3000/blog/author/${email}`,
+        // `/blog/author/${email}`,
         formData
       );
       toast.success("Profile updated successfully");
@@ -86,6 +87,9 @@ function ProfilePage() {
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error("Error updating profile");
+    }
+    finally{
+      setLoaing(false)
     }
   };
 
@@ -218,8 +222,9 @@ function ProfilePage() {
               <button
                 type="submit"
                 className="w-full py-2 px-4 bg-orange-600 hover:bg-orange-700 text-sm md:text-base text-white font-bold rounded-md transition duration-200"
+                disabled={loading}
               >
-                Update My Details
+                 {loading?'Updating...':'Update My Details'}
               </button>
             </div>
           </form>
