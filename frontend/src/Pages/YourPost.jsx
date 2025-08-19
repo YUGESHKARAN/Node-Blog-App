@@ -117,8 +117,31 @@ function YourPost() {
     setSelectedImage(null);
   };
 
-  console.log("local email", email);
+  // console.log("local email", email);
   // console.log("your post",filterdPost)
+
+     const renderTextWithHashtags = (text) => {
+      if (!text) return null;
+    
+      // Convert visible "\r\n" or "\\n" into real line breaks
+      const cleanedText = text.replace(/\\r\\n|\\n|\\r\n/g, ' ');
+    
+      return cleanedText.split('\n').map((line, lineIndex) => (
+        <React.Fragment key={lineIndex}>
+          {line.split(/(\s+#\w+)/g).map((word, index) =>
+            word.startsWith(" #") ? (
+              <span key={index} className="text-md text-white font-italy font-bold">
+                {word}
+              </span>
+            ) : (
+              <React.Fragment key={index}>{word}</React.Fragment>
+            )
+          )}
+          <br />
+        </React.Fragment>
+      ));
+    };
+   
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  ">
@@ -187,7 +210,7 @@ function YourPost() {
             ).map((data, index) => (
               <div
                 key={index}
-                className="w-11/12 mx-auto md:w-full bg-gray-800 md:pb-2 flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
+                className="w-11/12 mx-auto md:w-full bg-gray-800  flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
               >
                  <div className="flex mb-2 gap-2 items-center">
                     <img
@@ -210,7 +233,7 @@ function YourPost() {
                       ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
                       : blog1
                   }
-                  className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center  hover:opacity-90 transition-all duration-300"
+                  className="w-full h-36  rounded-xl object-cover bg-center  hover:opacity-90 transition-all duration-300"
                   alt={data.title}
                   onClick={() =>
                     handleImageClick(
@@ -220,12 +243,12 @@ function YourPost() {
                     )
                   }
                 />
-                <div className="min-h-28 h-auto py-4">
+                <div className="min-h-28 h-auto pt-4">
                   <h2 className="md:text-xl text-lg text-white font-bold">
-                    {data.title}
+                   {data.title && data.title.slice(0,20)}...
                   </h2>
                   <p className="text-xs text-gray-400 mt-2">
-                    {data.description.slice(0, 100)}...
+                 {renderTextWithHashtags(data.description.slice(0,50))}...
                   </p>
                 </div>
                 {/* <h1 className={`${data.documents?.length>0?'text-xs text-gray-200':'hidden'}`}>Source Documents & Links:</h1>
@@ -251,7 +274,7 @@ function YourPost() {
                
                 </div> */}
                 
-                <div className="flex justify-between items-center mt-2">
+                <div className="flex justify-between items-center mb-2 ">
               
                   <div className="flex gap-3 items-center">
                     <div className="flex items-center gap-2">

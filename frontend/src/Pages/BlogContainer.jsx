@@ -119,7 +119,7 @@ function BlogContainer() {
     if (!text) return null;
   
     // Convert visible "\r\n" or "\\n" into real line breaks
-    const cleanedText = text.replace(/\\r\\n|\\n|\\r\n/g, '\n');
+    const cleanedText = text.replace(/\\r\\n|\\n|\\r\n/g, ' ');
   
     return cleanedText.split('\n').map((line, lineIndex) => (
       <React.Fragment key={lineIndex}>
@@ -137,6 +137,8 @@ function BlogContainer() {
     ));
   };
  
+
+
 console.log("posts", posts);  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-8">
@@ -222,7 +224,7 @@ console.log("posts", posts);
               {data.image && /\.(mp4|webm|ogg)$/.test(data.image) ? (
                 <video
                   src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`}
-                  className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
+                  className="w-full h-36  rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
                   controls
                   alt={data.title}
                   onClick={() =>
@@ -238,7 +240,7 @@ console.log("posts", posts);
                       ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
                       : blog1
                   }
-                  className="w-full h-36 sm:h-40 rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
+                  className="w-full h-36  rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
                   alt={data.title}
                   onClick={() =>
                     handleImageClick(
@@ -250,12 +252,12 @@ console.log("posts", posts);
                 />
               )}
 
-              <div className="min-h-28 h-auto py-4">
+              <div className="min-h-28 h-auto pt-4">
                 <h2 className="md:text-xl text-lg text-white font-bold">
-                  {data.title && data.title.slice(0,25)}...
+                  {data.title && data.title.slice(0,20)}...
                 </h2>
                 <p className="text-xs text-gray-400 mt-2">
-                  {renderTextWithHashtags(data.description.slice(0, 100))}...
+                  {renderTextWithHashtags(data.description.slice(0, 50))}...
                 </p>
               </div>
 
@@ -284,7 +286,7 @@ console.log("posts", posts);
                 }
                 </div> */}
 
-              <div className="flex justify-between items-center mt-2">
+              <div className="flex justify-between items-center mb-2">
                 <div className="flex gap-3 items-center">
                   <div className="flex items-center gap-2">
                     <Link
