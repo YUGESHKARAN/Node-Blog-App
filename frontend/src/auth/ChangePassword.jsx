@@ -1,7 +1,6 @@
 import React,{useState} from 'react'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-
+import axiosInstance from '../instances/Axiosinstances';
 function ChangePassword() {
     const [errors, setErrors] = useState({});
       const [success, setSuccess] = useState("");
@@ -22,7 +21,7 @@ function ChangePassword() {
       const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.post("https://node-blog-app-seven.vercel.app/blog/author/reset-password", formData);
+          const response = await axiosInstance.post("/blog/author/reset-password", formData);
           if (response.status === 200) {
             setSuccess("Password updated successfully!");
             setTimeout(() => {

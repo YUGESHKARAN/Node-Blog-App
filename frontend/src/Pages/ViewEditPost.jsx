@@ -3,13 +3,14 @@ import blog1 from "../images/img_not_found.png";
 import { useLocation } from "react-router-dom";
 import avatar1 from "../images/avatar1.jpg";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import NavBar from "../ui/NavBar";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 import Footer from "../ui/Footer";
 import { MdEdit } from "react-icons/md";
+import axiosInstance from "../instances/Axiosinstances";
+
 function ViewEditPost() {
   // const username = localStorage.getItem("username");
   const email = localStorage.getItem("email");
@@ -62,7 +63,7 @@ const [previewImage, setPreviewImage] = useState(null);
   //   try {
   //     // Send FormData object directly to the API
   //     const response = await axios.put(
-  //       `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`,
+  //       `/blog/posts/${email}/${PostId}`,
   //       formData,
   //       {
   //         headers: {
@@ -113,15 +114,10 @@ const [previewImage, setPreviewImage] = useState(null);
     setLoading(true)
   
     try {
-      const response = await axios.put(
-        `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`,
+      const response = await axiosInstance.put(
+        `/blog/posts/${email}/${PostId}`,
         // `http://localhost:3000/blog/posts/${email}/${PostId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        formData
       );
   
       if (response.status === 200) {
@@ -153,8 +149,8 @@ const [previewImage, setPreviewImage] = useState(null);
   };
   const deletePost = async() => {
     try{
-      const response = axios.delete(`https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`);
-      // const response = axios.delete(`http://localhost:3000/blog/posts/${email}/${PostId}`);
+      const response = axiosInstance.delete(`/blog/posts/${email}/${PostId}`);
+      // const response = axiosInstance.delete(`http://localhost:3000/blog/posts/${email}/${PostId}`);
       console.log("deleted response",response);
       toast.success('post deleted successfully') ;
       navigate("/home");
@@ -176,8 +172,8 @@ const [previewImage, setPreviewImage] = useState(null);
   useEffect(() => {
     const getSinglrPost = async () => {
       try {
-        const response = await axios.get(
-          `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${PostId}`
+        const response = await axiosInstance.get(
+          `/blog/posts/${email}/${PostId}`
           // `http://localhost:3000/blog/posts/${email}/${PostId}`
         );
         const postData = response.data.data;

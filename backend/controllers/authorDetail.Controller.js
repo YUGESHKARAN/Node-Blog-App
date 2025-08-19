@@ -290,7 +290,13 @@ const sendOtp = async (req, res) => {
 
     res.status(200).json({ message: 'OTP sent successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Error sending OTP', error });
+    console.error("Error in sendOtp:", error); // log it to the backend console
+
+    // Avoid returning raw error object
+    res.status(500).json({
+      message: 'Error sending OTP',
+      error: error.message || 'Internal Server Error'
+    });
   }
 };
 

@@ -1,12 +1,11 @@
 import React,{useState,useEffect} from 'react'
-import axios from 'axios'
 import NavBar from '../ui/NavBar';
 import blog1 from "../images/blog1.jpg";
 import { AiOutlineMail } from 'react-icons/ai';
 import { GrLinkedin } from 'react-icons/gr';
 import Footer from '../ui/Footer';
 import user from "../images/user.png";
-import e from 'cors';
+import axiosInstance from '../instances/Axiosinstances';
 
 function Authors() {
     const [authors,setAuthors] = useState([])
@@ -15,8 +14,8 @@ function Authors() {
     const [recommendation,setRecommendation] = useState([]) ; 
     const authorsDetails = async() => {
         try{
-            const response = await axios.get('https://node-blog-app-seven.vercel.app/blog/author/profiles/');
-            // const response = await axios.get('http://127.0.0.1:3000/blog/author/profiles/');
+            const response = await axiosInstance.get('/blog/author/profiles/');
+            // const response = await axiosInstance.get('http://127.0.0.1:3000/blog/author/profiles/');
             setAuthors(response.data.filter((author)=>author.email!==email))
         }
         catch(err)
@@ -33,7 +32,7 @@ useEffect(()=>{
 
 const recommendtion_system  = async() =>{
   try{
-    const response = await axios.post('https://recommendation-system-omega.vercel.app/recommended', {email} )
+    const response = await axiosInstance.post('https://recommendation-system-omega.vercel.app/recommended', {email} )
 
     // console.log("recommedation data",response.data)
     setRecommendation(response.data.remonneded_people)
@@ -58,7 +57,7 @@ useEffect(()=>{
 const addFollower = async(userEmail) =>{
   console.log('useremail',userEmail)
   try{
-    const response = await axios.put(`https://node-blog-app-seven.vercel.app/blog/author/follow/${userEmail}`,
+    const response = await axiosInstance.put(`/blog/author/follow/${userEmail}`,
       {emailAuthor:email}
     )
     console.log(response.data)

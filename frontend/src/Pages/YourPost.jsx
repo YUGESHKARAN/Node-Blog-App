@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { IoSearchOutline, IoEye, IoClose, IoShareSocial } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
@@ -8,6 +7,7 @@ import blog1 from "../images/img_not_found.png";
 import NavBar from "../ui/NavBar";
 import Footer from "../ui/Footer";
 import { BiLike, BiSolidLike } from "react-icons/bi";
+import axiosInstance from "../instances/Axiosinstances";
 
 function YourPost() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,8 +22,8 @@ function YourPost() {
   const fetchPosts = async () => {
     setLoader(true);
     try {
-      const response = await axios.get(
-        "https://node-blog-app-seven.vercel.app/blog/posts"
+      const response = await axiosInstance.get(
+        "/blog/posts"
       );
       setPosts(
         response.data.posts.filter((post) => post.authoremail === email)
@@ -50,8 +50,8 @@ function YourPost() {
   // Track post views
   const postViews = async (authorEmail, postId) => {
     try {
-      await axios.put(
-        `https://node-blog-app-seven.vercel.app/blog/posts/views/${authorEmail}/${postId}`,
+      await axiosInstance.put(
+        `/blog/posts/views/${authorEmail}/${postId}`,
         { emailAuthor: email }
       );
     } catch (err) {
@@ -81,8 +81,8 @@ function YourPost() {
     e.stopPropagation();
    }
     try {
-      await axios.put(
-        `https://node-blog-app-seven.vercel.app/blog/posts/likes/${authorEmail}/${postId}`,
+      await axiosInstance.put(
+        `/blog/posts/likes/${authorEmail}/${postId}`,
         { emailAuthor: email }
       );
       setPosts((prevPosts) =>

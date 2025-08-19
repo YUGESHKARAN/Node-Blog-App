@@ -2,6 +2,8 @@ import React,{useState, useEffect} from 'react'
 import NavBar from '../ui/NavBar'
 import axios from 'axios'   
 import Footer from '../ui/Footer';
+import axiosInstance from '../instances/Axiosinstances';
+
 function TechCommunity() {
 
  const [posts, setPosts] = useState([]); 
@@ -15,7 +17,7 @@ function TechCommunity() {
 
  const getAuthorCommunity = async () => {
     try{
-        const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/${email}`);
+        const response = await axiosInstance.get(`/blog/author/${email}`);
         setAuthorCommunity(response.data.community);
     }
     catch(err)
@@ -27,7 +29,7 @@ function TechCommunity() {
  const getPosts = async () => {
    
     try {
-      const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/posts");
+      const response = await axiosInstance.get("/blog/posts");
       setPosts(response.data.posts);
     } 
     catch (err) {
@@ -40,7 +42,7 @@ function TechCommunity() {
   const getAuthors = async () => {
    
     try {
-      const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/author");
+      const response = await axiosInstance.get("/blog/author");
       setAuthors(response.data);
     } 
     catch (err) {
@@ -104,17 +106,11 @@ const communities = categories.map((category) => getCategoryStats(authors, categ
 
 const updateCommunity = async(email,techCommunity)=>{
     try{
-         const response = await axios.put("https://node-blog-app-seven.vercel.app/blog/author/control/updateCommunity",
+         const response = await axiosInstance.put("/blog/author/control/updateCommunity",
          {
             email:email,
             techcommunity:techCommunity
-         },
-         {
-          headers: {
-             'Content-Type': 'application/json',
-          },
-        
-      }
+         }
         );
         if (response.status === 201) {
         await  getPosts();

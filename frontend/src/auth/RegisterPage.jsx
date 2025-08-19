@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NavBar from "../ui/NavBar";
 import Footer from "../ui/Footer";
+import axiosInstance from "../instances/Axiosinstances";
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -32,8 +32,8 @@ function RegisterPage() {
     if (Object.keys(validationErrors).length === 0) {
       try {
         // Send a POST request to the API using axios
-        const response = await axios.post(
-          "https://node-blog-app-seven.vercel.app/blog/author",
+        const response = await axiosInstance.post(
+          "/blog/author",
           {
             authorname: formData.username,
             email: formData.email,

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext} from "react";
 import blog1 from "../images/loading3.gif";
 import blog2 from "../images/blog48.jpg";
 import avatar1 from "../images/avatar1.jpg";
-import axios from "axios";
 import NavBar from "../ui/NavBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,6 +14,8 @@ import { SiTruenas } from "react-icons/si";
 import { ReactTyped } from "react-typed";
 import { IoClose } from "react-icons/io5";
 import { GlobalStateContext } from "../GlobalStateContext";
+import axiosInstance from "../instances/Axiosinstances";
+
 function ViewPage() {
   const user = localStorage.getItem("username");
   const userEmail = localStorage.getItem("email");
@@ -37,8 +38,8 @@ function ViewPage() {
   useEffect(() => {
     const getSinglePost = async () => {
       try {
-        const response = await axios.get(
-          `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${id}`
+        const response = await axiosInstance.get(
+          `/blog/posts/${email}/${id}`
         );
         const postData = response.data.data;
         setSinglePostData(postData);
@@ -56,8 +57,8 @@ function ViewPage() {
 useEffect(() => {
   const getComments = async () => {
     try {
-      const response = await axios.get(
-        `https://node-blog-app-seven.vercel.app/blog/posts/${email}/${id}`
+      const response = await axiosInstance.get(
+        `/blog/posts/${email}/${id}`
       );
       const comments = response.data.data;
       setMessages(comments.messages);

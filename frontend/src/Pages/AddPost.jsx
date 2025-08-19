@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../ui/Footer";
 import Chatbot from "../images/chatbt.gif";
 import { ReactTyped } from "react-typed";
-
+import axiosInstance from "../instances/Axiosinstances";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import glow from "../assets/glow.png"
 function AddPost() {
@@ -186,16 +186,10 @@ function AddPost() {
     setLoading(true);
   
     try {
-      const response = await axios.post(
-        `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
-        // `http://localhost:3000/blog/posts/${email}`,
-        formData,
-        
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+      const response = await axiosInstance.post(
+        `/blog/posts/${email}`,
+        // `/blog/posts/${email}`,
+        formData
       );
 
       console.log("adding post response", response.data);

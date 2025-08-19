@@ -1,8 +1,9 @@
 import React, { useState,useEffect } from 'react';
-import axios from 'axios';
+// import axiosInstance from 'axiosInstance';
 import NavBar from '../ui/NavBar';
 import { RiChatDeleteFill, RiDeleteBack2Fill } from 'react-icons/ri';
 import Footer from '../ui/Footer';
+import axiosInstance from '../instances/Axiosinstances';
 // import { format } from 'date-fns';
 function Announcement() {
   const username = localStorage.getItem("username");
@@ -24,7 +25,7 @@ function Announcement() {
 
 const fetchAllAnnouncement = async()=>{
   try{
-    const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/${email}`);
+    const response = await axiosInstance.get(`/blog/author/${email}`);
     console.log("announcement",response.data.announcement)
     setAnnouncement(response.data.announcement)
   }
@@ -51,15 +52,9 @@ useEffect(()=>{
     formData.append("profile", profile);
 
     try {
-      const response = await axios.post(`https://node-blog-app-seven.vercel.app/blog/author/announcement/add`, 
-      // const response = await axios.post(`http://localhost:3000/blog/author/announcement/add`, 
-         formData,
-         {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        
-      });
+      const response = await axiosInstance.post(`/blog/author/announcement/add`, 
+      // const response = await axiosInstance.post(`/blog/author/announcement/add`, 
+         formData);
 
       
       if (response.status==201) {
@@ -81,7 +76,7 @@ useEffect(()=>{
 
   const deleteAnnouncement = async (id) => {
     try{
-      const response = await axios.delete(`https://node-blog-app-seven.vercel.app/blog/author/announcements/${id}`);
+      const response = await axiosInstance.delete(`/blog/author/announcements/${id}`);
       console.log("response",response)
       fetchAllAnnouncement();
     }

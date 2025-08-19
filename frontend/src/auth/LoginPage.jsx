@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import {CirclesWithBar} from 'react-loader-spinner'
-
+import axiosInstance from "../instances/Axiosinstances";
 function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",
@@ -26,8 +25,8 @@ function LoginPage() {
 
     try {
       // Send a POST request to the updated API endpoint
-      const response = await axios.post("https://node-blog-app-seven.vercel.app/blog/login", formData);
-      // const response = await axios.post("http://localhost:3000/blog/login", formData);
+      const response = await axiosInstance.post("/blog/login", formData);
+      // const response = await axiosInstance.post("http://localhost:3000/blog/login", formData);
       console.log("response",response.data.message)
       if (response.status === 200) {
         setSuccess("Login successful!");
@@ -51,9 +50,9 @@ function LoginPage() {
 
   const sendOtp = async (e, email) => {
     e.preventDefault();
-
+  console.log("otp email", email)
     try {
-      const response = await axios.post(`https://node-blog-app-seven.vercel.app/blog/author/send-otp`, {
+      const response = await axiosInstance.post('/blog/author/send-otp', {
         email
       });
 

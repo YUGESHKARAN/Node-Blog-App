@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import {
   IoSearchOutline,
@@ -11,6 +10,7 @@ import { MdEdit } from "react-icons/md";
 import { MagnifyingGlass } from "react-loader-spinner";
 import blog1 from "../images/img_not_found.png";
 import { BiLike, BiSolidLike } from "react-icons/bi";
+import axiosInstance from "../instances/Axiosinstances";
 
 function BlogContainer() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,8 +27,8 @@ function BlogContainer() {
   const fetchPosts = async () => {
     setLoader(true);
     try {
-      const response = await axios.get(
-        "https://node-blog-app-seven.vercel.app/blog/posts"
+      const response = await axiosInstance.get(
+        "/blog/posts"
       );
       setPosts(
         response.data.posts.filter((post) => post.authoremail !== email)
@@ -67,8 +67,8 @@ function BlogContainer() {
   // Track post views
   const postViews = async (authorEmail, postId) => {
     try {
-      await axios.put(
-        `https://node-blog-app-seven.vercel.app/blog/posts/views/${authorEmail}/${postId}`,
+      await axiosInstance.put(
+        `/blog/posts/views/${authorEmail}/${postId}`,
         { emailAuthor: email }
       );
     } catch (err) {
@@ -79,8 +79,8 @@ function BlogContainer() {
   const postLikes = async (authorEmail, postId, e) => {
     e.preventDefault();
     try {
-      await axios.put(
-        `https://node-blog-app-seven.vercel.app/blog/posts/likes/${authorEmail}/${postId}`,
+      await axiosInstance.put(
+        `/blog/posts/likes/${authorEmail}/${postId}`,
         { emailAuthor: email }
       );
       setPosts((prevPosts) =>

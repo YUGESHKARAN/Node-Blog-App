@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import avatar1 from "../images/avatar1.jpg";
-import axios from "axios";
 import NavBar from "../ui/NavBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import Footer from "../ui/Footer";
-
+import axiosInstance from "../instances/Axiosinstances";
 function ProfilePage() {
   const { logout } = useAuth();
   const email = localStorage.getItem("email");
@@ -27,8 +26,8 @@ function ProfilePage() {
     if (!confirm) return;
 
     try {
-      const response = await axios.delete(
-        `https://node-blog-app-seven.vercel.app/blog/author/${email}`
+      const response = await axiosInstance.delete(
+        `/blog/author/${email}`
       );
       toast.success("Account deleted successfully");
       response.status === 200 && logout();
@@ -40,8 +39,8 @@ function ProfilePage() {
   useEffect(() => {
     const fetchAuthor = async () => {
       try {
-        const response = await axios.get(
-          `https://node-blog-app-seven.vercel.app/blog/author/${email}`
+        const response = await axiosInstance.get(
+          `/blog/author/${email}`
         );
         const authorData = response.data;
         setAuthorName(authorData.authorname);
@@ -75,15 +74,10 @@ function ProfilePage() {
     }
 
     try {
-      const response = await axios.put(
-        `https://node-blog-app-seven.vercel.app/blog/author/${email}`,
+      const response = await axiosInstance.put(
+        `/blog/author/${email}`,
         // `http://127.0.0.1:3000/blog/author/${email}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        formData
       );
       toast.success("Profile updated successfully");
       if (response.status === 201) {

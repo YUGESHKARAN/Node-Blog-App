@@ -15,6 +15,7 @@ import {
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { GoCopilot } from "react-icons/go";
 import { MdAppSettingsAlt } from "react-icons/md";
+import axiosInstance from "../instances/Axiosinstances";
 function HomePage() {
   const username = localStorage.getItem("username");
 
@@ -27,7 +28,8 @@ function HomePage() {
 
   const getAuthors = async () => {
     try {
-      const response = await axios.get('https://node-blog-app-seven.vercel.app/blog/author');
+      // const response = await axios.get('https://node-blog-app-seven.vercel.app/blog/author');
+      const response = await axiosInstance.get('/blog/author');
       // const result = response.data.filter((author) => author.email !== email);
       setAuthors(response.data.filter((author) => author.email !== email).filter(author => author.role === "coordinator"));
       console.log("authors", response.data);
@@ -42,7 +44,8 @@ function HomePage() {
 
   const getData = async () => {
     try {
-      const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/posts/`);
+      // const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/posts/`);
+      const response = await axiosInstance.get(`/blog/posts/`);
       console.log("data", response.data);
       setCategoryCount(response.data.count);
       setPosts(response.data.posts);

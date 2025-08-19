@@ -8,8 +8,8 @@ import bloglogo from '../assets/bloglogo.png';
 import { RiUser3Line } from 'react-icons/ri';
 import { IoIosClose, IoMdNotifications } from 'react-icons/io';
 import { GlobalStateContext } from '../GlobalStateContext';
-import axios from 'axios';
 import { TfiAnnouncement } from 'react-icons/tfi';
+import axiosInstance from '../instances/Axiosinstances';
 
 function NavBar() {
     const { logout } = useAuth();
@@ -59,7 +59,7 @@ function NavBar() {
     // Fetch stored notifications from the server
     const fetchNotifications = async () => {
         try {
-          const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/author/${userEmail}`);
+          const response = await axiosInstance.get(`/blog/author/${userEmail}`);
           setNote(response.data.notification);
           setAnnouncement(response.data.announcement)
         //   console.log("author email data", response.data.notification)
@@ -77,7 +77,7 @@ function NavBar() {
 
     const deleteSigleNotification = async(userEmail,notificationId) =>{
         try{
-           const response = await axios.delete( `https://node-blog-app-seven.vercel.app/blog/author/notification/delete?email=${userEmail}&notificationId=${notificationId}`)
+           const response = await axiosInstance.delete( `/blog/author/notification/delete?email=${userEmail}&notificationId=${notificationId}`)
 
            console.log("deleted",response.data)
            fetchNotifications()
@@ -92,7 +92,7 @@ function NavBar() {
        const confirm = window.confirm('Are you sure want to delete all the notifications');
        if (!confirm) return;
         try{
-           const response = await axios.delete(`https://node-blog-app-seven.vercel.app/blog/author/notification/deleteall?email=${userEmail}`)
+           const response = await axiosInstance.delete(`/blog/author/notification/deleteall?email=${userEmail}`)
 
            console.log("deleted",response.data)
         }

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import NavBar from '../ui/NavBar';
 import { MdDeleteForever } from 'react-icons/md';
 import Footer from '../ui/Footer';
 import { IoSearch } from "react-icons/io5";
+import axiosInstance from '../instances/Axiosinstances';
 
 function Control() {
   const [authors, setAuthors] = useState([]);
@@ -16,7 +16,7 @@ function Control() {
   const email = localStorage.getItem('email');
   const getAuthors = async () => {
     try {
-      const response = await axios.get('https://node-blog-app-seven.vercel.app/blog/author');
+      const response = await axiosInstance.get('/blog/author');
       setAuthors(response.data);
       setFilteredAuthors(response.data);
     } catch (err) {
@@ -44,14 +44,10 @@ function Control() {
     }
 
     try {
-      const response = await axios.put(
-        'https://node-blog-app-seven.vercel.app/blog/author/control/updateRole',
-        { role: roleToUpdate, email },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
+      const response = await axiosInstance.put(
+        '/blog/author/control/updateRole',
+        { role: roleToUpdate, email }
+        
       );
       if (response.status === 200) {
         alert('Role updated successfully');
@@ -90,8 +86,8 @@ const deleteAuthor = async (email) => {
   }
 
     try {
-      const response = await axios.delete(
-        `https://node-blog-app-seven.vercel.app/blog/author/${email}`
+      const response = await axiosInstance.delete(
+        `/blog/author/${email}`
       );
     //   toast.success("Account deleted successfully");
      getAuthors();
@@ -105,7 +101,7 @@ const deleteAuthor = async (email) => {
  const getPosts = async () => {
    
     try {
-      const response = await axios.get("https://node-blog-app-seven.vercel.app/blog/posts");
+      const response = await axiosInstance.get("/blog/posts");
       setPosts(response.data.posts);
     } 
     catch (err) {
@@ -169,14 +165,9 @@ const updateAssignedCommunities = async (email) => {
   const selectedCommunities = assignedCommunities[email] || [];
   console.log("selected commu",selectedCommunities)
   try {
-   const  response  =  await axios.put(`https://node-blog-app-seven.vercel.app/blog/author/control/coordinatorUpdate`, {
+   const  response  =  await axiosInstance.put(`/blog/author/control/coordinatorUpdate`, {
       techCommunities: selectedCommunities,
       email:email
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },  
     }
   );
 
