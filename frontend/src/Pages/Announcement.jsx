@@ -5,6 +5,8 @@ import { RiChatDeleteFill, RiDeleteBack2Fill } from 'react-icons/ri';
 import Footer from '../ui/Footer';
 import axiosInstance from '../instances/Axiosinstances';
 // import { format } from 'date-fns';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Announcement() {
   const username = localStorage.getItem("username");
   const email = localStorage.getItem("email");
@@ -14,7 +16,7 @@ function Announcement() {
   const [message, setMessage] = useState('');
   const [links, setLinks] = useState('');
   // const [image, setImage] = useState(null);
-  const [deliveredTo, setDeliveredTo] = useState('community');
+  const [deliveredTo, setDeliveredTo] = useState('');
   const [currentLinkTitle, setCurrentLinkTitle] = useState('');
   const [currentLinkUrl, setCurrentLinkUrl] = useState('');
   const [showAnnouncement, setShowAnnouncement]  = useState(false); 
@@ -22,6 +24,11 @@ function Announcement() {
   const [loading,setLoading] = useState(false)
   const role = localStorage.getItem("role");  
 
+  const [fieldErrors, setFieldErrors] = useState({
+  title: "",
+  message: "",
+  deliveredTo:""
+});
 
 
 const fetchAllAnnouncement = async()=>{
@@ -42,7 +49,31 @@ useEffect(()=>{
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+        let errors = {};
+    if (!title.trim()) {
+    errors.title = "Announcement title is required.";
+    }
+
+    if (!message.trim()) {
+    errors.message = "Announcement message is required.";
+  }
+
+     if (!deliveredTo.trim()) {
+    errors.deliveredTo = "Select recipient group";
+  }
+
+    setFieldErrors(errors);
+
+  if (Object.keys(errors).length > 0) {
+    return; // prevent submit
+  }
+
     const email = localStorage.getItem("email");
+   
+    setLoading(true)
+
+    try {
+
     const formData = new FormData();
     formData.append("user", username);
     formData.append("title", title);
@@ -51,15 +82,13 @@ useEffect(()=>{
     formData.append("deliveredTo", deliveredTo);
     formData.append("email", email);
     formData.append("profile", profile);
-    setLoading(true)
-
-    try {
       const response = await axiosInstance.post(`/blog/author/announcement/add`, 
       // const response = await axiosInstance.post(`/blog/author/announcement/add`, 
          formData);
 
       
       if (response.status==201) {
+        toast.success('Announcement delivered Successfully')
         setTitle('');
         setMessage('');
         setLinks('');
@@ -119,8 +148,11 @@ useEffect(()=>{
             value={title}
             onChange={e => setTitle(e.target.value)}
             className="w-full px-3 py-2 bg-gray-800 border focus:outline-none focus:ring-blue-500 focus:border-blue-500 border-gray-600 rounded-md"
-            required
+            
           />
+            {fieldErrors.title && (
+                <p className="text-sm text-red-500">{fieldErrors.title}</p>
+            )}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-300">Message  <span className="text-red-500">*</span></label>
@@ -128,8 +160,11 @@ useEffect(()=>{
             value={message}
             onChange={e => setMessage(e.target.value)}
             className="w-full px-3 py-2 bg-gray-800 border focus:outline-none focus:ring-blue-500 focus:border-blue-500 border-gray-600 rounded-md"
-            required
+            
           />
+            {fieldErrors.message && (
+                <p className="text-sm text-red-500">{fieldErrors.message}</p>
+            )}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-300">Links</label>
@@ -191,18 +226,22 @@ useEffect(()=>{
             onChange={e => setDeliveredTo(e.target.value)}
             className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           >
+            <option value="">Choose recipients</option>
             <option value="community">community</option>
             <option value="coordinators">Coordinators</option>
             <option value="all">All</option>
 
           </select>
+            {fieldErrors.deliveredTo && (
+                <p className="text-sm text-red-500">{fieldErrors.deliveredTo}</p>
+            )}
         </div>
         <button 
         type="submit" 
         className="font-semibold hover:bg-gray-500 bg-white text-gray-800 transition-all duration-200 md:px-4 px-2 py-1 md:text-base text-sm md:py-2 rounded "
         disabled={loading}
         >
-          {loading?'Submitting':'Submit Announcement'}
+          {loading?'Submitting...':'Submit Announcement'}
         </button>
       </form>
 
@@ -256,6 +295,7 @@ useEffect(()=>{
           ))}
         </div>
       )}
+      <ToastContainer/>
    <Footer/>
     </div>
   );

@@ -29,8 +29,8 @@ function ViewEditPost() {
   const [documents, setDocuments] = useState([])
   const [error,setError] = useState("")
   const [selectedDocs, setSelectedDocs] = useState([]);
-
-  
+  const [showConfirm, setShowConfirm] = useState(false);
+  // const [loading, setLoading] = useState(false);
 const [previewImage, setPreviewImage] = useState(null);
 
   const { PostId } = useParams(); //Accessing Post Id of selected post
@@ -147,30 +147,8 @@ const [previewImage, setPreviewImage] = useState(null);
     // const files = Array.from(e.target.files);
   setSelectedDocs(files.map(file => file.name)); // store names
   };
-  const deletePost = async() => {
-    try{
-      const response = axiosInstance.delete(`/blog/posts/${email}/${PostId}`);
-      // const response = axiosInstance.delete(`http://localhost:3000/blog/posts/${email}/${PostId}`);
-      console.log("deleted response",response);
-      toast.success('post deleted successfully') ;
-      navigate("/home");
-      
-      
 
-    }
-    catch(err){
-      console.log(err)
-    }
-    finally{
-      setInterval(() => {
-        window.location.reload()// Redirect to the homepage
-     }, 2000);
-      
-    }
-  }
-
-  useEffect(() => {
-    const getSinglrPost = async () => {
+   const getSinglrPost = async () => {
       try {
         const response = await axiosInstance.get(
           `/blog/posts/${email}/${PostId}`
@@ -187,8 +165,40 @@ const [previewImage, setPreviewImage] = useState(null);
         console.log(err);
       }
     };
+  useEffect(() => {
+   
     getSinglrPost();
   }, []);
+
+
+  const deletePost = async() => {
+    setShowConfirm(true);
+    setLoading(true)
+    try{
+      const response = axiosInstance.delete(`/blog/posts/${email}/${PostId}`);
+      // const response = axiosInstance.delete(`http://localhost:3000/blog/posts/${email}/${PostId}`);
+      console.log("deleted response",response);
+        toast.success('post deleted successfully') ;
+      navigate("/home");
+
+       setShowConfirm(false);
+      
+
+    }
+    catch(err){
+      console.log(err)
+    }
+    finally{
+      setInterval(() => {
+        window.location.reload()// Redirect to the homepage
+     }, 2000);
+    setLoading(false);
+    // getSinglrPost()
+      
+    }
+  }
+
+  
 
   console.log("single post data", singlePostData);
   return (
@@ -213,8 +223,10 @@ const [previewImage, setPreviewImage] = useState(null);
                className="bg-blue-600 px-2 py-1 text-white font-semibold text-xs   md:text-sm cursor-pointer  hover:bg-blue-400 rounded-md">Edit</p>
 
               <p
-               onClick={deletePost} 
-               className="px-2 py-1 text-white font-semibold  rounded-md flex bg-red-600 cursor-pointer hover:bg-red-400 transition-all  text-gray-600 text-xs   md:text-sm font-bold">
+               onClick={()=>{ setShowConfirm(true);}} 
+               className="px-2 py-1 text-white font-semibold  rounded-md flex bg-red-600 cursor-pointer hover:bg-red-400 transition-all  text-gray-600 text-xs   md:text-sm font-bold"
+
+               >
                 Delete
               </p>
             </div>
@@ -710,6 +722,52 @@ const [previewImage, setPreviewImage] = useState(null);
       <Footer/>
 
       </div>
+
+      
+      {showConfirm && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50 transition-opacity duration-300">
+    <div className="bg-white p-6 rounded-lg shadow-2xl w-11/12 max-w-sm animate-fadeIn">
+      <div className="flex items-center mb-4">
+        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-100">
+          <svg
+            className="w-5 h-5 text-red-600"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
+            />
+          </svg>
+        </div>
+        <h2 className="ml-3 text-lg font-semibold text-gray-800">Confirm Deletion</h2>
+      </div>
+
+      <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+        Are you sure you want to delete this Post?
+      </p>
+
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={() => setShowConfirm(false)}
+          className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded hover:bg-gray-200 transition"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={deletePost}
+          className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700 transition"
+          disabled={loading}
+        >
+          {loading? 'Deleting..':'Delete'}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }

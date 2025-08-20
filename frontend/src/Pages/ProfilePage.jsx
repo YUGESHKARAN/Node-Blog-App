@@ -20,11 +20,11 @@ function ProfilePage() {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const navigate = useNavigate();
-  const [loading,setLoaing] = useState(false)
-
+  const [loading,setLoading] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false);
   const deleteAuthor = async () => {
-    const confirm = window.confirm('Are you sure want to delete your account');
-    if (!confirm) return;
+    setShowConfirm(true);
+    setLoading(true)
 
     try {
       const response = await axiosInstance.delete(
@@ -34,6 +34,9 @@ function ProfilePage() {
       response.status === 200 && logout();
     } catch (err) {
       console.log(err);
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -64,7 +67,7 @@ function ProfilePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
-   setLoaing(true)
+   setLoading(true)
     const formData = new FormData();
     formData.append("authorname", authorName);
     localStorage.setItem('username', authorName);
@@ -89,7 +92,7 @@ function ProfilePage() {
       toast.error("Error updating profile");
     }
     finally{
-      setLoaing(false)
+      setLoading(false)
     }
   };
 
@@ -102,7 +105,7 @@ function ProfilePage() {
         <h1 className="md:text-3xl text-xl font-bold mb-6">Profile Page</h1>
         <div className="flex justify-end mb-4">
           <button
-            onClick={deleteAuthor}
+            onClick={()=>{setShowConfirm(true)}}
             className="text-white bg-red-500 rounded-md px-3 py-2 hover:bg-red-300 transition-all duration-200"
           >
             <RiDeleteBin6Line />
@@ -230,6 +233,51 @@ function ProfilePage() {
           </form>
         </div>
       </div>
+            {showConfirm && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50 transition-opacity duration-300">
+    <div className="bg-white p-6 rounded-lg shadow-2xl w-11/12 max-w-sm animate-fadeIn">
+      <div className="flex items-center mb-4">
+        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-100">
+          <svg
+            className="w-5 h-5 text-red-600"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
+            />
+          </svg>
+        </div>
+        <h2 className="ml-3 text-lg font-semibold text-gray-800">Confirm Deletion</h2>
+      </div>
+
+      <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+        Are you sure you want to delete your account ? <br /> Deleting your account will permanently remove all your data.
+      </p>
+     
+
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={() => setShowConfirm(false)}
+          className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded hover:bg-gray-200 transition"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={deleteAuthor}
+          className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700 transition"
+          disabled={loading}
+        >
+          {loading? 'Deleting..':'Delete'}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
       <Footer />
       <ToastContainer />
     </div>

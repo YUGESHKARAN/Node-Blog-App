@@ -177,8 +177,8 @@ console.log('singlepost data--------------',singlePostData)
 
       <div className="md:min-h-screen  h-auto md:pb-40 md:w-3/6 w-full pb-20 p-2 md:p-10 flex flex-col justify-center items-center m-auto md:mt-10">
         <div className="w-full flex bg-gray-800 flex-col p-3 h-auto items-center">
-          <div className="flex justify-between w-full items-center">
-            <div className="flex justify-between gap-2 items-center">
+          <div className="flex  justify-between w-full items-center">
+            <div className="flex  justify-between gap-2 items-center">
               <img
                 src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`}
                 className="md:w-8 w-5 rounded-md"
@@ -215,7 +215,7 @@ console.log('singlepost data--------------',singlePostData)
                 ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`
                 : blog1
             }
-            className="w-full h-fit bg-black"
+            className="w-full cursor-pointer h-fit bg-black"
             alt="Post"
             onClick={() =>
               handleImageClick(

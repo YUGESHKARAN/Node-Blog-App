@@ -4,7 +4,8 @@ import { MdDeleteForever } from 'react-icons/md';
 import Footer from '../ui/Footer';
 import { IoSearch } from "react-icons/io5";
 import axiosInstance from '../instances/Axiosinstances';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Control() {
   const [authors, setAuthors] = useState([]);
   const [filteredAuthors, setFilteredAuthors] = useState([]);
@@ -13,6 +14,9 @@ function Control() {
   const [updatedRoles, setUpdatedRoles] = useState({});
   const [assignedCommunities, setAssignedCommunities] = useState({});
   const [posts, setPosts] = useState([]);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [authorEmail,setAuthorEmail] = useState("")
   const email = localStorage.getItem('email');
   const getAuthors = async () => {
     try {
@@ -39,9 +43,10 @@ function Control() {
   const updateRole = async (email, id) => {
     const roleToUpdate = updatedRoles[id];
     if (!roleToUpdate) {
-      alert('Please select a role before updating.');
+        toast.error("Please select a role before updating");
       return;
     }
+   
 
     try {
       const response = await axiosInstance.put(
@@ -50,7 +55,8 @@ function Control() {
         
       );
       if (response.status === 200) {
-        alert('Role updated successfully');
+        // alert('Role updated successfully');
+        toast.success('Role updated successfully')
         getAuthors();
       }
     } catch (err) {
@@ -76,23 +82,30 @@ const filterAndSearch = () => {
   setFilteredAuthors(filtered);
 };
 
-const deleteAuthor = async (email) => {
-    const confirm = window.confirm('Are you sure want to delete your account');
-    if (!confirm) return;
-  const secretKey = prompt('Enter your secret key to confirm deletion:');
-  if (secretKey?.trim() !== 'admin') {
-    alert('Incorrect secret key. Deletion cancelled.');
-    return;
-  }
+const deleteAuthor = async () => {
+  //   const confirm = window.confirm('Are you sure want to delete your account');
+  //   if (!confirm) return;
+  // const secretKey = prompt('Enter your secret key to confirm deletion:');
+  // if (secretKey?.trim() !== 'admin') {
+  //   alert('Incorrect secret key. Deletion cancelled.');
+  //   return;
+  // }
+
+    setShowConfirm(true);
+    setLoading(true)
 
     try {
       const response = await axiosInstance.delete(
-        `/blog/author/${email}`
+        `/blog/author/${authorEmail}`
       );
-    //   toast.success("Account deleted successfully");
+      toast.success("Account deleted successfully");
      getAuthors();
     } catch (err) {
       console.log(err);
+    }
+    finally{
+      setLoading(false);
+      setShowConfirm(false)
     }
   };
 
@@ -174,7 +187,9 @@ const updateAssignedCommunities = async (email) => {
   console.log(response.data)
 
   if(response.status === 201 ){
-    alert("Communities updated successfully");
+    // alert("Communities updated successfully");
+    toast.success('Tech community updated successfully')
+    
   }
   } catch (err) {
     console.error("Error updating communities", err);
@@ -245,7 +260,8 @@ useEffect(() => {
             <h2 className='flex justify-between items-center text-xl font-semibold text-white'>
               {author.authorname}
               <span
-                onClick={() => deleteAuthor(author.email)}   
+                // onClick={() => deleteAuthor(author.email)}  
+                onClick={()=>{setAuthorEmail(author.email); setShowConfirm(true);}}  
                 className='text-red-400 cursor-pointer'> 
                 <MdDeleteForever />
               </span>
@@ -325,7 +341,8 @@ useEffect(() => {
             <h2 className='flex justify-between items-center text-xl font-semibold text-white'>
               {author.authorname}
               <span
-                onClick={() => deleteAuthor(author.email)}   
+                // onClick={() => deleteAuthor(author.email)}   
+                  onClick={()=>{setAuthorEmail(author.email); setShowConfirm(true);}} 
                 className='text-red-400 cursor-pointer'> 
                 <MdDeleteForever />
               </span>
@@ -405,7 +422,8 @@ useEffect(() => {
             <h2 className='flex justify-between items-center text-xl font-semibold text-white'>
               {author.authorname}
               <span
-                onClick={() => deleteAuthor(author.email)}   
+                // onClick={() => deleteAuthor(author.email)}   
+                onClick={()=>{setAuthorEmail(author.email); setShowConfirm(true);}} 
                 className='text-red-400 cursor-pointer'> 
                 <MdDeleteForever />
               </span>
@@ -436,8 +454,53 @@ useEffect(() => {
         ))}
 
       </div>
-    
+            {showConfirm && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50 transition-opacity duration-300">
+    <div className="bg-white p-6 rounded-lg shadow-2xl w-11/12 max-w-sm animate-fadeIn">
+      <div className="flex items-center mb-4">
+        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-100">
+          <svg
+            className="w-5 h-5 text-red-600"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
+            />
+          </svg>
+        </div>
+        <h2 className="ml-3 text-lg font-semibold text-gray-800">Confirm Deletion Author</h2>
+      </div>
+
+      <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+        Are you sure you want to delete this Author?
+      </p>
+
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={() => setShowConfirm(false)}
+          className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded hover:bg-gray-200 transition"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={deleteAuthor}
+          className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700 transition"
+          disabled={loading}
+        >
+          {loading? 'Deleting...':'Delete'}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+     <ToastContainer />
        <Footer/>
+       
     </div>
   );
 }

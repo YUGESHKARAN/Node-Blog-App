@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import NavBar from "../ui/NavBar";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,12 +13,19 @@ import glow from "../assets/glow.png"
 function AddPost() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("Education");
-  const [image, setImage] = useState(null);
+  const [category, setCategory] = useState("");
+  const [image, setImage] = useState("");
   const email = localStorage.getItem("email"); // Get email from local storage
   const user = localStorage.getItem('username')
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+    const [fieldErrors, setFieldErrors] = useState({
+  title: "",
+  category: "",
+  description: "",
+  image: "",
+});
   const [messages, setMessages] = useState([
     {
       message: `Hello ${user}, I’m here to transform your text into compelling post-ready content.`,
@@ -126,55 +133,63 @@ function AddPost() {
   
 
   const onImageChange = (e) => {
-    setImage(e.target.files[0]);
+      if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+
+        const file =e.target.files[0];
+  // setImages(files);
+
+  const preview = URL.createObjectURL(file);
+  setPreviewImage(preview);
+    }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault(); // Prevent the default form submission
-  //   const formData = new FormData();
-  //   formData.append("title", title);
-  //   formData.append("description", description);
-  //   formData.append("category", category);
-  //   formData.append("image", image);
-
-  //    // Append all selected documents
-  // documents.forEach((doc) => formData.append('document', doc));
-
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await axios.post(
-  //       `https://node-blog-app-seven.vercel.app/blog/posts/${email}`,
-  //       // `http://localhost:3000/blog/posts/${email}`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-  //     console.log("adding post response",response)
-  //     setTitle("");
-  //     setDescription("");
-  //     setCategory("");
-  //     setImage(null);
-  //     toast.success("Post added successfully");
-  //     navigate("/home"); // Redirect to the homepage
-  //   } catch (error) {
-  //     console.error("Error adding post:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const [currentLink, setCurrentLink] = useState('');
   const [links, setLinks] = useState([]);
   const [currentLinkTitle, setCurrentLinkTitle] = useState('');
   const [currentLinkUrl, setCurrentLinkUrl] = useState('');
-  
+    const [previewImage, setPreviewImage] = useState("");
+  const imageInputRef = useRef(null); // Add this at the top of your component
   const handleSubmit = async (e) => {
     e.preventDefault();
+        let errors = {};
+
+  // Trimmed validation
+  if (!title.trim()) {
+    errors.title = "Post title is required.";
+  }
+
+  if (!category.trim()) {
+    errors.category = "Post category is required.";
+  }
+
+  // if (!price || Number(price) <= 0) {
+  //   errors.price = "Enter a valid price.";
+  // }
+
+  if (!description.trim()) {
+    errors.description = "Post description is required.";
+  }
+
+  const hasNoImage = image.length === 0 &&
+    (!image || image.length === 0);
+
+  if (hasNoImage) {
+    errors.image = "Post thumbnail is required";
+  }
+
+    setFieldErrors(errors);
+
+  if (Object.keys(errors).length > 0) {
+    return; // prevent submit
+  }
   
-    const formData = new FormData();
+  
+    setLoading(true);
+  
+    try {
+
+        const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("category", category);
@@ -186,9 +201,6 @@ function AddPost() {
     // Correctly append links using JSON stringification
     formData.append('links', JSON.stringify(links));
   
-    setLoading(true);
-  
-    try {
       const response = await axiosInstance.post(
         `/blog/posts/${email}`,
         // `/blog/posts/${email}`,
@@ -196,7 +208,11 @@ function AddPost() {
       );
 
       console.log("adding post response", response.data);
-  
+
+       if (imageInputRef.current) {
+        imageInputRef.current.value = null;
+      }
+      setPreviewImage("")
       // Reset form
       setTitle("");
       setDescription("");
@@ -267,8 +283,11 @@ function AddPost() {
                 onChange={(e) => setTitle(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Enter post title"
-                required
+                
               />
+               {fieldErrors.title && (
+                <p className="text-sm text-red-500">{fieldErrors.title}</p>
+               )}
             </div>
             <div>
               <label htmlFor="description" className="block text-sm font-medium text-gray-300">
@@ -281,8 +300,12 @@ function AddPost() {
                 className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Enter post description"
                 rows="5"
-                required
+                
               ></textarea>
+
+                {fieldErrors.description && (
+                <p className="text-sm text-red-500">{fieldErrors.description}</p>
+               )}
             </div>
             <div>
               <label htmlFor="category" className="block text-sm font-medium text-gray-300">
@@ -308,17 +331,53 @@ function AddPost() {
                 <option value="Satellite Space Technology">Satellite Space Technology</option>   
                 <option value="Others">Others</option>   
               </select>
+
+                {fieldErrors.category && (
+                <p className="text-sm text-red-500">{fieldErrors.category}</p>
+               )}
             </div>
             <div>
               <label htmlFor="image" className="block text-sm font-medium text-gray-300">
-                Poster <span className="text-red-500">*</span>
+                Thumbnail <span className="text-red-500">*</span>
               </label>
               <input
                 type="file"
                 id="image"
                 onChange={onImageChange}
                 className="mt-1 block w-full text-sm text-gray-300 text-xs file:mr-4 file:cursor-pointer file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold hover:file:bg-gray-500 file:text-black file:bg-white "
+                 ref={imageInputRef}
               />
+              {image && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setImage("");
+                            setPreviewImage("")
+                            if (imageInputRef.current) {
+                              imageInputRef.current.value = null;
+                            }
+                          }}
+                          className="text-sm text-red-500 underline mt-1"
+                        >
+                          Remove Selected Image
+                        </button>
+                      )}
+                    {previewImage.length > 0 && (
+                      <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                      
+
+                         <div className="p-1 rounded-lg">
+                            <img
+                              src={previewImage}
+                              // alt={`Preview ${idx}`}
+                              className="w-full md:w-32 md:h-24 h-16 object-cover rounded-lg"
+                            />
+                          </div>
+                      </div>
+                    )}
+                {fieldErrors.image && (
+                <p className="text-sm text-red-500">{fieldErrors.image}</p>
+               )}
             </div>
 
             <div>
