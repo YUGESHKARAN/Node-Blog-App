@@ -2,6 +2,15 @@
 
 **Welcome to the Node Blog App!**
 
+![GitHub repo size](https://img.shields.io/github/repo-size/YUGESHKARAN/Node-Blog-App)
+![GitHub stars](https://img.shields.io/github/stars/YUGESHKARAN/Node-Blog-App?style=social)
+![GitHub forks](https://img.shields.io/github/forks/YUGESHKARAN/Node-Blog-App?style=social)
+![GitHub issues](https://img.shields.io/github/issues/YUGESHKARAN/Node-Blog-App)
+![GitHub last commit](https://img.shields.io/github/last-commit/YUGESHKARAN/Node-Blog-App)
+![MIT License](https://img.shields.io/github/license/YUGESHKARAN/Node-Blog-App)
+![Node.js CI](https://img.shields.io/github/actions/workflow/status/YUGESHKARAN/Node-Blog-App/node.js.yml?branch=main)
+![Node Version](https://img.shields.io/badge/node-%3E=16.0.0-green)
+
 A modern, full-stack E-Learning platform **specially designed for individual universities and colleges** ,  focused on exchaning knowledge, help students/developers build and engage with tech communities. It allows developers to collaborate with each other and connect with people who share similar interests by posting technical content across multiple domains in the same university. This enables viewers to learn, grow, and clarify their doubts through the comment section. The platform features three distinct interfaces: Student, Coordinator, and Admin.
 
 ## Student Interface <br>
