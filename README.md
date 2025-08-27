@@ -1,6 +1,7 @@
 # 📝 Node Blog App
 
 [![License: MIT](https://img.shields.io/github/license/YUGESHKARAN/Node-Blog-App)](https://github.com/YUGESHKARAN/Node-Blog-App/blob/main/LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/YUGESHKARAN/Node-Blog-App?style=social)](https://github.com/YUGESHKARAN/Node-Blog-App/stargazers)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)](https://nodejs.org/)
 [![Last Commit](https://img.shields.io/github/last-commit/YUGESHKARAN/Node-Blog-App)](https://github.com/YUGESHKARAN/Node-Blog-App/commits/main)
 [![Issues](https://img.shields.io/github/issues/YUGESHKARAN/Node-Blog-App)](https://github.com/YUGESHKARAN/Node-Blog-App/issues)
