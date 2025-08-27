@@ -1,5 +1,13 @@
 # 📝 Node Blog App
 
+[![Build Status](https://github.com/YUGESHKARAN/Node-Blog-App/actions/workflows/node.js.yml/badge.svg)](https://github.com/YUGESHKARAN/Node-Blog-App/actions)
+[![License: MIT](https://img.shields.io/github/license/YUGESHKARAN/Node-Blog-App)](https://github.com/YUGESHKARAN/Node-Blog-App/blob/main/LICENSE)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)](https://nodejs.org/)
+[![Last Commit](https://img.shields.io/github/last-commit/YUGESHKARAN/Node-Blog-App)](https://github.com/YUGESHKARAN/Node-Blog-App/commits/main)
+[![Issues](https://img.shields.io/github/issues/YUGESHKARAN/Node-Blog-App)](https://github.com/YUGESHKARAN/Node-Blog-App/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/YUGESHKARAN/Node-Blog-App)](https://github.com/YUGESHKARAN/Node-Blog-App/pulls)
+[![Contributors](https://img.shields.io/github/contributors/YUGESHKARAN/Node-Blog-App)](https://github.com/YUGESHKARAN/Node-Blog-App/graphs/contributors)
+
 **Welcome to the Node Blog App!**
 
 A modern, full-stack E-Learning platform **specifically designed for universities and colleges**, focusing on knowledge sharing and community building. This app empowers students and developers to connect, collaborate, and engage through technical content and discussions, all within their institution. Users can interact, clarify doubts, and grow together via a robust post and comment system. The platform features three interfaces: Student, Coordinator, and Admin.
