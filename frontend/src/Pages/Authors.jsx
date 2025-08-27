@@ -6,7 +6,7 @@ import { GrLinkedin } from 'react-icons/gr';
 import Footer from '../ui/Footer';
 import user from "../images/user.png";
 import axiosInstance from '../instances/Axiosinstances';
-
+import axios from 'axios';
 function Authors() {
     const [authors,setAuthors] = useState([])
     const email = localStorage.getItem('email');
@@ -32,7 +32,7 @@ useEffect(()=>{
 
 const recommendtion_system  = async() =>{
   try{
-    const response = await axiosInstance.post('https://recommendation-system-omega.vercel.app/recommended', {email} )
+    const response = await axios.post('https://recommendation-system-omega.vercel.app/recommended', {email} )
 
     // console.log("recommedation data",response.data)
     setRecommendation(response.data.remonneded_people)
