@@ -266,7 +266,7 @@ function AddPost() {
         className="bg-gradient-to-r bg-blur w-fit cursor-pointer rounded-md mb-2 from-purple-600 to-blue-500 md:px-4 md:py-2 px-3 py-1 text-xs md:text-base hover:bg-purple-700 transition"
 
          >
-          Back to Post
+         ←  Back to Post
         </div>
         
           }
@@ -357,7 +357,7 @@ function AddPost() {
                               imageInputRef.current.value = null;
                             }
                           }}
-                          className="text-sm text-red-500 underline mt-1"
+                          className="text-sm text-yellow-500 underline mt-1"
                         >
                           Remove Selected Image
                         </button>

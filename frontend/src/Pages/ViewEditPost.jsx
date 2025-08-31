@@ -205,7 +205,7 @@ const [previewImage, setPreviewImage] = useState(null);
     <div className="relative w-full  bg-gradient-to-br from-gray-900 to-gray-800 h-auto min-h-[900px]">
       <NavBar />
       <div className="h-auto md:w-11/12  flex flex-col p-2  justify-center items-center  m-auto mt-10">
-        <div className={`${edit?'hidden':'md:w-6/12 w-11/12 md:mb-40  mb-20 bg-gray-800 flex flex-col p-3 h-auto   items-center'}`}>
+        {/* <div className={`${edit?'hidden':'md:w-6/12 w-11/12 md:mb-40  mb-20 bg-gray-800 flex flex-col p-3 h-auto   items-center'}`}>
           <div className="flex  justify-between w-full items-center">
             <div className="flex justify-between gap-2 items-center">
               <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`} className="md:w-8 w-5 rounded-md" />
@@ -246,213 +246,65 @@ const [previewImage, setPreviewImage] = useState(null);
           <p className="w-full text-justify leading-relaxed text-gray-300 text-base md:text-md">
             {singlePostData.description}
           </p>
+        </div> */}
+        <div className={`${edit ? 'hidden' : 'md:w-6/12 w-11/12 mb-20 md:mb-40 bg-gray-800 rounded-lg shadow-lg p-5 flex flex-col gap-4 items-center'}`}>
+          
+          {/* Top section: Author info + controls */}
+          <div className="w-full flex items-center justify-between">
+            
+            {/* Author Info */}
+            <div className="flex items-center gap-3">
+              <img
+                src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`}
+                alt="Author"
+                className="md:w-10 w-8 h-8 md:h-10 object-cover rounded-full border border-gray-600"
+              />
+              <div>
+                <p className="text-sm md:text-base font-semibold text-white">{singlePostData.authorname}</p>
+                <p className="text-xs text-gray-400">{timeStamp.slice(0, 10)}</p>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-2 md:gap-3">
+              <button
+                onClick={() => setEdit(true)}
+                className="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 text-xs md:text-sm font-semibold rounded-md transition"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => setShowConfirm(true)}
+                className="bg-red-600 hover:bg-red-500 text-white px-3 py-1 text-xs md:text-sm font-semibold rounded-md transition"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+
+          {/* Title */}
+          <h3 className="w-full text-left text-white text-xl md:text-3xl font-bold leading-snug">
+            {singlePostData.title}
+          </h3>
+
+          {/* Blog Image */}
+          <div className="w-full overflow-hidden rounded-md">
+            <img
+              src={singlePostData.image
+                ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`
+                : blog1}
+              alt="Blog Visual"
+              className="w-full object-cover rounded-md max-h-[400px]"
+            />
+          </div>
+
+          {/* Description */}
+          <p className="w-full text-justify text-gray-300 text-sm md:text-base leading-relaxed">
+            {singlePostData.description}
+          </p>
         </div>
 
-        {/* <form
-          onSubmit={handleSubmit}
-          action=""
-          className={`${
-        edit
-              ? "flex flex-col text-white rounded-md space-y-4  mb-10  md:mb-12 justify-center p-5 w-11/12  gap-1 m-auto  "
-              : "hidden"
-          }`}
-        >
-          <h1 className="md:text-3xl text-xl font-bold mb-3 text-left w-full">Edit Your Post</h1>
-
-          <div className="w-11/12 mt-1">
-            <label htmlFor="title" className="text-md  font-semibold ">
-              Title
-            </label>{" "}
-            <br />
-            <input
-              type="text"
-              id="title"
-              className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 text-xs sm:text-sm"
-              placeholder={title}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-
-          <div className="w-11/12 mt-5">
-            <label htmlFor="description" className="text-md  font-semibold ">
-              Description
-            </label>{" "}
-            <br />
-            <textarea
-              id="description"
-              className="mt-1 block w-full text-xs leading-relaxed px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-              placeholder={description}
-              value={description}
-              rows={5}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-          <div className="w-11/12 mt-5">
-            <label htmlFor="description" className="text-md  font-semibold ">
-              current Post
-            </label>{" "}
-            <br />
-           <img src={singlePostData.image? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`: blog1} className="w-40" alt="" />
-          </div>
-
-
-          <div className="w-11/12 mt-5">
-            <label htmlFor="description" className="text-md  font-semibold ">
-              Update Post
-            </label>{" "}
-            <br />
-            <input
-              type="file"
-              accept="image/*"
-              name="image"
-              onChange={onImageChange}
-              className="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600"
-            />
-          </div>
-
-          <div className={`${singlePostData.links&&singlePostData.links.length>0?'w-11/12 mt-5':'hidden'}`}>
-            <label htmlFor="description" className="text-md  font-semibold ">
-              current Links
-            </label>{" "}
-            <br />
-            <div className="flex-col w-full mt-2 items-start justify-start gap-2">
-              {
-                 singlePostData.links&& singlePostData.links.map((link, index) => (
-                    <a key={index} href={`${link.url}`} className="text-xs flex justify-start items-start mb-2 text-gray-200 gap-1 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center hover:bg-gray-300 transition-all duration-200 text-black justify-center"> View </p> {link.title}</a>
-
-                    ))
-                }
-            </div>
-          </div>
-
-          <div className="w-11/12 mt-5">
-              <label className="block text-sm font-medium text-gray-300">
-               Update Links
-              </label>
-              <div className="flex space-x-2 mt-1">
-                <input
-                  type="text"
-                  value={currentLinkTitle}
-                  onChange={(e) => setCurrentLinkTitle(e.target.value)}
-                  placeholder="Title"
-                  className="w-1/2 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm px-3 text-sm p bg-gray-800 border border-gray-600 rounded-md"
-                />
-                <input
-                  type="url"
-                  value={currentLinkUrl}
-                  onChange={(e) => setCurrentLinkUrl(e.target.value)}
-                  placeholder="Link URL"
-                  className="w-1/2 focus:outline-none text-xs focus:ring-green-500 focus:border-green-500 md:text-sm px-3 py-1 md:py-2 text-sm  bg-gray-800 border border-gray-600 rounded-md"
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (currentLinkTitle.trim() && currentLinkUrl.trim()) {
-                      const newLink = { 
-                        title: currentLinkTitle.trim(), 
-                        url: currentLinkUrl.trim() 
-                      };
-                      setLinks([...links, newLink]);
-                      setCurrentLinkTitle("");
-                      setCurrentLinkUrl("");
-                    }
-                  }}
-                  className="mt-1 block  text-xs text-gray-300 mr-4 py-1 md:py-2 px-4 rounded-full border-0 md:text-sm font-semibold bg-orange-500 text-white hover:bg-orange-600"
-                >
-                  Add
-                </button>
-              </div>
-              {links.length > 0 && (
-                <div className="mt-2 space-y-1">
-                  {links.map((link, index) => (
-                     <div
-                        key={`${link.title}-${index}`}
-                        className="flex justify-between items-start bg-gray-700 p-3 md:p-4 rounded-md break-words"
-                      >
-                        <div className="text-sm break-all">
-                        <span className="font-semibold mb-1"> {link.title}: </span> <br />{link.url}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setLinks((prevLinks) => prevLinks.filter((_, i) => i !== index))
-                          }
-                          className="text-red-500 text-xs ml-2 hover:text-red-700"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-          
-          <div className={`${singlePostData.documents&&singlePostData.documents.length>0?'w-11/12 mt-5':'hidden'}`}>
-            <label htmlFor="description" className="text-md  font-semibold ">
-              current Documents
-            </label>{" "}
-            <br />
-            <div className="flex-col w-full mt-2 items-start justify-start gap-2">
-              {
-                 singlePostData.documents&& singlePostData.documents.map((doc, index) => (
-                    <a key={index} href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`} className="text-xs flex justify-start items-start mb-2 text-gray-200 gap-1 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center hover:bg-gray-300 transition-all duration-200 text-black justify-center"> Open </p> {doc}</a>
-
-                    ))
-                }
-            </div>
-          </div>
-
-          <div className="w-11/12 mt-5">
-            <label htmlFor="documents" className="text-md font-semibold">
-              Update Documents
-            </label>
-            <input
-              type="file"
-              multiple
-              accept=".pdf,.doc,.docx"
-              onChange={onDocumentsChange}
-              className="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600"
-            />
-          </div>
-
-
-          <div className="w-11/12 mt-5">
-            <label htmlFor="category" className="text-md  font-semibold">
-              Category
-            </label>{" "}
-            <br />
-            <select
-              id="category"
-              className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-                <option value="">Select Domain</option>
-                <option value="GenAI">GenAI</option>
-                <option value="Design Thinking">Design Thinking</option>
-                <option value="Data Science">Data Science</option>
-                <option value="Blockchain">Blockchain</option>
-                <option value="AI/ML">AI/ML</option>
-                <option value="Cyber Security">Cyber Security</option>
-                <option value="IoT ">IoT</option>
-                <option value="Embedded System">Embedded System</option>
-                <option value="Web Development">Web Development</option>   
-                <option value="Satellite Space Technology">Satellite Space Technology</option>   
-                <option value="Others">Others</option>   
-            </select>
-          </div>
-
-          <button
-            type="submit"
-            className="px-3 mt-5 md:mt-0 py-1 w-fit  bg-orange-500 text-sm md:text-base text-[#f7f1e3] hover:bg-orange-400 transition-all duration-200 cursor-pointer rounded-md"
-            disabled={loading}
-          >
-            {loading?'Updating...':'Update'}
-            
-          </button>
-        </form> */}
+        
         <form
           onSubmit={handleSubmit}
           className={`${
@@ -467,7 +319,7 @@ const [previewImage, setPreviewImage] = useState(null);
           {error.apiError && <p className="text-red-500">{error.apiError}</p>}
           {/* Title */}
           <div className="w-full">
-            <label htmlFor="title" className="text-sm font-semibold text-gray-300">
+            <label htmlFor="title" className= "md:text-xl text-sm font-semibold text-gray-300">
               Title
             </label>
             <input
@@ -482,7 +334,7 @@ const [previewImage, setPreviewImage] = useState(null);
 
           {/* Description */}
           <div className="w-full">
-            <label htmlFor="description" className="text-sm font-semibold text-gray-300">
+            <label htmlFor="description" className="md:text-xl text-sm font-semibold text-gray-300">
               Description
             </label>
             <textarea
@@ -497,7 +349,7 @@ const [previewImage, setPreviewImage] = useState(null);
 
           {/* Current Image with Edit Icon */}
           <div className="w-full flex flex-col">
-            <label className="text-sm font-semibold text-gray-300">Post Thumbnail</label>
+            <label className="md:text-xl text-sm font-semibold text-gray-300">Post Thumbnail</label>
             <div >
               <div className="relative inline-block mt-2">
               <img
@@ -532,7 +384,7 @@ const [previewImage, setPreviewImage] = useState(null);
 
         {/* Current Links with edit option */}
         <div className={`${singlePostData.links?.length > 0 ? 'w-full md:w-11/12 mt-5' : 'hidden'}`}>
-          <label className="text-md font-semibold text-gray-300">Current Links</label>
+          <label className="md:text-xl text-sm font-semibold text-gray-300">Current Links</label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
             {singlePostData.links?.map((link, index) => (
               <div
@@ -569,8 +421,8 @@ const [previewImage, setPreviewImage] = useState(null);
 
         {/* Update Links */}
         <div className="w-full md:w-11/12 mt-6 bg-gray-800 p-4 rounded-lg border border-gray-700 shadow-md">
-          <label className="block text-sm font-semibold text-gray-300 mb-2">
-            Update Links
+          <label className="block md:text-xl text-sm font-semibold text-gray-300 mb-2">
+            Add / Update Links
           </label>
           <div className="flex flex-col sm:flex-row gap-2">
             <input
@@ -638,7 +490,7 @@ const [previewImage, setPreviewImage] = useState(null);
           {/* Current Documents with Edit Option */}
           {singlePostData.documents && singlePostData.documents.length > 0 && (
             <div className="w-full">
-              <label className="text-sm font-semibold flex items-center justify-between text-gray-300">Current Documents
+              <label className="md:text-xl text-sm font-semibold flex items-center justify-between text-gray-300">Current Documents
               <MdEdit className="text-orange-500"/>
                 <input
                         type="file"
@@ -667,22 +519,22 @@ const [previewImage, setPreviewImage] = useState(null);
               </div>
 
                {/* New selected documents */}
-    {selectedDocs.length > 0 && (
-      <div className="mt-4">
-        <p className="text-sm font-semibold mb-1 text-gray-400">Newly Selected:</p>
-        <div className=" list-inside text-xs text-gray-300">
-          {selectedDocs.map((doc, idx) => (
-            <p key={idx} className="mb-2 "> <span className="font-semibold text-white">{idx +1}.</span>  {doc}</p>
-          ))}
-        </div>
-      </div>
-    )}
+          {selectedDocs.length > 0 && (
+            <div className="mt-4">
+              <p className=" md:text-xl text-sm font-semibold mb-1 text-gray-400">Newly Selected:</p>
+              <div className=" list-inside text-xs text-gray-300">
+                {selectedDocs.map((doc, idx) => (
+                  <p key={idx} className="mb-2 "> <span className="font-semibold text-white">{idx +1}.</span>  {doc}</p>
+                ))}
+              </div>
+            </div>
+          )}
             </div>
           )}
 
           {/* Category */}
           <div className="w-full">
-            <label htmlFor="category" className="text-sm font-semibold text-gray-300">
+            <label htmlFor="category" className="md:text-xl text-sm font-semibold text-gray-300">
               Category
             </label>
             <select

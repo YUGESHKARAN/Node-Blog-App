@@ -132,35 +132,42 @@ useEffect(() => {
             </div>
 
             {/* Desktop Menu */}
-            <ul className='lg:flex justify-start text-base hidden font-semibold text-gray-300 w-3/5  items-center gap-10'>
-                <li className='transition-all duration-200 hover:text-white'>
+            <ul className='lg:flex justify-center text-base hidden font-semibold text-gray-300 w-3/5  items-center gap-10'>
+                <li className='transition-all duration-200  hover:text-white'>
                     <Link to="/home" className='flex items-center gap-1'>
                         <IoHome className='text-xl'/>Home
                     </Link>
                 </li>
 
-                 <li className='transition-all duration-200 hover:text-white'>
+                 <li className='transition-all duration-200  hover:text-white'>
                  
-                     <Link to="/community" className='flex items-center gap-1'>
+                     <Link to="/community" className='flex  items-center gap-1'>
                         <MdGroups className='text-2xl'/> Tech Communities
                     </Link>
                 </li>
-
                 <li className='transition-all duration-200 hover:text-white'>
-                    {role==='coordinator'&&
+                        <Link to="/authors"className='flex items-center gap-1'>
+                            <IoPeople className='text-2xl '/>Authors
+                        </Link>
+                    </li>
+              {role==='coordinator'&&
+                <li className='transition-all  duration-200 hover:text-white'>
+                    
                      <Link to="/addPost" className='flex items-center gap-1'>
                         <MdPostAdd className='text-2xl'/> Add Post
-                    </Link>}
+                    </Link>
                 </li>
+                }
+                  
              
                 
-                <li className='transition-all duration-200 hover:text-white'>
+                {/* <li className='transition-all duration-200 hover:text-white'>
                     <Link to="/profile" className='flex items-center gap-1'>
                         <FaUserAlt className='text-lg'/>My Profile
                     </Link>
-                </li>
+                </li> */}
                 <li className='transition-all duration-200 hover:text-white'>
-                        <Link to="/announcement" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
+                        <Link to="/announcement" className='flex items-center transition-all duration-200  justify-start'>
                             <MdAnnouncement className='text-xl  mr-1'/> 
                             <sup className={`${announcement.length>0?'text-[10px] bg-green-600 w-4 h-4 flex items-center justify-center rounded-full text-white':'text-[10px]  flex items-center justify-center rounded-full text-white'}`}>{announcement.length>0?announcement.length:''}</sup>
                         </Link>
@@ -185,7 +192,17 @@ useEffect(() => {
               
             </p>
 
-            <div className='transition-all duration-200 hover:text-white'>
+            <div className='transition-all flex items-center duration-200 hover:text-white'>
+                 <p className='text-white lg:flex justify-end w-full hidden font-semibold items-center gap-1 mr-3 text-sm'>
+                 <Link to="/profile" className='flex items-center gap-1'>
+                        {profile!=="undefined"? 
+                        <img 
+                         src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${profile}`}
+                         className='w-7 h-7 rounded-full object-contain'/>
+                        : <RiUser3Line className='text-xl text-[#0be881]' />} Hi,{username} 
+                    </Link>
+              
+            </p>
                 <div className='flex items-center '>
                     <IoMdNotifications
                     onClick={()=>{setShowNotification(!showNotefication)}}

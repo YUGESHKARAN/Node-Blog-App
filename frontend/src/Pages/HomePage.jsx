@@ -69,7 +69,7 @@ function HomePage() {
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const [chatbot, setChatbot] = useState(false);
-
+  
   const backendEndpoint = "https://mongodb-rag.onrender.com/query-rag";
   // const backendEndpoint = "http://127.0.0.1:3000/query-rag";
 
