@@ -654,7 +654,7 @@ const deleteAnnouncement = async (req, res) => {
 const updateRole = async (req, res) => {
 
   const { email, role } = req.body;
-
+  console.log("Update role request received:", req.body);
   try {
     console.log("logged");
     
@@ -663,8 +663,8 @@ const updateRole = async (req, res) => {
       return res.status(404).json({ message: "Author not found" });
     }
     
-    author.role = role;
-    await author.save();  
+  author.role = role;
+  await author.save({ validateBeforeSave: false });
     res.status(200).json({ message: "Role updated successfully", author }); 
   }
   catch(err)
@@ -672,6 +672,8 @@ const updateRole = async (req, res) => {
     res.status(500).json({ message: "Error updating role", error: err.message }); 
   }
 }
+
+
 
 const updateTechCommunity = async(req,res)=>{
 

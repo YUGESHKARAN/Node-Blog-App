@@ -24,7 +24,7 @@ function Control() {
       setAuthors(response.data);
       setFilteredAuthors(response.data);
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   };
 
@@ -46,8 +46,7 @@ function Control() {
         toast.error("Please select a role before updating");
       return;
     }
-   
-
+  
     try {
       const response = await axiosInstance.put(
         '/blog/author/control/updateRole',
@@ -83,13 +82,7 @@ const filterAndSearch = () => {
 };
 
 const deleteAuthor = async () => {
-  //   const confirm = window.confirm('Are you sure want to delete your account');
-  //   if (!confirm) return;
-  // const secretKey = prompt('Enter your secret key to confirm deletion:');
-  // if (secretKey?.trim() !== 'admin') {
-  //   alert('Incorrect secret key. Deletion cancelled.');
-  //   return;
-  // }
+
 
     setShowConfirm(true);
     setLoading(true)
