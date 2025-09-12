@@ -44,7 +44,7 @@ function AddPost() {
   const [isTyping, setIsTyping] = useState(false);
   const [chatbot, setChatbot] = useState(false);
 
-  const backendEndpoint = "https://blog-chat-backend.vercel.app/generate-content";
+  const backendEndpoint = "https://blogchat-backend.onrender.com/generate-content";
 
   // const backendEndpoint = "http://127.0.0.1:5000/generate-content";
 
