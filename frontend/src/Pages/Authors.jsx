@@ -71,8 +71,9 @@ const addFollower = async(userEmail) =>{
 
 const recommendaedAutors = authors.filter((author)=>recommendation.includes(author.email)).filter(author => author.role === "coordinator"); 
 
-console.log("authors",authors);
-console.log("recommendaedAutors",recommendaedAutors);
+// console.log("authors",authors);
+// console.log("user email",email);
+// console.log("recommendaedAutors",recommendaedAutors);
 
   return (
     <div className='w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  '>

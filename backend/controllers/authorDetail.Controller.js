@@ -203,12 +203,68 @@ const deleteAuthor = async (req, res) => {
 };
 
 
+// const updateFollowers = async (req, res) => {
+//   try {
+//     const { email } = req.params; // The author being followed/unfollowed
+//     const { emailAuthor } = req.body; // The follower's email
+//   console.log("Follower email:", emailAuthor);
+//   console.log("Author email:", email);
+//   // Find both authors
+//     const author = await Author.findOne({ email });
+//     const followerAuthor = await Author.findOne({ email: emailAuthor });
+
+//     if (!author || !followerAuthor) {
+//       return res.status(404).json({ message: 'Author not found' });
+//     }
+
+//     // If already following, unfollow
+//     if (author.followers.includes(emailAuthor)) {
+//       author.followers = author.followers.filter(follower => follower !== emailAuthor);
+//       followerAuthor.following = followerAuthor.following.filter(following => following !== email);
+
+//       await author.save();
+//       await followerAuthor.save();
+
+//       return res.status(200).json({
+//         message: 'Unfollowed successfully',
+//         followers: author.followers,
+//         following: followerAuthor.following,
+//       });
+//     }
+
+//     // If not following, follow
+//     author.followers.push(emailAuthor);
+//     followerAuthor.following.push(email);
+
+//     await author.save();
+//     await followerAuthor.save();
+
+//     return res.status(200).json({
+//       message: 'Author followed successfully',
+//       followers: author.followers,
+//       following: followerAuthor.following,
+//     });
+
+//   } catch (err) {
+//     return res.status(500).json({ message: 'Server error', error: err.message });
+//   }
+// };
+
+
+// otp
+// const nodemailer = require('nodemailer');
+
 const updateFollowers = async (req, res) => {
   try {
-    const { email } = req.params; // The author being followed/unfollowed
-    const { emailAuthor } = req.body; // The follower's email
+    const { email } = req.params;
+    const { emailAuthor } = req.body;
 
-    // Find both authors
+    console.log('Following request:', { email, emailAuthor });
+
+    if (!email || !emailAuthor) {
+      return res.status(400).json({ message: 'Both emails are required' });
+    }
+
     const author = await Author.findOne({ email });
     const followerAuthor = await Author.findOne({ email: emailAuthor });
 
@@ -216,13 +272,16 @@ const updateFollowers = async (req, res) => {
       return res.status(404).json({ message: 'Author not found' });
     }
 
-    // If already following, unfollow
+    // Unfollow
     if (author.followers.includes(emailAuthor)) {
-      author.followers = author.followers.filter(follower => follower !== emailAuthor);
-      followerAuthor.following = followerAuthor.following.filter(following => following !== email);
+      author.followers = author.followers.filter(f => f !== emailAuthor);
+      followerAuthor.following = followerAuthor.following.filter(f => f !== email);
 
-      await author.save();
-      await followerAuthor.save();
+      // await author.save();
+      // await followerAuthor.save();
+      await author.save({ validateBeforeSave: false });
+      await followerAuthor.save({ validateBeforeSave: false });
+
 
       return res.status(200).json({
         message: 'Unfollowed successfully',
@@ -231,12 +290,15 @@ const updateFollowers = async (req, res) => {
       });
     }
 
-    // If not following, follow
+    // Follow
     author.followers.push(emailAuthor);
     followerAuthor.following.push(email);
 
-    await author.save();
-    await followerAuthor.save();
+    // await author.save();
+    // await followerAuthor.save();
+    await author.save({ validateBeforeSave: false });
+    await followerAuthor.save({ validateBeforeSave: false });
+
 
     return res.status(200).json({
       message: 'Author followed successfully',
@@ -245,13 +307,11 @@ const updateFollowers = async (req, res) => {
     });
 
   } catch (err) {
+    console.error('SERVER ERROR:', err); // Add this line
     return res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
 
-
-// otp
-// const nodemailer = require('nodemailer');
 
 const sendOtp = async (req, res) => {
   const { email } = req.body;
