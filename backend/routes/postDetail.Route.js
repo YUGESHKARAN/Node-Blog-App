@@ -7,6 +7,7 @@ const path = require('path');
 
 const {
   getAllPosts,
+  getSingleAuthorPosts,
   getCategoryPosts,
   addPosts,
   updatePost,
@@ -19,6 +20,7 @@ const {
 // handle authors blog post data
 
 router.get("/", getAllPosts);
+router.get("/:email", getSingleAuthorPosts);
 
 router.get("/:category", getCategoryPosts);
 
@@ -38,18 +40,18 @@ router.get("/:category", getCategoryPosts);
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-const uploadata = multer().fields([
+const uploadData = multer().fields([
   { name: 'image', maxCount: 1 },
   { name: 'document', maxCount: 10 }, // Allow up to 10 document files
 ]);
 
-router.post("/:email",uploadata, addPosts);
+router.post("/:email",uploadData, addPosts);
 
 // router.put("/:email/:postId",upload.single('image'), updatePost);
 
 
 
-router.put("/:email/:postId",uploadata,updatePost);
+router.put("/:email/:postId",uploadData,updatePost);
 
 
 router.get("/:email/:postId",getSinglePost);

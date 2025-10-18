@@ -10,6 +10,7 @@ import { ReactTyped } from "react-typed";
 import axiosInstance from "../instances/Axiosinstances";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import glow from "../assets/glow.png"
+
 function AddPost() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -44,7 +45,7 @@ function AddPost() {
   const [isTyping, setIsTyping] = useState(false);
   const [chatbot, setChatbot] = useState(false);
 
-  const backendEndpoint = "https://blogchat-backend.onrender.com/generate-content";
+  const backendEndpoint =  import.meta.env.VITE_CHATBOT_URL;
 
   // const backendEndpoint = "http://127.0.0.1:5000/generate-content";
 
@@ -62,7 +63,7 @@ function AddPost() {
     setIsTyping(true);
 
     try {
-      const response = await axios.post(backendEndpoint, {
+      const response = await axios.post(`${backendEndpoint}`, {
         description: message,
       });
 
@@ -148,7 +149,7 @@ function AddPost() {
   const [links, setLinks] = useState([]);
   const [currentLinkTitle, setCurrentLinkTitle] = useState('');
   const [currentLinkUrl, setCurrentLinkUrl] = useState('');
-    const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
   const imageInputRef = useRef(null); // Add this at the top of your component
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -189,7 +190,7 @@ function AddPost() {
   
     try {
 
-        const formData = new FormData();
+    const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("category", category);

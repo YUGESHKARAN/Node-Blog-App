@@ -158,11 +158,16 @@ const announcementSchema = new mongoose.Schema(
       },
     },
 
+    poster:{
+      type:String,
+      required:false
+    },
+    
    deliveredTo:{
     type: String,
      enum: ['all',"community",'coordinators'],
      default: 'all'
-   },
+   }, 
 
     message: {
       type: String,
@@ -179,6 +184,10 @@ const announcementSchema = new mongoose.Schema(
     timestamp: {
       type: Date,
       default: Date.now,
+    },
+      image:{
+      type:String,
+      required:false
     },
   }
 )
@@ -228,6 +237,35 @@ const authorSchema = new mongoose.Schema({
   posts: [postSchema], // Array of posts linked to the author
   notification:[notificationSchema],
   
+  personalLinks: {
+    type: [
+      {
+        title: { type: String, required: false }, // Title of the link
+        url: { type: String, required: false },   // URL of the link
+      },
+    ],
+    default: [],
+    validate: {
+      validator: function (v) {
+        // Ensure all entries have unique URLs and maximum count is 5
+        const isUnique = Array.isArray(v) && new Set(v.map(link => link.url)).size === v.length;
+        const isMaxFive = v.length <= 5;
+        return isUnique && isMaxFive;
+      },
+      message: props => {
+        const urls = props.value.map(link => link.url);
+        const hasDuplicates = new Set(urls).size !== urls.length;
+        if (hasDuplicates) {
+          return "Links array must contain unique URLs.";
+        }
+        if (props.value.length > 5) {
+          return "You can only add up to 5 links.";
+        }
+        return "Invalid personal links.";
+      },
+    },
+  },
+ 
   otp: { type: String }, // OTP for password reset
   otpExpiresAt: { type: Date } // Expiry time for the OTP
 });

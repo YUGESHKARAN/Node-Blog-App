@@ -32,7 +32,7 @@ function HomePage() {
       const response = await axiosInstance.get('/blog/author');
       // const result = response.data.filter((author) => author.email !== email);
       setAuthors(response.data.filter((author) => author.email !== email).filter(author => author.role === "coordinator"));
-      console.log("authors", response.data);
+      // console.log("authors", response.data);
     } catch (err) {
       console.error(err);
     }
@@ -46,7 +46,7 @@ function HomePage() {
     try {
       // const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/posts/`);
       const response = await axiosInstance.get(`/blog/posts/`);
-      console.log("data", response.data);
+      // console.log("data", response.data);
       setCategoryCount(response.data.count);
       setPosts(response.data.posts);
       setYourPost(response.data.posts.filter(post => post.authoremail === email));
@@ -129,7 +129,7 @@ function HomePage() {
   
       // Extract bot response or use a fallback
       const botResponse = response.data?.response || "No response received from the bot.";
-      console.log("Bot response:", response);
+      // console.log("Bot response:", response);
   
       // Show the bot's response with a typewriter effect
       typewriterEffect(botResponse, "bot");
@@ -190,8 +190,8 @@ function HomePage() {
 
  // console.log('your posts', yourPost);
   // console.log('email', email);
-  console.log("role localstorage", role);
-  console.log("authors", authors);  
+  // console.log("role localstorage", role);
+  // console.log("authors", authors);  
 
   return (
     <div className="min-h-screen relative bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 text-white">
@@ -230,10 +230,13 @@ function HomePage() {
         </div>
 
         <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
-          <div className="text-center flex-col justify-center">
-            <h1 className="md:text-3xl text-sm text-white">{posts.length}</h1>
-            <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Total Posts</h3>
-          </div>
+           <Link to='/profile'>
+            <div className="text-center flex-col justify-center">
+              {/* <h1 className="md:text-3xl text-sm text-white">{posts.length}</h1> */}
+              {/* <h1 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400"> My </h1> */}
+              <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Profile Page</h3>
+            </div>
+          </Link>
         </div>
 
         <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">

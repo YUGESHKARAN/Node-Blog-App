@@ -19,6 +19,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+const notificationUrl = process.env.NOTIFICATION_URL || 'http://localhost:5173';
 
 // s3 integration
 const { S3Client,PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
@@ -72,6 +73,32 @@ const getAllPosts = async (req, res) => {
   }
 };
 
+const getSingleAuthorPosts = async(req,res)=>{
+  try{
+
+    const {email} = req.params;
+
+    const author = await Author.findOne({email});
+    if(!author){
+      return res.status(404).json({message:`author ${email} not found`});
+    }
+
+    const authorPosts = author.posts.flatMap((post)=>({
+      ...post.toObject(),
+      authorName: author.authorname,
+      authoremail: author.email,
+      profile:author.profile || '',
+      role:author.role,
+      community:author.community,
+    }))
+    res.status(200).json({message:"author posts",data:authorPosts,authorName:author.authorname, profile:author.profile || ''} )
+
+  }
+  catch(err){
+    res.status(500).json({message:err.message})
+  }
+}
+
 const getCategoryPosts = async (req, res) => {
   try {
     // const authors = await Author.find({}); // fetch all authors
@@ -100,149 +127,6 @@ const getCategoryPosts = async (req, res) => {
 };
 
 
-// const addPosts = async (req, res) => {
-//   const { title, description, category, links } = req.body;
-  
-//   const author = await Author.findOne({ email: req.params.email });
-
-//   try {
-//     if (!author) {
-//       return res.status(404).json({ message: "Author not found" });
-//     }
-
-//     let imageUrl = '';
-//     if (req.files && req.files.image) {
-//       const buffer = await sharp(req.files.image[0].buffer)
-//         .resize({ width: 672, height: 462, fit: 'contain' })
-//         .toBuffer();
-
-//       const params = {
-//         Bucket: bucketName,
-//         Key: req.files.image[0].originalname,
-//         Body: buffer,
-//         ContentType: req.files.image[0].mimetype
-//       };
-
-//       const command = new PutObjectCommand(params);
-//       await s3.send(command);
-//       imageUrl = req.files.image[0].originalname;
-//     }
-
-//     const documentUrls = [];
-//     if (req.files && req.files.document) {
-//       for (const doc of req.files.document) {
-//         const params = {
-//           Bucket: bucketName,
-//           Key: doc.originalname,
-//           Body: doc.buffer,
-//           ContentType: doc.mimetype
-//         };
-
-//         const command = new PutObjectCommand(params);
-//         await s3.send(command);
-//         documentUrls.push(doc.originalname);
-//       }
-//     }
-
-//     // Parse links from form data
-//     const parsedLinks = links ? JSON.parse(links) : [];
-//     console.log("parsedLinks", parsedLinks);
-
-//     // Create a new post
-//     const postId = new mongoose.Types.ObjectId(); // Generate a unique ID for the post
-//     author.posts.push({
-//       _id: postId,
-//       title,
-//       image: imageUrl,
-//       description,
-//       category,
-//       documents: documentUrls,
-//       links: parsedLinks
-//     });
-
-  
-
-//     // 🌟 **Re-add the notification system**
-//     const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.email}/${postId}`;
-
-//   // Find community authors (excluding self)
-//     const communityAuthors = await Author.find({
-//       community: { $in: author.community },
-//       email: { $ne: author.email }
-//     }).select('email');
-
-//     // Prepare sets
-//     const followerSet = new Set(author.followers);
-//     const communitySet = new Set();
-
-//     for (const a of communityAuthors) {
-//       if (!followerSet.has(a.email)) {
-//         communitySet.add(a.email);
-//       }
-//     }
-
-//     const combinedRecipients = [...followerSet, ...communitySet];
-
-//     const bulkNotifications = combinedRecipients.map(email => {
-//       const isFollower = followerSet.has(email);
-//       const message = isFollower
-//         ? `New post from ${author.authorname}: ${title}`
-//         : `${author.authorname} from your community posted: ${title}`;
-
-//       const notification = {
-//         postId,
-//         user: author.authorname,
-//         authorEmail: author.email,
-//         message,
-//         url,
-//         profile: author.profile || ""
-//       };
-
-//       return {
-//         updateOne: {
-//           filter: { email },
-//           update: { $push: { notification } }
-//         }
-//       };
-//     });
-
-//     if (bulkNotifications.length > 0) {
-//       await Author.bulkWrite(bulkNotifications);
-//     }
-
-//     const data = await author.save();
-
-//     res.status(201).json({ message: "Post added successfully", data });
-
-//     // 🌟 Send email to all recipients
-//     if (combinedRecipients.length > 0) {
-//       const emailSubject = `New post from ${author.authorname}`;
-//       const emailHtml = `
-//         <h3>${author.authorname} has posted a new blog!</h3>
-//         <p><strong>Title:</strong> ${title}</p>
-//         <p>${description}</p>
-//         <p><a href="${url}">Click here to view the post</a></p>
-//       `;
-
-//       for (const recipient of combinedRecipients) {
-//         await transporter.sendMail({
-//           from: `"${author.authorname}" <${process.env.EMAIL_USER}>`,
-//           to: recipient,
-//           subject: emailSubject,
-//           html: emailHtml
-//         });
-//       }
-//     }
-
-
-//     // const data = await author.save();
-
-//     // res.status(201).json({ message: "Post added successfully", data });
-//   } catch (err) {
-//     res.status(500).json({ message: "Server error", error: err.message });
-//     console.log(err)
-//   }
-// };
 
 const addPosts = async (req, res) => {
   const { title, description, category, links } = req.body;
@@ -306,7 +190,7 @@ const addPosts = async (req, res) => {
       links: parsedLinks
     });
 
-    const url = `https://blog-frontend-teal-ten.vercel.app/viewpage/${author.email}/${postId}`;
+    const url = `${notificationUrl}/viewpage/${author.email}/${postId}`;
 
     // --- Find community authors (excluding self) ---
     const communityAuthors = await Author.find({
@@ -682,7 +566,7 @@ const postView = async (req, res) => {
     post.views.push(emailAuthor);
 
     // Save the updated author document with the post's updated views array
-    await author.save();
+    await author.save({ validateBeforeSave: false });
 
     // Respond with success and the updated views array
     return res.status(200).json({
@@ -718,7 +602,9 @@ const postLikes = async (req, res) => {
     // Check if the emailAuthor is already in the views array of the post
     if (post.likes.includes(emailAuthor)) {
       post.likes = post.likes.filter(like => like !== emailAuthor);
-      await author.save();
+      // await author.save({ validateBeforeSave: false });
+      // await followerAuthor.save({ validateBeforeSave: false });
+      await author.save({ validateBeforeSave: false });
       return res.status(200).json({
         message: 'like removed successfully',
         likes: post.likes,
@@ -729,7 +615,7 @@ const postLikes = async (req, res) => {
     post.likes.push(emailAuthor);
 
     // Save the updated author document with the post's updated views array
-    await author.save();
+    await author.save({ validateBeforeSave: false });
 
     // Respond with success and the updated views array
     return res.status(200).json({
@@ -738,6 +624,7 @@ const postLikes = async (req, res) => {
     });
   } catch (err) {
     // If there is a server error, return a 500 error
+    console.log(err)
     return res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
@@ -748,6 +635,7 @@ const postLikes = async (req, res) => {
 
 module.exports = {
   getAllPosts,
+  getSingleAuthorPosts,
   getCategoryPosts,
   addPosts,
   updatePost,

@@ -1,16 +1,12 @@
-import React, { useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import blog1 from "../images/loading3.gif";
-import blog2 from "../images/blog48.jpg";
-import avatar1 from "../images/avatar1.jpg";
+import blog2 from "../images/blog48.jpg"; 
 import NavBar from "../ui/NavBar";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Footer from "../ui/Footer";
 import { MdOutlineInsertComment } from "react-icons/md";
 import { io } from "socket.io-client";
-import { use } from "react";
-import { SiTruenas } from "react-icons/si";
 import { ReactTyped } from "react-typed";
 import { IoClose } from "react-icons/io5";
 import { GlobalStateContext } from "../GlobalStateContext";
@@ -19,7 +15,6 @@ import axiosInstance from "../instances/Axiosinstances";
 function ViewPage() {
   const user = localStorage.getItem("username");
   const userEmail = localStorage.getItem("email");
-  const [message, setMessage] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -31,22 +26,19 @@ function ViewPage() {
   const [showContent, setShowContent] = useState(false);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
-  const[profile,setProfile] = useState('')
-  const {notification, setNotification} = useContext(GlobalStateContext);  
+  const [profile, setProfile] = useState("");
+  const { notification, setNotification } = useContext(GlobalStateContext);
 
   // Fetch post data
   useEffect(() => {
     const getSinglePost = async () => {
       try {
-        const response = await axiosInstance.get(
-          `/blog/posts/${email}/${id}`
-        );
+        const response = await axiosInstance.get(`/blog/posts/${email}/${id}`);
         const postData = response.data.data;
         setSinglePostData(postData);
         setTimeStamp(postData.timestamp);
         setPostId(postData._id);
-        setProfile(postData.profile)
-        
+        setProfile(postData.profile);
       } catch (err) {
         console.error("Error fetching post data", err);
       }
@@ -54,25 +46,19 @@ function ViewPage() {
     getSinglePost();
   }, [email, id]);
 
-useEffect(() => {
-  const getComments = async () => {
-    try {
-      const response = await axiosInstance.get(
-        `/blog/posts/${email}/${id}`
-      );
-      const comments = response.data.data;
-      setMessages(comments.messages);
-    } catch (err) {
-      console.error("Error fetching comments", err);
-    }
-  };
-getComments();
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const response = await axiosInstance.get(`/blog/posts/${email}/${id}`);
+        const comments = response.data.data;
+        setMessages(comments.messages);
+      } catch (err) {
+        console.error("Error fetching comments", err);
+      }
+    };
+    getComments();
+  }, [messages]);
 
-}, [messages]);
-
-
-  // Socket connection and message handling
-  // "https://node-blog-app-x8tt.onrender.com
   useEffect(() => {
     // const newSocket = io("https://node-blog-app-x8tt.onrender.com", {
     const newSocket = io("https://web-socket-io-pzd4.onrender.com", {
@@ -87,19 +73,16 @@ getComments();
     // Listen for incoming notifications
     newSocket.on("notification", (notification) => {
       console.log("Received notification:", notification);
-      setNotification((prevNotifications) => [notification, ...prevNotifications]);
+      setNotification((prevNotifications) => [
+        notification,
+        ...prevNotifications,
+      ]);
     });
-
-    
-
-
 
     return () => {
       newSocket.disconnect();
     };
   }, [postId, userEmail]);
-  
-
 
   // console.log("postId", postId);
 
@@ -113,9 +96,8 @@ getComments();
       user,
       email: userEmail,
       message: newMessage,
-      url:`${window.location.origin}/viewpage/${singlePostData.authoremail}/${postId}`,
-      profile:profile
-    
+      url: `${window.location.origin}/viewpage/${singlePostData.authoremail}/${postId}`,
+      profile: profile,
     };
 
     socket.emit("newMessage", messageData);
@@ -130,47 +112,32 @@ getComments();
     setSelectedImage(null);
   };
 
-   // Function to wrap hashtags with a span
-  // const renderTextWithHashtags = (text) => {
-  //   return text.split(/(\s+#\w+)/g).map((word, index) =>
-  //     word.startsWith(" #") ? (
-  //       <span key={index} className="text-md text-white font-italy font-bold">
-  //         {word}
-  //       </span>
-  //     ) : (
-  //       word
-  //     )
-  //   );
-  // };
- const renderTextWithHashtags = (text) => {
-  if (!text) return null;
+  const renderTextWithHashtags = (text) => {
+    if (!text) return null;
 
-  // Convert visible "\r\n" or "\\n" into real line breaks
-  const cleanedText = text.replace(/\\r\\n|\\n|\\r\n/g, '\n');
+    // Convert visible "\r\n" or "\\n" into real line breaks
+    const cleanedText = text.replace(/\\r\\n|\\n|\\r\n/g, "\n");
 
-  return cleanedText.split('\n').map((line, lineIndex) => (
-    <React.Fragment key={lineIndex}>
-      {line.split(/(\s+#\w+)/g).map((word, index) =>
-        word.startsWith(" #") ? (
-          <span key={index} className="text-md text-white font-italy font-bold">
-            {word}
-          </span>
-        ) : (
-          <React.Fragment key={index}>{word}</React.Fragment>
-        )
-      )}
-      <br />
-    </React.Fragment>
-  ));
-};
+    return cleanedText.split("\n").map((line, lineIndex) => (
+      <React.Fragment key={lineIndex}>
+        {line.split(/(\s+#\w+)/g).map((word, index) =>
+          word.startsWith(" #") ? (
+            <span
+              key={index}
+              className="text-md text-white font-italy font-bold"
+            >
+              {word}
+            </span>
+          ) : (
+            <React.Fragment key={index}>{word}</React.Fragment>
+          )
+        )}
+        <br />
+      </React.Fragment>
+    ));
+  };
 
 
-
-
-
-  
-// console.log('messages--------------',messages)
-console.log('singlepost data--------------',singlePostData)
   return (
     <div className="w-full min-h-screen h-auto relative bg-gradient-to-br from-gray-900 to-gray-800">
       <NavBar />
@@ -179,11 +146,14 @@ console.log('singlepost data--------------',singlePostData)
         <div className="w-full flex bg-gray-800 flex-col p-3 h-auto items-center">
           <div className="flex  justify-between w-full items-center">
             <div className="flex  justify-between gap-2 items-center">
+              <Link></Link>
+               <Link to={`/viewProfile/${email}`} >
               <img
                 src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`}
                 className="md:w-8 w-5 rounded-md"
                 alt="Author Profile"
               />
+              </Link>
               <h3 className="flex flex-col items-center justify-center">
                 <p className="md:text-md text-white text-sm w-full font-bold">
                   {singlePostData.authorname}
@@ -229,9 +199,9 @@ console.log('singlepost data--------------',singlePostData)
           <div className="w-full text-justify mt-2  text-xs leading-relaxed text-gray-300 text-md">
             {singlePostData.description && showContent ? (
               <>
-              <span className="text-base leading-relaxed">{renderTextWithHashtags( singlePostData.description)}</span>  
-             
-                
+                <span className="text-base leading-relaxed">
+                  {renderTextWithHashtags(singlePostData.description)}
+                </span>
                 <span
                   className="text-xs text-yellow-500 cursor-pointer"
                   onClick={() => setShowContent(false)}
@@ -242,10 +212,13 @@ console.log('singlepost data--------------',singlePostData)
             ) : (
               <>
                 {" "}
-                {
-                singlePostData.description &&
-                 <span className="text-base leading-relaxed">{renderTextWithHashtags(singlePostData.description.slice(0,100))}</span>  
-                 }
+                {singlePostData.description && (
+                  <span className="text-base leading-relaxed">
+                    {renderTextWithHashtags(
+                      singlePostData.description.slice(0, 100)
+                    )}
+                  </span>
+                )}
                 ... <br />{" "}
                 <span
                   className="text-xs text-yellow-500 mt-4 cursor-pointer "
@@ -253,53 +226,50 @@ console.log('singlepost data--------------',singlePostData)
                 >
                   Show More
                 </span>
-
-                
-                 
-               
               </>
             )}
 
             <h1
-  className={`${
-    singlePostData.documents?.length == 0 && singlePostData.links?.length == 0
-      ? 'hidden'
-      : 'block mt-6 md:text-lg text-base font-semibold text-gray-100 border-b border-gray-700 pb-2'
-  }`}
->
-  📎 Source Documents & Links
-</h1>
+              className={`${
+                singlePostData.documents?.length == 0 &&
+                singlePostData.links?.length == 0
+                  ? "hidden"
+                  : "block mt-6 md:text-lg text-base font-semibold text-gray-100 border-b border-gray-700 pb-2"
+              }`}
+            >
+              📎 Source Documents & Links
+            </h1>
 
-<div className="flex flex-col md:flex-row md:flex-wrap mb-4 mt-3 gap-3 w-full">
-  {singlePostData.documents?.length > 0 &&
-    
-    singlePostData.documents.map((doc, index) => (
-      <a
-        key={index}
-        href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group w-fit flex items-center gap-2 px-4 py-1 md:py-2 bg-gray-200 rounded-lg shadow-sm hover:bg-gray-200 transition-all duration-200 text-sm font-medium text-gray-900"
-      >
-        📄 <span className="truncate max-w-xs">{doc.split("-").slice(5).join("-")}</span>
-      </a>
-    ))}
+            <div className="flex flex-col md:flex-row md:flex-wrap mb-4 mt-3 gap-3 w-full">
+              {singlePostData.documents?.length > 0 &&
+                singlePostData.documents.map((doc, index) => (
+                  <a
+                    key={index}
+                    href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group w-fit flex items-center gap-2 px-4 py-1 md:py-2 bg-gray-200 rounded-lg shadow-sm hover:bg-gray-200 transition-all duration-200 text-sm font-medium text-gray-900"
+                  >
+                    📄{" "}
+                    <span className=" max-w-xs">
+                      {doc.split("-").slice(5).join("-")}
+                    </span>
+                  </a>
+                ))}
 
-  {singlePostData.links?.length > 0 &&
-    singlePostData.links.map((link, index) => (
-      <a
-        key={index}
-        href={link.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group flex items-center w-fit gap-2 px-4 py-1 md:py-2 bg-blue-100 rounded-lg shadow-sm hover:bg-blue-200 transition-all duration-200 text-sm font-medium text-blue-900"
-      >
-        🔗 <span className="truncate max-w-xs">{link.title}</span>
-      </a>
-    ))}
-</div>
-
-           
+              {singlePostData.links?.length > 0 &&
+                singlePostData.links.map((link, index) => (
+                  <a
+                    key={index}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center w-fit gap-2 px-4 py-1 md:py-2 bg-blue-100 rounded-lg shadow-sm hover:bg-blue-200 transition-all duration-200 text-sm font-medium text-blue-900"
+                  >
+                    🔗 <span className="truncate max-w-xs">{link.title}</span>
+                  </a>
+                ))}
+            </div>
           </div>
 
           {/* Comment Section */}

@@ -48,7 +48,7 @@ function BlogContainer() {
         url: `${window.location.origin}/viewpage/${email}/${url}`,
       };
       const response = await navigator.share(data);
-      console.log("post shared successfully", response);
+      // console.log("post shared successfully", response);
     } catch (err) {
       console.log("error sharing post", err);
     }
@@ -139,28 +139,39 @@ function BlogContainer() {
  
 
 
-console.log("posts", posts);  
+// console.log("posts", posts);  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-8">
       <div className="flex-col w-11/12 md:gap-16 flex-wrap justify-center h-auto mx-auto">
-      <div className="flex md:max-w-5xl md:w-fit  scrollbar-hide mx-auto items-center justify-start gap-3 mb-5 overflow-x-auto ">
-      <div
-              onClick={()=>setPostCategory('')}
-              className="w-fit text-nowrap cursor-pointer  rounded-md bg-gray-800 text-white  text-sm px-3 py-2 hover:bg-gray-700 transition-all duration-200"
-            >
-              All
-            </div>
-          {getUniqueCategories(posts).map((data, index) => (
-            <div
-              key={index}
-              onClick={()=>setPostCategory(data)}
-              className="w-fit text-nowrap cursor-pointer  rounded-md bg-gray-800 text-white  text-sm px-3 py-2 hover:bg-gray-700 transition-all duration-200"
-            >
-              {data}
-            </div>
-          ))} 
-          
-        </div>
+     <div className="flex md:max-w-5xl md:w-fit mt-4 scrollbar-hide mx-auto items-center justify-start gap-3 mb-5 overflow-x-auto">
+  {/* All Button */}
+  <div
+    onClick={() => setPostCategory("")}
+    className={`w-fit text-nowrap cursor-pointer rounded-md text-sm px-3 py-1 md:py-2 transition-all duration-200 ${
+      postCategory === ""
+        ? "bg-orange-500 text-white shadow-md"
+        : "bg-gray-800 text-white hover:bg-gray-700"
+    }`}
+  >
+    All
+  </div>
+
+  {/* Dynamic Categories */}
+  {getUniqueCategories(posts).map((data, index) => (
+    <div
+      key={index}
+      onClick={() => setPostCategory(data)}
+      className={`w-fit text-nowrap cursor-pointer rounded-md text-sm px-3 py-1 md:py-2 transition-all duration-200 ${
+        postCategory === data
+          ? "bg-orange-500 text-white shadow-md"
+          : "bg-gray-800 text-white hover:bg-gray-700"
+      }`}
+    >
+      {data}
+    </div>
+  ))}
+</div>
+
         {/* Search and Filter Section */}
         <div className="w-full flex items-center gap-2 justify-center">
           <div className="md:w-72 w-52 flex border border-gray-600 rounded-xl p-2 bg-gray-800 justify-center gap-2 items-center my-4">
@@ -203,14 +214,17 @@ console.log("posts", posts);
         
             <div
               key={index}
-              className="w-11/12 mx-auto md:w-full bg-gray-800 md:pb-2 flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-16 p-4 rounded-xl"
+              className="w-11/12 mx-auto md:w-full bg-gray-800 md:pb-2 flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-10 md:mb-0 p-4 rounded-xl"
             >
               <div className="flex mb-2 gap-2 items-center">
-                <img
-                  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
-                  className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
-                  alt={data.authorname}
-                />
+                <Link to={`/viewProfile/${data.authoremail}`} >
+                  <img
+                    src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
+                    className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
+                    alt={data.authorname}
+                  />
+                </Link>
+                
                 <div className="flex flex-col">
                   <p className="text-xs text-white font-semibold">
                     {data.authorname}

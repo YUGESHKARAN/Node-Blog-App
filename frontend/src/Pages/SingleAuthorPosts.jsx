@@ -13,23 +13,26 @@ import NavBar from "../ui/NavBar";
 import Footer from "../ui/Footer";
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import axiosInstance from "../instances/Axiosinstances";
-
-function YourPost() {
+import user from "../images/user.png";
+import { useParams } from "react-router-dom";
+function SingleAuthorPosts() {
   const [searchTerm, setSearchTerm] = useState("");
   const [posts, setPosts] = useState([]);
   const [postCategory, setPostCategory] = useState("");
   const [loader, setLoader] = useState(false);
-  const email = localStorage.getItem("email");
+  const [authorName, setAuthorName] = useState("");
+  const [authorProfile, setAuthorProfile] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const { email } = useParams();
 
   // Fetch posts from API
   const fetchPosts = async () => {
     setLoader(true);
     try {
-      const response = await axiosInstance.get("/blog/posts");
-      setPosts(
-        response.data.posts.filter((post) => post.authoremail === email)
-      );
+      const response = await axiosInstance.get(`/blog/posts/${email}`);
+      setPosts(response.data.data);
+      setAuthorName(response.data.authorName);
+      setAuthorProfile(response.data.profile);
     } catch (err) {
       console.error("Error fetching posts:", err);
     }
@@ -148,13 +151,51 @@ function YourPost() {
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  ">
       <NavBar />
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-8">
-        <div className="flex w-11/12  flex-wrap justify-center h-auto mx-auto">
-          <div className="flex md:max-w-5xl md:w-fit mt-4 scrollbar-hide mx-auto items-center justify-start gap-3 mb-5 overflow-x-auto">
+      <div className="relative min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-8">
+
+     <h1 className=" text-2xl w-11/12 mx-auto md:text-3xl font-bold text-white tracking-wide">
+            <span className=" text-white">
+              {" "}
+            Posts page
+            </span>{" "}
+         
+          
+          </h1>
+
+        <div className="relative w-full mt-6  mx-auto text-center   transition-all duration-300">
+          {/* Profile Image */}
+          <div className="relative w-32 h-32 md:w-48 md:h-48 mx-auto">
+            <Link to={`/viewProfile/${email}`}>
+              <img
+                src={
+                  authorProfile
+                    ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${authorProfile}`
+                    : user
+                }
+                alt="Author Profile"
+                className={`rounded-full object-cover w-full h-full border-4 ${
+                  authorProfile ? "border-orange-500" : "border-gray-500 bg-white"
+                } shadow-md  transition-transform duration-300`}
+              />
+            </Link>
+          </div>
+
+          {/* Author Name */}
+          <h1 className="mt-5 text-xl text-green-500 md:text-3xl font-bold text-white tracking-wide">
+           {authorName && `${authorName}`}
+
+          </h1>
+        </div>
+
+        <div className="w-11/12 mx-auto">
+          <h1 className="text-center text-white font-bold text-xl mt-2 md:mt-10">
+            Domains
+          </h1>
+          <div className="mx-auto md:w-fit  flex max-w-5xl  mt-4 scrollbar-hide mx-auto items-center justify-start gap-3 mb-2 md:mb-5 overflow-x-auto">
             {/* All Button */}
             <div
               onClick={() => setPostCategory("")}
-              className={`w-fit text-nowrap cursor-pointer rounded-md text-sm px-3 py-1 md:py-2 transition-all duration-200 ${
+              className={`w-fit text-nowrap cursor-pointer rounded-md text-sm px-3 p-1 md:py-2 transition-all duration-200 ${
                 postCategory === ""
                   ? "bg-orange-500 text-white shadow-md"
                   : "bg-gray-800 text-white hover:bg-gray-700"
@@ -168,7 +209,7 @@ function YourPost() {
               <div
                 key={index}
                 onClick={() => setPostCategory(data)}
-                className={`w-fit text-nowrap cursor-pointer rounded-md text-sm px-3 py-2 transition-all duration-200 ${
+                className={`w-fit text-nowrap cursor-pointer rounded-md text-sm px-3 py-1 md:py-2 transition-all duration-200 ${
                   postCategory === data
                     ? "bg-orange-500 text-white shadow-md"
                     : "bg-gray-800 text-white hover:bg-gray-700"
@@ -178,7 +219,9 @@ function YourPost() {
               </div>
             ))}
           </div>
+        </div>
 
+        <div className="flex relative backdrop-blur-md w-11/12 flex-wrap justify-center h-auto mx-auto">
           {/* Search and Filter Section */}
           <div className="w-full flex items-center gap-2 justify-center">
             <div className="md:w-72 w-52 flex border border-gray-600 rounded-xl p-2 bg-gray-800 justify-center gap-2 items-center my-4">
@@ -193,7 +236,7 @@ function YourPost() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 w-11/12 md:grid-cols-2 lg:grid-cols-4 md:gap-16 flex-wrap justify-center md:mt-10 mt-7 h-auto mx-auto">
+          <div className="grid grid-cols-1 w-11/12 md:grid-cols-2 lg:grid-cols-4 md:gap-16 flex-wrap justify-center md:mt-10  mt-7 h-auto mx-auto">
             {/* Posts Grid */}
             {loader ? (
               <div className="col-span-4 flex flex-col items-center justify-center">
@@ -221,14 +264,26 @@ function YourPost() {
                   className="w-11/12 mx-auto md:w-full bg-gray-800  flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 h-auto mb-10 md:mb-0 p-4 rounded-xl"
                 >
                   <div className="flex mb-2 gap-2 items-center">
-                    <img
-                      src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
-                      className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
-                      alt={data.authorname}
-                    />
+                    {data.profile ? (
+                      <Link to={`/viewProfile/${data.email}`}>
+                        {" "}
+                        <img
+                          src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
+                          className="rounded-full w-10 h-10 mx-auto object-cover"
+                          alt=""
+                        />
+                      </Link>
+                    ) : (
+                      <Link to={`/viewProfile/${data.email}`}>
+                        <img
+                          src={user}
+                          className="rounded-full w-10 h-10 bg-white border-2 border-black mx-auto object-cover"
+                        />
+                      </Link>
+                    )}
                     <div className="flex flex-col">
                       <p className="text-sm text-white font-semibold">
-                        {data.authorname}
+                        {data.authorName}
                       </p>
                       <p className="text-xs text-gray-500">
                         {data.timestamp.slice(0, 10)}
@@ -301,15 +356,6 @@ function YourPost() {
                         >
                           <IoShareSocial className="text-sm text-blue-400" />
                         </div>
-
-                        {data.authoremail === email && (
-                          <Link
-                            to={`/EditPost/${data._id}`}
-                            className="text-pink-400 hover:text-pink-300"
-                          >
-                            <MdEdit className="text-sm" />
-                          </Link>
-                        )}
                       </div>
                     </div>
                     <button
@@ -350,4 +396,4 @@ function YourPost() {
   );
 }
 
-export default YourPost;
+export default SingleAuthorPosts;

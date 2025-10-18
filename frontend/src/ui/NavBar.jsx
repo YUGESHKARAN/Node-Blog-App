@@ -29,7 +29,7 @@ function NavBar() {
         localStorage.removeItem("role");
         localStorage.removeItem("username");
         localStorage.removeItem("email");
-        localStorage.removeItem("message");
+        // localStorage.removeItem("message");
         
         logout();
     };
@@ -56,6 +56,11 @@ function NavBar() {
         };
     }, []);
 
+     const announcementUrl =
+    role === "admin"
+      ? `/blog/author/getAllAnnouncemnet/${userEmail}`
+      : `/blog/author/${userEmail}`;
+
     // Fetch stored notifications from the server
     const fetchNotifications = async () => {
         try {
@@ -68,10 +73,10 @@ function NavBar() {
         }
       };
 
+       
+      
+
     useEffect(()=>{
-         
- 
-  
       fetchNotifications();
     },[note])
 
@@ -147,7 +152,7 @@ useEffect(() => {
                 </li>
                 <li className='transition-all duration-200 hover:text-white'>
                         <Link to="/authors"className='flex items-center gap-1'>
-                            <IoPeople className='text-2xl '/>Authors
+                            <IoPeople className='text-2xl '/>Authors 
                         </Link>
                     </li>
               {role==='coordinator'&&

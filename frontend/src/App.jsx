@@ -17,6 +17,8 @@ import { GlobalStateProvider } from "./GlobalStateContext.jsx";
 import Announcement from "./Pages/Announcement.jsx";
 import Control from "./Pages/Control.jsx";
 import TechCommunity from "./Pages/TechCommunity.jsx";
+import ViewSingleAuthor from "./Pages/ViewSingleAuthor.jsx";
+import SingleAuthorPosts from "./Pages/SingleAuthorPosts.jsx";
 function App() {
   return (
     <AuthProvider>
@@ -46,6 +48,11 @@ function App() {
             element={<ProtectedRoute element={<ViewEditPost/>} />}
           />
 
+          <Route
+            path="/viewProfile/:email"
+            element={<ProtectedRoute element={<ViewSingleAuthor/>} />}
+          />
+
             <Route
             path="/viewpage/:email/:id"
             element={<ProtectedRoute element={<ViewPage/>} />}
@@ -61,6 +68,11 @@ function App() {
            <Route
             path="/yourposts"
             element={<ProtectedRoute element={<YourPost/>} />}
+          />
+
+           <Route
+            path="/singleAuthorPosts/:email"
+            element={<ProtectedRoute element={<SingleAuthorPosts/>} />}
           />
 
           <Route

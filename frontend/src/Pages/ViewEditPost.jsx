@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import blog1 from "../images/img_not_found.png";
-import { useLocation } from "react-router-dom";
-import avatar1 from "../images/avatar1.jpg";
 import { useParams } from "react-router-dom";
 import NavBar from "../ui/NavBar";
 import { ToastContainer, toast } from 'react-toastify';
@@ -95,9 +93,13 @@ const [previewImage, setPreviewImage] = useState(null);
     e.preventDefault();
   
     const formData = new FormData();
+
     formData.append("title", title);
+    
     formData.append("description", description);
+
     formData.append("category", category);
+
     formData.append('links', JSON.stringify(links));
     
     if (image) {
@@ -197,57 +199,15 @@ const [previewImage, setPreviewImage] = useState(null);
       
     }
   }
-
-  
-
   console.log("single post data", singlePostData);
+
   return (
     <div className="relative w-full  bg-gradient-to-br from-gray-900 to-gray-800 h-auto min-h-[900px]">
       <NavBar />
       <div className="h-auto md:w-11/12  flex flex-col p-2  justify-center items-center  m-auto mt-10">
-        {/* <div className={`${edit?'hidden':'md:w-6/12 w-11/12 md:mb-40  mb-20 bg-gray-800 flex flex-col p-3 h-auto   items-center'}`}>
-          <div className="flex  justify-between w-full items-center">
-            <div className="flex justify-between gap-2 items-center">
-              <img src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`} className="md:w-8 w-5 rounded-md" />
-              <h3 className="flex flex-col items-center justify-center ">
-                <p className="md:text-md text-white text-sm w-full font-bold">
-                  {singlePostData.authorname}
-                </p>
-                <p className="md:text-sm text-xs font-semibold text-gray-500">
-                  {timeStamp.slice(0, 10)}
-                </p>
-              </h3>
-            </div>
-            <div className="flex gap-3 items-center">
-              <p onClick={()=>setEdit(true)}
-               className="bg-blue-600 px-2 py-1 text-white font-semibold text-xs   md:text-sm cursor-pointer  hover:bg-blue-400 rounded-md">Edit</p>
 
-              <p
-               onClick={()=>{ setShowConfirm(true);}} 
-               className="px-2 py-1 text-white font-semibold  rounded-md flex bg-red-600 cursor-pointer hover:bg-red-400 transition-all  text-gray-600 text-xs   md:text-sm font-bold"
 
-               >
-                Delete
-              </p>
-            </div>
-
-          
-          </div>
-          <h3 className="w-full text-white  mb-2 mt-2 text-left text-lg md:text-3xl font-bold">
-                {singlePostData.title}
-            </h3>
-
-          <img
-            src={singlePostData.image? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.image}`:blog1}
-            className="w-full h-fit"
-            alt=""
-          />
-
-          <p className="w-full text-justify leading-relaxed text-gray-300 text-base md:text-md">
-            {singlePostData.description}
-          </p>
-        </div> */}
-        <div className={`${edit ? 'hidden' : 'md:w-6/12 w-11/12 mb-20 md:mb-40 bg-gray-800 rounded-lg shadow-lg p-5 flex flex-col gap-4 items-center'}`}>
+        <div className = {`${edit ? 'hidden' : 'md:w-6/12 w-11/12 mb-20 md:mb-40 bg-gray-800 rounded-lg shadow-lg p-5 flex flex-col gap-4 items-center'}`}>
           
           {/* Top section: Author info + controls */}
           <div className="w-full flex items-center justify-between">
@@ -402,7 +362,8 @@ const [previewImage, setPreviewImage] = useState(null);
                   </span>
                   <p className="text-sm font-semibold">{link.title}</p>
                 </a>
-                {/* Edit icon overlay */}
+                
+                {/* Edit */}
                 <button
                   type="button"
                   className="absolute top-2 right-2 bg-gray-900  p-1.5 rounded-full text-white hover:bg-orange-500 transition-all duration-200  group-hover:opacity-100"

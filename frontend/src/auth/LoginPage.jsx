@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import {CirclesWithBar} from 'react-loader-spinner'
 import axiosInstance from "../instances/Axiosinstances";
+import Cookies from 'js-cookie'
 function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",
@@ -30,10 +31,14 @@ function LoginPage() {
       console.log("response",response.data.message)
       if (response.status === 200) {
         setSuccess("Login successful!");
-        login(); // Assuming the useAuth() function updates the auth context
+         
+        // await Cookies.set('token', response.data.token, { expires: 1, sameSite: 'lax' });
+        // await Cookies.set('token', response.data.token,  { expires: 10 / 86400, sameSite: "lax" });
+        login(response.data.token);
+
         localStorage.setItem("username", response.data.author.authorname);
         localStorage.setItem("email", response.data.author.email);
-        localStorage.setItem("message",response.data.message); 
+        // localStorage.setItem("message",response.data.message); 
         localStorage.setItem("role",response.data.author.role); 
         localStorage.setItem("profile",response.data.author.profile); 
         setLoader(true);
@@ -54,7 +59,7 @@ function LoginPage() {
   const sendOtp = async (e, email) => {
     e.preventDefault();
     setLoader2(true)
-  console.log("otp email", email)
+  // console.log("otp email", email)
     try {
       const response = await axiosInstance.post('/blog/author/send-otp', {
         email
