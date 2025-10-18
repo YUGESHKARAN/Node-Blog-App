@@ -191,11 +191,11 @@ function SingleAuthorPosts() {
           <h1 className="text-center text-white font-bold text-xl mt-2 md:mt-10">
             Domains
           </h1>
-          <div className="mx-auto md:w-fit  flex max-w-5xl  mt-4 scrollbar-hide mx-auto items-center justify-start gap-3 mb-2 md:mb-5 overflow-x-auto">
+          <div className="mx-auto w-11/12 md:w-fit flex flex-wrap mt-4 scrollbar-hide  items-center justify-center gap-3 mb-2 md:mb-5 md:overflow-x-auto">
             {/* All Button */}
             <div
               onClick={() => setPostCategory("")}
-              className={`w-fit text-nowrap cursor-pointer rounded-md text-sm px-3 p-1 md:py-2 transition-all duration-200 ${
+              className={` text-nowrap cursor-pointer rounded-md text-sm px-3 p-1 md:py-2 transition-all duration-200 ${
                 postCategory === ""
                   ? "bg-orange-500 text-white shadow-md"
                   : "bg-gray-800 text-white hover:bg-gray-700"
@@ -209,7 +209,7 @@ function SingleAuthorPosts() {
               <div
                 key={index}
                 onClick={() => setPostCategory(data)}
-                className={`w-fit text-nowrap cursor-pointer rounded-md text-sm px-3 py-1 md:py-2 transition-all duration-200 ${
+                className={` text-nowrap cursor-pointer rounded-md text-sm px-3 py-1 md:py-2 transition-all duration-200 ${
                   postCategory === data
                     ? "bg-orange-500 text-white shadow-md"
                     : "bg-gray-800 text-white hover:bg-gray-700"
@@ -265,7 +265,7 @@ function SingleAuthorPosts() {
                 >
                   <div className="flex mb-2 gap-2 items-center">
                     {data.profile ? (
-                      <Link to={`/viewProfile/${data.email}`}>
+                      <Link to={`/viewProfile/${data.authoremail}`}>
                         {" "}
                         <img
                           src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
@@ -274,7 +274,7 @@ function SingleAuthorPosts() {
                         />
                       </Link>
                     ) : (
-                      <Link to={`/viewProfile/${data.email}`}>
+                      <Link to={`/viewProfile/${data.authoremail}`}>
                         <img
                           src={user}
                           className="rounded-full w-10 h-10 bg-white border-2 border-black mx-auto object-cover"
