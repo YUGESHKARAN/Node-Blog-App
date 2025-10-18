@@ -15,6 +15,7 @@ import { BsPersonSquare } from "react-icons/bs";
 import { ImProfile } from "react-icons/im";
 
 import { PiLinkSimpleFill } from "react-icons/pi";
+import { MdEdit } from "react-icons/md";
 function ProfilePage() {
   const { logout } = useAuth();
   const email = localStorage.getItem("email");
@@ -199,10 +200,11 @@ function ProfilePage() {
               {/* Edit Overlay */}
               <label
                 htmlFor="image"
-                className="absolute bottom-3 right-3 bg-green-500 hover:bg-green-600 text-black p-1 px-2 rounded-full shadow-md cursor-pointer"
+                className="absolute bottom-3 right-3 bg-white hover:bg-white text-black p-1 px-2 rounded-full shadow-md cursor-pointer"
                 title="Change Profile Picture"
               >
-                ✎
+                {/* ✎ */}
+                <MdEdit />
               </label>
               <input
                 type="file"
