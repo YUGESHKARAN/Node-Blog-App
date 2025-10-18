@@ -167,9 +167,11 @@ function Authors() {
       )}
 
       <div className="w-11/12 min-h-screen h-auto mx-auto flex-col  items-center justify-center mt-12">
-        <h2 className="w-full text-white text-center text-xl md:text-3xl font-bold">
-          Coordinators Profile
+      {authors.filter((author) => author.role === "coordinator").length>0  && 
+      <h2 className="w-full text-white text-center text-xl md:text-3xl font-bold">
+          Coordinators
         </h2>
+        }
         <div
           className={`grid place-items-center gap-6  mt-4 md:mt-6 grid-cols-2 lg:grid-cols-5`}
         >
@@ -300,9 +302,10 @@ function Authors() {
         </div>
 
         
+         {authors.filter((author) => author.role === "student").length>0 &&
            <h2 className="w-full text-white mt-12 text-center text-xl md:text-3xl font-bold">
-          Students Profile
-        </h2>
+          Students
+        </h2>}
 
         <div
           className={`grid place-items-center gap-6 mt-4 md:mt-6 grid-cols-2 lg:grid-cols-6`}

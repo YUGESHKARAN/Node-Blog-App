@@ -31,6 +31,7 @@ function HomePage() {
       // const response = await axios.get('https://node-blog-app-seven.vercel.app/blog/author');
       const response = await axiosInstance.get('/blog/author');
       // const result = response.data.filter((author) => author.email !== email);
+      // setAuthors(response.data.filter((author) => author.email !== email).filter(author => author.role === "coordinator"));
       setAuthors(response.data.filter((author) => author.email !== email).filter(author => author.role === "coordinator"));
       // console.log("authors", response.data);
     } catch (err) {
@@ -45,11 +46,22 @@ function HomePage() {
   const getData = async () => {
     try {
       // const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/posts/`);
-      const response = await axiosInstance.get(`/blog/posts/`);
+      const response = await axiosInstance.get(`/blog/posts/profiles`);
       // console.log("data", response.data);
       setCategoryCount(response.data.count);
       setPosts(response.data.posts);
-      setYourPost(response.data.posts.filter(post => post.authoremail === email));
+    } catch (err) {
+      console.error("Error", err);
+    }
+  };
+
+  const getAuthorData = async () => {
+    try {
+      // const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/posts/`);
+      const response = await axiosInstance.get(`/blog/author/${email}`);
+      // console.log("data", response.data);
+    
+      setYourPost(response.data.posts);
     } catch (err) {
       console.error("Error", err);
     }
@@ -57,6 +69,7 @@ function HomePage() {
 
   useEffect(() => {
     getData();
+    getAuthorData()
   }, []);
 
   // Chatbot
@@ -214,7 +227,7 @@ function HomePage() {
           role==='coordinator'?
           <Link to='/yourposts'>
           <div className="text-center flex-col justify-center">
-            <h1 className="md:text-3xl text-sm text-white">{yourPost.length}</h1>
+            <h1 className="md:text-3xl text-sm text-white">{yourPost && yourPost.length}</h1>
             <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">My Posts</h3>
           </div>
           </Link>:
