@@ -46,7 +46,7 @@ function HomePage() {
   const getData = async () => {
     try {
       // const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/posts/`);
-      const response = await axiosInstance.get(`/blog/posts/profiles`);
+      const response = await axiosInstance.get(`/blog/posts/`);
       // console.log("data", response.data);
       setCategoryCount(response.data.count);
       setPosts(response.data.posts);
