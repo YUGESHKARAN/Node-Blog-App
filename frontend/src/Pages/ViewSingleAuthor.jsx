@@ -180,7 +180,7 @@ function ViewSingleAuthor() {
               <input
                 type="text"
                 id="role"
-                value={role}
+                value={author.role}
                 readOnly
                 className="mt-1 block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-400"
               />
