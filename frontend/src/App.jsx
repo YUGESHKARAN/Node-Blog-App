@@ -19,6 +19,7 @@ import Control from "./Pages/Control.jsx";
 import TechCommunity from "./Pages/TechCommunity.jsx";
 import ViewSingleAuthor from "./Pages/ViewSingleAuthor.jsx";
 import SingleAuthorPosts from "./Pages/SingleAuthorPosts.jsx";
+import BookMarkPage from "./Pages/BookMarkPage.jsx";
 function App() {
   return (
     <AuthProvider>
@@ -73,6 +74,11 @@ function App() {
            <Route
             path="/singleAuthorPosts/:email"
             element={<ProtectedRoute element={<SingleAuthorPosts/>} />}
+          />
+
+          <Route
+            path="/bookMarkPage/:email"
+            element={<ProtectedRoute element={<BookMarkPage/>} />}
           />
 
           <Route

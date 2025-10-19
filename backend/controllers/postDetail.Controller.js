@@ -718,9 +718,105 @@ const postLikes = async (req, res) => {
   }
 };
 
+const addPostBookmark = async(req,res)=>{
+  try{
+    const {email} = req.params;
+    const {postId} = req.body;
+      // console.log("email",email)
+    if(!email){
+      return res.status(400).json({message:"email required"})
+    }
+    if(!postId){
+      return res.status(400).json({message:"postId required"})
+    }
+
+  
+    const author = await Author.findOne({email});
+  
+    if(!author){
+      return res.status(404).json({message:"author not found"})
+    }
+
+    const bookmarkIndex = (author.postBookmark || []).findIndex(id => id.toString() === postId);
+    let message;
+    if (bookmarkIndex !== -1) {
+      // already bookmarked -> remove
+      author.postBookmark.splice(bookmarkIndex, 1);
+      message = "Post removed from bookmarks";
+    } else {
+      // not bookmarked -> add
+      author.postBookmark.push(new mongoose.Types.ObjectId(postId));
+      message = "Post added to bookmarks";
+    }
+
+    await author.save({ validateBeforeSave: false });
+
+    return res.status(200).json({ message, postBookmark: author.postBookmark });
+  }
+  catch(err){
+    res.status(500).json({message:err.message})
+    console.log("error", err.message)
+  }
+}
 
 
+const getBookmarkedPosts = async (req, res) => {
+  try {
+    const { email } = req.params;
+    if (!email) return res.status(400).json({ message: "email required" });
 
+    // fetch only bookmark ids (ensure field is returned)
+    const author = await Author.findOne({ email }).select("postBookmark");
+    if (!author) return res.status(404).json({ message: "author not found" });
+
+    // normalize bookmark ids to strings
+    const postIds = (author.postBookmark || [])
+      .map((id) => (id ? id.toString() : null))
+      .filter(Boolean);
+
+    if (postIds.length === 0) {
+      return res.status(200).json({ message: "No bookmarks", posts: [] });
+    }
+
+    // Fetch all authors that have posts (avoid relying on Mongo $in casting issues)
+    const authorsWithPosts = await Author.find({ "posts.0": { $exists: true } })
+      .select("authorname email profile role community posts");
+
+    // Build map postId -> postWithAuthorDetails by scanning posts in JS
+    const postMap = new Map();
+    for (const a of authorsWithPosts) {
+      for (const p of a.posts || []) {
+        const pid = p._id && p._id.toString();
+        if (pid && postIds.includes(pid) && !postMap.has(pid)) {
+          postMap.set(pid, {
+            ...p.toObject(),
+            authorname: a.authorname,
+            authoremail: a.email,
+            profile: a.profile || "",
+            role: a.role,
+            community: a.community,
+          });
+        }
+      }
+    }
+
+    // preserve bookmark order
+    const bookmarkedPosts = postIds.map((id) => postMap.get(id)).filter(Boolean);
+    const bookmarkedPostIds = bookmarkedPosts.map(p => (p && p._id) ? p._id.toString() : null).filter(Boolean);
+    
+
+    return res.status(200).json({
+      message: "Bookmarked posts",
+      count: bookmarkedPosts.length,
+      posts: bookmarkedPosts,
+      postIds:bookmarkedPostIds
+    });
+  } catch (err) {
+    console.error("getBookmarkedPosts error:", err);
+    return res.status(500).json({ message: "server error", error: err.message });
+  }
+};
+//
 
 module.exports = {
   getAllPosts,
@@ -732,6 +828,8 @@ module.exports = {
   getSinglePost,
   postView,
   postLikes,
-  getRecommendedPosts
+  getRecommendedPosts,
+  addPostBookmark,
+  getBookmarkedPosts
  
 };

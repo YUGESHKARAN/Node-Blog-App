@@ -15,7 +15,9 @@ const {
   getSinglePost,
   postView,
   postLikes,
-  getRecommendedPosts
+  getRecommendedPosts,
+  addPostBookmark,
+  getBookmarkedPosts
 } = require("../controllers/postDetail.Controller");
 
 // handle authors blog post data
@@ -51,10 +53,9 @@ router.post("/:email",authenticateToken,uploadData, addPosts);
 
 // router.put("/:email/:postId",upload.single('image'), updatePost);
 
-
-
 router.put("/:email/:postId",authenticateToken,uploadData,updatePost);
-
+router.get("/getBookmarkPosts/:email",authenticateToken,getBookmarkedPosts)
+router.post("/bookmarkPosts/:email",authenticateToken,addPostBookmark)
 
 router.get("/:email/:postId",authenticateToken, getSinglePost);
 router.put("/views/:email/:id",authenticateToken, postView)

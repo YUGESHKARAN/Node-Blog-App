@@ -16,7 +16,7 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { GoCopilot } from "react-icons/go";
 import { MdAnnouncement, MdAppSettingsAlt } from "react-icons/md";
 import axiosInstance from "../instances/Axiosinstances";
-import { RiUser3Line } from "react-icons/ri";
+import { RiBookMarkedFill, RiUser3Line } from "react-icons/ri";
 function HomePage() {
   const username = localStorage.getItem("username");
 
@@ -276,17 +276,18 @@ function HomePage() {
         </div>
         
         <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
-          <Link to="/profile">
+          <Link to={`/bookMarkPage/${email}`}>
             <div className="text-center flex-col justify-center">
               {/* <h1 className="md:text-3xl text-sm text-white">{posts.length}</h1> */}
               <h1 className="md:text-3xl w-full text-center text-sm text-white">
                 {
-                  <RiUser3Line className="text-sm mb-0.5 md:text-3xl text-center mx-auto   text-[#0be881]" />
+                  <RiBookMarkedFill className="text-sm mb-0.5 md:text-3xl text-center mx-auto   text-[#0be881]" />
+                  // <RiBookMarkedFill />
                 }
               </h1>
               {/* <h1 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400"> My </h1> */}
               <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
-                Profile
+                Bookmarks
               </h3>
             </div>
           </Link>
@@ -314,7 +315,7 @@ function HomePage() {
                 {categoryCount}
               </h1>
               <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
-                Total Domains
+                Tech. Domains
               </h3>
             </div>
           </Link>

@@ -210,6 +210,17 @@ const authorSchema = new mongoose.Schema({
   },
 
   announcement: [announcementSchema],
+   // Store bookmarked post ids (unique ObjectIds referencing posts within authors' posts)
+  postBookmark: {
+    type: [mongoose.Schema.Types.ObjectId],
+    default: [],
+    validate: {
+      validator: function (v) {
+        return Array.isArray(v) && new Set(v.map(id => id.toString())).size === v.length;
+      },
+      message: "postBookmark must contain unique post IDs"
+    }
+  },
 
   password: {
     type: String,
