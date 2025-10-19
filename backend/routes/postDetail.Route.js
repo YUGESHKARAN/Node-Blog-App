@@ -4,7 +4,7 @@ const Author = require("../models/blogAuthorSchema");
 
 const multer = require('multer');
 const path = require('path');
-
+const authenticateToken = require('../authMiddleware')
 const {
   getAllPosts,
   getSingleAuthorPosts,
@@ -14,13 +14,15 @@ const {
   deletePost,
   getSinglePost,
   postView,
-  postLikes
+  postLikes,
+  getRecommendedPosts
 } = require("../controllers/postDetail.Controller");
 
 // handle authors blog post data
 
 router.get("/", getAllPosts);
 router.get("/:email", getSingleAuthorPosts);
+router.get("/recommended/:email",getRecommendedPosts)
 
 router.get("/:category", getCategoryPosts);
 
@@ -45,20 +47,20 @@ const uploadData = multer().fields([
   { name: 'document', maxCount: 10 }, // Allow up to 10 document files
 ]);
 
-router.post("/:email",uploadData, addPosts);
+router.post("/:email",authenticateToken,uploadData, addPosts);
 
 // router.put("/:email/:postId",upload.single('image'), updatePost);
 
 
 
-router.put("/:email/:postId",uploadData,updatePost);
+router.put("/:email/:postId",authenticateToken,uploadData,updatePost);
 
 
-router.get("/:email/:postId",getSinglePost);
-router.put("/views/:email/:id",postView)
-router.put("/likes/:email/:id",postLikes)
+router.get("/:email/:postId",authenticateToken, getSinglePost);
+router.put("/views/:email/:id",authenticateToken, postView)
+router.put("/likes/:email/:id",authenticateToken, postLikes)
 
-router.delete("/:email/:postId", deletePost);
+router.delete("/:email/:postId",authenticateToken,  deletePost);
 
 
 

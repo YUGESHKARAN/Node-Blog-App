@@ -14,8 +14,9 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { GoCopilot } from "react-icons/go";
-import { MdAppSettingsAlt } from "react-icons/md";
+import { MdAnnouncement, MdAppSettingsAlt } from "react-icons/md";
 import axiosInstance from "../instances/Axiosinstances";
+import { RiUser3Line } from "react-icons/ri";
 function HomePage() {
   const username = localStorage.getItem("username");
 
@@ -23,16 +24,21 @@ function HomePage() {
   const [categoryCount, setCategoryCount] = useState(0);
   const [authors, setAuthors] = useState([]);
   const [yourPost, setYourPost] = useState(0);
-  const email = localStorage.getItem('email');
-  const role = localStorage.getItem('role');
+  const [announcement, setAnnouncement] = useState([]);
+  const email = localStorage.getItem("email");
+  const role = localStorage.getItem("role");
 
   const getAuthors = async () => {
     try {
       // const response = await axios.get('https://node-blog-app-seven.vercel.app/blog/author');
-      const response = await axiosInstance.get('/blog/author');
+      const response = await axiosInstance.get("/blog/author/profiles/");
       // const result = response.data.filter((author) => author.email !== email);
       // setAuthors(response.data.filter((author) => author.email !== email).filter(author => author.role === "coordinator"));
-      setAuthors(response.data.filter((author) => author.email !== email).filter(author => author.role === "coordinator"));
+      setAuthors(
+        response.data
+          .filter((author) => author.email !== email)
+          .filter((author) => author.role === "coordinator")
+      );
       // console.log("authors", response.data);
     } catch (err) {
       console.error(err);
@@ -43,13 +49,15 @@ function HomePage() {
     getAuthors();
   }, []);
 
+ 
+
   const getData = async () => {
     try {
       // const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/posts/`);
       const response = await axiosInstance.get(`/blog/posts/`);
       // console.log("data", response.data);
       setCategoryCount(response.data.count);
-      setPosts(response.data.posts);
+      // setPosts(response.data.posts);
     } catch (err) {
       console.error("Error", err);
     }
@@ -60,7 +68,7 @@ function HomePage() {
       // const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/posts/`);
       const response = await axiosInstance.get(`/blog/author/${email}`);
       // console.log("data", response.data);
-    
+      setAnnouncement(response.data.announcement);
       setYourPost(response.data.posts);
     } catch (err) {
       console.error("Error", err);
@@ -69,20 +77,20 @@ function HomePage() {
 
   useEffect(() => {
     getData();
-    getAuthorData()
+    getAuthorData();
   }, []);
 
   // Chatbot
   const [messages, setMessages] = useState([
     {
-      "message": "Hi Chief, Blog Copilot is here. How can I help?",
+      message: "Hi Chief, Blog Copilot is here. How can I help?",
       sender: "bot",
       direction: "incoming",
     },
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const [chatbot, setChatbot] = useState(false);
-  
+
   const backendEndpoint = "https://mongodb-rag.onrender.com/query-rag";
   // const backendEndpoint = "http://127.0.0.1:3000/query-rag";
 
@@ -121,40 +129,41 @@ function HomePage() {
   const handleSend = async (message) => {
     // Sanitize input message to remove HTML tags
     const sanitizedMessage = message.replace(/<[^>]*>/g, ""); // Removes HTML tags
-    console.log("san mesg",sanitizedMessage)
+    console.log("san mesg", sanitizedMessage);
     const newMessage = {
       message: sanitizedMessage,
       sender: "user",
       direction: "outgoing",
     };
-  
+
     // Add user message to the messages array
     setMessages((prev) => [...prev, newMessage]);
     setIsTyping(true);
-  
+
     // console.log("User's query message:", sanitizedMessage);
-  
+
     try {
       // Send POST request to the backend
       const response = await axios.post(backendEndpoint, {
         query: sanitizedMessage,
       });
-  
+
       // Extract bot response or use a fallback
-      const botResponse = response.data?.response || "No response received from the bot.";
+      const botResponse =
+        response.data?.response || "No response received from the bot.";
       // console.log("Bot response:", response);
-  
+
       // Show the bot's response with a typewriter effect
       typewriterEffect(botResponse, "bot");
     } catch (error) {
       console.error("Error fetching response:", error);
-  
+
       // Log error details for debugging
       if (error.response) {
         console.error("Server Response Data:", error.response.data);
         console.error("Server Response Status:", error.response.status);
       }
-  
+
       // Add error message to the messages array
       const errorMessage = {
         message: "An error occurred. Please try again later.",
@@ -167,7 +176,7 @@ function HomePage() {
       setIsTyping(false);
     }
   };
-  
+
   const typewriterEffect = (text, sender) => {
     const words = text.split(" ");
     let currentMessage = "";
@@ -201,73 +210,117 @@ function HomePage() {
     addWord();
   };
 
- // console.log('your posts', yourPost);
+  // console.log('your posts', yourPost);
   // console.log('email', email);
   // console.log("role localstorage", role);
-  // console.log("authors", authors);  
+  // console.log("authors", authors);
 
   return (
     <div className="min-h-screen relative bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 text-white">
       <NavBar />
 
       {/* <div className="md:text-2xl text-xl mb-10 font-bold text-center mt-5">Welcome to Blog Browser!</div> */}
-      <div className="md:text-2xl text-xl mb-10  font-bold text-center mt-5">{role.charAt(0).toUpperCase() + role.slice(1)} Dashboard</div>
+      <div className="md:text-2xl text-xl mb-10  font-bold text-center mt-5">
+        {role.charAt(0).toUpperCase() + role.slice(1)} Dashboard
+      </div>
 
       <div className="grid grid-cols-8 gap-1.5 md:gap-3 w-11/12 md:w-9/12 my-5 mx-auto">
-        <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
 
-
-         {
-           role==='admin'? <Link to='/control'>
-          <div className="text-center flex-col items-center justify-center">
-              <h1 className="md:text-3xl w-full mb-1 mx-auto  text-white"> <MdAppSettingsAlt className="text-center mx-auto"/>  </h1> 
-            <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Controls</h3>
-          </div>
-          </Link>:
-          role==='coordinator'?
-          <Link to='/yourposts'>
-          <div className="text-center flex-col justify-center">
-            <h1 className="md:text-3xl text-sm text-white">{yourPost && yourPost.length}</h1>
-            <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">My Posts</h3>
-          </div>
-          </Link>:
-            <Link to='/community'>
-          <div className="text-center flex-col justify-center">
-            <h1 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">My Tech</h1>
-            <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Community</h3>
-          </div>
-          </Link>
-          
-          }
-          
+      <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
+          {role === "admin" ? (
+            <Link to="/control">
+              <div className="text-center flex-col items-center justify-center">
+                <h1 className="md:text-3xl w-full mb-1 mx-auto  text-white">
+                  {" "}
+                  <MdAppSettingsAlt className="text-center mx-auto" />{" "}
+                </h1>
+                <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
+                  Controls
+                </h3>
+              </div>
+            </Link>
+          ) : role === "coordinator" ? (
+            <Link to="/yourposts">
+              <div className="text-center flex-col justify-center">
+                <h1 className="md:text-3xl text-sm text-white">
+                  {yourPost && yourPost.length}
+                </h1>
+                <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
+                  My Posts
+                </h3>
+              </div>
+            </Link>
+          ) : (
+            <Link
+              to="/announcement"
+              className="text-center flex-col justify-center"
+              
+            >
+              <div className="flex items-center transition-all duration-200  justify-center">
+                <MdAnnouncement className="text-sm md:text-2xl  " />
+              <sup
+                className={`${
+                  announcement.length > 0
+                    ? "text-[10px]  w-4 h-4 flex items-center justify-center rounded-full text-white"
+                    : "text-[10px]  flex items-center justify-center rounded-full text-white"
+                } md:text-base`}
+              >
+                {announcement.length > 0 ? announcement.length : ""}
+              </sup>
+              </div>
+            <h3 className="text-[10px] md:text-sm text-center lg:text-2xl font-semibold text-orange-400">
+                  Announcement
+                </h3> 
+            </Link>
+          )}
         </div>
-
+        
         <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
-           <Link to='/profile'>
+          <Link to="/profile">
             <div className="text-center flex-col justify-center">
               {/* <h1 className="md:text-3xl text-sm text-white">{posts.length}</h1> */}
+              <h1 className="md:text-3xl w-full text-center text-sm text-white">
+                {
+                  <RiUser3Line className="text-sm mb-0.5 md:text-3xl text-center mx-auto   text-[#0be881]" />
+                }
+              </h1>
               {/* <h1 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400"> My </h1> */}
-              <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Profile Page</h3>
+              <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
+                Profile
+              </h3>
             </div>
           </Link>
         </div>
 
+
+
         <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
-          <Link to='/authors'>
+          <Link to="/authors">
             <div className="text-center flex-col justify-center">
-              <h1 className="md:text-3xl text-sm text-white">{authors.length}</h1>
-              <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Authors</h3>
+              <h1 className="md:text-3xl text-sm text-white">
+                {authors.length}
+              </h1>
+              <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
+                Authors
+              </h3>
             </div>
           </Link>
         </div>
 
         <div className="col-span-2 p-2 md:w-11/12 md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
-        
-          <div className="text-center flex-col justify-center">
-            <h1 className="md:text-3xl text-sm text-white">{categoryCount}</h1>
-            <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">Categories</h3>
-          </div>
+          <Link to="/community">
+            <div className="text-center flex-col justify-center">
+              <h1 className="md:text-3xl text-sm text-white">
+                {categoryCount}
+              </h1>
+              <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
+                Total Domains
+              </h3>
+            </div>
+          </Link>
         </div>
+
+        
       </div>
 
       <div className="min-h-screen h-auto">
@@ -279,45 +332,48 @@ function HomePage() {
       className={`${email==='yugeshkaran01@gmail.com'?'fixed md:right-10 cursor-pointer  md:bottom-10 right-5 bottom-5':'hidden'}`}>
         <GoCopilot   className="md:text-xl text-xl rounded-full font-bold" />
       </div> */}
-      <div className={`${chatbot?'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50':'hidden'}`}>
-        <div className="flex-col w-full"> 
-
-    
-
-        <MainContainer className="rounded-lg h-96 md:w-1/2 w-9/12 mx-auto bg-gradient-to-br from-gray-900 to-gray-800 md:text-lg text-xs shadow-lg">
-          <ChatContainer className="bg-gray-900 rounded-lg">
-            <MessageList
-              typingIndicator={
-                isTyping && (
-                  <TypingIndicator
-                    className="bg-gray-900 w-full text-gray-400"
-                    content="Copilot is typing..."
+      <div
+        className={`${
+          chatbot
+            ? "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+            : "hidden"
+        }`}
+      >
+        <div className="flex-col w-full">
+          <MainContainer className="rounded-lg h-96 md:w-1/2 w-9/12 mx-auto bg-gradient-to-br from-gray-900 to-gray-800 md:text-lg text-xs shadow-lg">
+            <ChatContainer className="bg-gray-900 rounded-lg">
+              <MessageList
+                typingIndicator={
+                  isTyping && (
+                    <TypingIndicator
+                      className="bg-gray-900 w-full text-gray-400"
+                      content="Copilot is typing..."
+                    />
+                  )
+                }
+                className="bg-gray-900 text-gray-200 p-4"
+              >
+                {messages.map((msg, idx) => (
+                  <Message
+                    className="mb-4 text-white"
+                    key={idx}
+                    model={{
+                      message: msg.message,
+                      sentTime: "just now",
+                      sender: msg.sender,
+                      direction: msg.direction,
+                    }}
                   />
-                )
-              }
-              className="bg-gray-900 text-gray-200 p-4"
-            >
-              {messages.map((msg, idx) => (
-                <Message
-                  className="mb-4 text-white"
-                  key={idx}
-                  model={{
-                    message: msg.message,
-                    sentTime: "just now",
-                    sender: msg.sender,
-                    direction: msg.direction,
-                  }}
-                />
-              ))}
-            </MessageList>
-            
-            <MessageInput
-              placeholder="Type a message..."
-              onSend={handleSend}
-              className="bg-gray-800 text-white rounded-lg p-2"
-            />
-          </ChatContainer>
-        </MainContainer>
+                ))}
+              </MessageList>
+
+              <MessageInput
+                placeholder="Type a message..."
+                onSend={handleSend}
+                className="bg-gray-800 text-white rounded-lg p-2"
+              />
+            </ChatContainer>
+          </MainContainer>
 
           <div
             onClick={() => setChatbot(!chatbot)}
@@ -325,9 +381,8 @@ function HomePage() {
           >
             Close
           </div>
-
-        </div>          
-      </div>      
+        </div>
+      </div>
 
       <Footer />
     </div>

@@ -28,7 +28,7 @@ function BlogContainer() {
     setLoader(true);
     try {
       const response = await axiosInstance.get(
-        "/blog/posts"
+        `/blog/posts/recommended/${email}`
       );
       setPosts(
         response.data.posts.filter((post) => post.authoremail !== email)
@@ -219,7 +219,7 @@ function BlogContainer() {
               <div className="flex mb-2 gap-2 items-center">
                 <Link to={`/viewProfile/${data.authoremail}`} >
                   <img
-                    src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
+                    src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
                     className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
                     alt={data.authorname}
                   />

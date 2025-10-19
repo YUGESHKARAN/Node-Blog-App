@@ -744,7 +744,7 @@ const addAnnouncement = async (req, res) => {
       deliveredTo,
       profile,
       authorEmail: email,
-      poster: uniqueFilename,
+      poster: req.file ? uniqueFilename : "",
     };
 
     // let filter = {};

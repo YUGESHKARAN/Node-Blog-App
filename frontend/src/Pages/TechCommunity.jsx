@@ -115,7 +115,7 @@ const updateCommunity = async(email,techCommunity)=>{
         if (response.status === 201) {
         await  getPosts();
         await  getAuthorCommunity();
-        window.location.reload();
+        // window.location.reload();
        }
 
       

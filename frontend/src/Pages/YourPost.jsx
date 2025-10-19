@@ -21,15 +21,17 @@ function YourPost() {
   const [loader, setLoader] = useState(false);
   const email = localStorage.getItem("email");
   const [selectedImage, setSelectedImage] = useState(null);
-
+  const [authorProfile,setAuthorProfile] = useState("")
   // Fetch posts from API
   const fetchPosts = async () => {
     setLoader(true);
     try {
-      const response = await axiosInstance.get("/blog/posts");
-      setPosts(
-        response.data.posts.filter((post) => post.authoremail === email)
-      );
+      const response = await axiosInstance.get(`/blog/posts/${email}`);
+      // setPosts(
+      //   response.data.posts.filter((post) => post.authoremail === email)
+      // );
+      setPosts(response.data.data);
+      setAuthorProfile(response.data.profile);
     } catch (err) {
       console.error("Error fetching posts:", err);
     }
@@ -222,7 +224,7 @@ function YourPost() {
                 >
                   <div className="flex mb-2 gap-2 items-center">
                     <img
-                      src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profie}`}
+                      src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${authorProfile}`}
                       className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
                       alt={data.authorname}
                     />

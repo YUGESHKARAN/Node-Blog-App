@@ -73,6 +73,92 @@ const getAllPosts = async (req, res) => {
   }
 };
 
+
+// ...existing code...
+const getRecommendedPosts = async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    let followedEmails = [];
+    let authorCommunities = [];
+    if (email) {
+      const currentAuthor = await Author.findOne({ email }).select('following community');
+      if (currentAuthor) {
+        followedEmails = Array.isArray(currentAuthor.following) ? currentAuthor.following : [];
+        authorCommunities = Array.isArray(currentAuthor.community) ? currentAuthor.community : [];
+      }
+    }
+
+    // Fetch only needed authors
+    const allAuthors = await Author.find({}).select('email authorname profile role community posts');
+
+    // Split authors into priority (followed OR same community) and others
+    const followedSet = new Set(followedEmails);
+    const priorityAuthors = [];
+    const otherAuthors = [];
+
+    for (const a of allAuthors) {
+      const inFollowing = followedSet.has(a.email);
+      const inCommunity = Array.isArray(a.community) && a.community.some(c => authorCommunities.includes(c));
+      if (inFollowing || inCommunity) priorityAuthors.push(a);
+      else otherAuthors.push(a);
+    }
+
+    // Helper to flatten posts in reverse (newest first). Prefer createdAt if available.
+    const flattenReverse = (authorsArray) => authorsArray.flatMap(author => {
+      const posts = Array.isArray(author.posts) ? author.posts.slice() : [];
+      const sorted = posts[0] && posts[0].createdAt
+        ? posts.slice().sort((x, y) => new Date(y.createdAt) - new Date(x.createdAt))
+        : posts.slice().reverse();
+
+      return sorted.map(post => ({
+        ...post.toObject(),
+        authorname: author.authorname,
+        authoremail: author.email,
+        profile: author.profile || '',
+        role: author.role,
+        community: author.community,
+      }));
+    });
+
+    // Priority posts first (followed OR community), then others — both in reverse/newest-first order
+    const postsFromPriority = flattenReverse(priorityAuthors);
+    const postsFromOthers = flattenReverse(otherAuthors);
+    // const allPosts = [...postsFromPriority, ...postsFromOthers];
+     // Shuffle arrays individually (Fisher–Yates) without mutating originals
+    const shuffleArray = (arr) => {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    };
+
+    const shuffledPriority = shuffleArray(postsFromPriority);
+    const shuffledOthers = shuffleArray(postsFromOthers);
+  
+    const allPosts = [...shuffledPriority, ...shuffledOthers];
+
+    // category counts (unchanged)
+    const categoryCounts = allAuthors.flatMap((author) =>
+      author.posts.map((post) => post.category)
+    ).reduce((counts, category) => {
+      counts[category] = (counts[category] || 0) + 1;
+      return counts;
+    }, {});
+    const count = Object.keys(categoryCounts).length;
+
+    res.status(200).json({ message: "All posts", posts: allPosts, count });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "server error", error: err.message });
+  }
+};
+// ...existing code...
+
+
+
 const getSingleAuthorPosts = async(req,res)=>{
   try{
 
@@ -90,7 +176,8 @@ const getSingleAuthorPosts = async(req,res)=>{
       profile:author.profile || '',
       role:author.role,
       community:author.community,
-    }))
+    })).reverse()
+
     res.status(200).json({message:"author posts",data:authorPosts,authorName:author.authorname, profile:author.profile || ''} )
 
   }
@@ -98,6 +185,8 @@ const getSingleAuthorPosts = async(req,res)=>{
     res.status(500).json({message:err.message})
   }
 }
+
+
 
 const getCategoryPosts = async (req, res) => {
   try {
@@ -642,6 +731,7 @@ module.exports = {
   deletePost,
   getSinglePost,
   postView,
-  postLikes
+  postLikes,
+  getRecommendedPosts
  
 };
