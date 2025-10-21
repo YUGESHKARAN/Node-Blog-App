@@ -712,7 +712,8 @@ const addAnnouncement = async (req, res) => {
       }
     }
     const eventFolder = "Events/";
-    const uniqueFilename = `${eventFolder}${uuidv4()}-${poster}`;
+    // const uniqueFilename = `${eventFolder}${uuidv4()}-${poster}`;
+    const uniqueFilename = req.file ? `${eventFolder}${uuidv4()}-${req.file.originalname}` : "";
 
     if (req.file) {
       // S3 Integration
@@ -744,7 +745,7 @@ const addAnnouncement = async (req, res) => {
       deliveredTo,
       profile,
       authorEmail: email,
-      poster: req.file ? uniqueFilename : "",
+      poster: uniqueFilename,
     };
 
     // let filter = {};
