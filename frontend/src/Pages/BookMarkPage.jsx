@@ -202,15 +202,15 @@ function BookMarkPage() {
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  ">
       <NavBar />
-      <div className="relative min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-8">
-        <h1 className=" text-2xl w-11/12 mx-auto md:text-3xl font-bold text-white tracking-wide">
+      <div className="relative min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-4">
+        <h1 className=" text-2xl  w-11/12 mx-auto md:text-3xl font-bold text-white tracking-wide">
           <span className=" text-white">My Bookmarks </span>{" "}
         </h1>
 
-        <div className="w-11/12 mx-auto">
-          <h1 className="text-center text-white font-bold text-xl mt-2 md:mt-10">
+        <div className="w-11/12 mt-10 mx-auto">
+          {/* <h1 className="text-center text-white font-bold text-xl mt-2 md:mt-10">
             Domains
-          </h1>
+          </h1> */}
           <div className="mx-auto w-11/12 md:w-fit flex flex-wrap mt-4 scrollbar-hide  items-center justify-center gap-3 mb-2 md:mb-5 md:overflow-x-auto">
             {/* All Button */}
             <div
@@ -289,7 +289,7 @@ function BookMarkPage() {
                         {" "}
                         <img
                           src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
-                          className="rounded-full w-10 h-10 mx-auto object-cover"
+                          className="rounded-full border border-white/50 w-10 h-10 mx-auto object-cover"
                           alt=""
                         />
                       </Link>

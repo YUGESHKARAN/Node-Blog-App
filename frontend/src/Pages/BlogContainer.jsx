@@ -257,7 +257,7 @@ function BlogContainer() {
                   <Link to={`/viewProfile/${data.authoremail}`}>
                     <img
                       src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
-                      className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
+                      className="w-8 max-h-10 object-cover rounded-full border border-white/50"
                       alt={data.authorname}
                     />
                   </Link>

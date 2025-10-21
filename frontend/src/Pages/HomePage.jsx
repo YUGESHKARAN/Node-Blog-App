@@ -49,8 +49,6 @@ function HomePage() {
     getAuthors();
   }, []);
 
- 
-
   const getData = async () => {
     try {
       // const response = await axios.get(`https://node-blog-app-seven.vercel.app/blog/posts/`);
@@ -216,133 +214,270 @@ function HomePage() {
   // console.log("authors", authors);
 
   return (
-    <div className="min-h-screen relative bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 text-white">
+    // <div className="min-h-screen relative bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 text-white">
+    //   <NavBar />
+
+    //   {/* <div className="md:text-2xl text-xl mb-10 font-bold text-center mt-5">Welcome to Blog Browser!</div> */}
+    //   <div className="md:text-2xl text-xl mb-10  font-bold text-center mt-5">
+    //     {role.charAt(0).toUpperCase() + role.slice(1)} Dashboard
+    //   </div>
+
+    //   <div className="grid grid-cols-8 gap-1.5 md:gap-3 w-11/12 md:w-9/12 my-5 mx-auto">
+
+    //   <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
+    //       {role === "admin" ? (
+    //         <Link to="/control">
+    //           <div className="text-center flex-col items-center justify-center">
+    //             <h1 className="md:text-3xl w-full mb-1 mx-auto  text-white">
+    //               {" "}
+    //               <MdAppSettingsAlt className="text-center mx-auto" />{" "}
+    //             </h1>
+    //             <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
+    //               Controls
+    //             </h3>
+    //           </div>
+    //         </Link>
+    //       ) : role === "coordinator" ? (
+    //         <Link to="/yourposts">
+    //           <div className="text-center flex-col justify-center">
+    //             <h1 className="md:text-3xl text-sm text-white">
+    //               {yourPost && yourPost.length}
+    //             </h1>
+    //             <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
+    //               My Posts
+    //             </h3>
+    //           </div>
+    //         </Link>
+    //       ) : (
+    //         <Link
+    //           to="/announcement"
+    //           className="text-center flex-col justify-center"
+
+    //         >
+    //           <div className="flex items-center transition-all duration-200  justify-center">
+    //             <MdAnnouncement className="text-sm md:text-2xl  " />
+    //           <sup
+    //             className={`${
+    //               announcement.length > 0
+    //                 ? "text-[10px]  w-4 h-4 flex items-center justify-center rounded-full text-white"
+    //                 : "text-[10px]  flex items-center justify-center rounded-full text-white"
+    //             } md:text-base`}
+    //           >
+    //             {announcement.length > 0 ? announcement.length : ""}
+    //           </sup>
+    //           </div>
+    //         <h3 className="text-[10px] md:text-sm text-center lg:text-2xl font-semibold text-orange-400">
+    //               Announcement
+    //             </h3>
+    //         </Link>
+    //       )}
+    //     </div>
+
+    //     <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
+    //       <Link to={`/bookMarkPage/${email}`}>
+    //         <div className="text-center flex-col justify-center">
+    //           {/* <h1 className="md:text-3xl text-sm text-white">{posts.length}</h1> */}
+    //           <h1 className="md:text-3xl w-full text-center text-sm text-white">
+    //             {
+    //               <RiBookMarkedFill className="text-sm mb-0.5 md:text-3xl text-center mx-auto   text-[#0be881]" />
+    //               // <RiBookMarkedFill />
+    //             }
+    //           </h1>
+    //           {/* <h1 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400"> My </h1> */}
+    //           <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
+    //             Bookmarks
+    //           </h3>
+    //         </div>
+    //       </Link>
+    //     </div>
+
+    //     <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
+    //       <Link to="/authors">
+    //         <div className="text-center flex-col justify-center">
+    //           <h1 className="md:text-3xl text-sm text-white">
+    //             {authors.length}
+    //           </h1>
+    //           <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
+    //             Authors
+    //           </h3>
+    //         </div>
+    //       </Link>
+    //     </div>
+
+    //     <div className="col-span-2 p-2 md:w-11/12 md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
+    //       <Link to="/community">
+    //         <div className="text-center flex-col justify-center">
+    //           <h1 className="md:text-3xl text-sm text-white">
+    //             {categoryCount}
+    //           </h1>
+    //           <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
+    //             Tech. Domains
+    //           </h3>
+    //         </div>
+    //       </Link>
+    //     </div>
+
+    //   </div>
+
+    //   <div className="min-h-screen h-auto">
+    //     <BlogContainer />
+    //   </div>
+
+    //   {/* <div
+    //   onClick={()=>{setChatbot(!chatbot)}}
+    //   className={`${email==='yugeshkaran01@gmail.com'?'fixed md:right-10 cursor-pointer  md:bottom-10 right-5 bottom-5':'hidden'}`}>
+    //     <GoCopilot   className="md:text-xl text-xl rounded-full font-bold" />
+    //   </div> */}
+    //   <div
+    //     className={`${
+    //       chatbot
+    //         ? "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+    //         : "hidden"
+    //     }`}
+    //   >
+    //     <div className="flex-col w-full">
+    //       <MainContainer className="rounded-lg h-96 md:w-1/2 w-9/12 mx-auto bg-gradient-to-br from-gray-900 to-gray-800 md:text-lg text-xs shadow-lg">
+    //         <ChatContainer className="bg-gray-900 rounded-lg">
+    //           <MessageList
+    //             typingIndicator={
+    //               isTyping && (
+    //                 <TypingIndicator
+    //                   className="bg-gray-900 w-full text-gray-400"
+    //                   content="Copilot is typing..."
+    //                 />
+    //               )
+    //             }
+    //             className="bg-gray-900 text-gray-200 p-4"
+    //           >
+    //             {messages.map((msg, idx) => (
+    //               <Message
+    //                 className="mb-4 text-white"
+    //                 key={idx}
+    //                 model={{
+    //                   message: msg.message,
+    //                   sentTime: "just now",
+    //                   sender: msg.sender,
+    //                   direction: msg.direction,
+    //                 }}
+    //               />
+    //             ))}
+    //           </MessageList>
+
+    //           <MessageInput
+    //             placeholder="Type a message..."
+    //             onSend={handleSend}
+    //             className="bg-gray-800 text-white rounded-lg p-2"
+    //           />
+    //         </ChatContainer>
+    //       </MainContainer>
+
+    //       <div
+    //         onClick={() => setChatbot(!chatbot)}
+    //         className="text-center mt-4 bg-orange-500 cursor-pointer w-24 mx-auto rounded-md py-1 text-sm"
+    //       >
+    //         Close
+    //       </div>
+    //     </div>
+    //   </div>
+
+    //   <Footer />
+    // </div>
+    <div className="min-h-screen relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white flex flex-col">
       <NavBar />
 
-      {/* <div className="md:text-2xl text-xl mb-10 font-bold text-center mt-5">Welcome to Blog Browser!</div> */}
-      <div className="md:text-2xl text-xl mb-10  font-bold text-center mt-5">
+      {/* Page Title */}
+      <h1 className="text-center text-3xl md:text-4xl font-extrabold mt-8 mb-10 tracking-wide bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">
+      {/* <h1 className="text-center text-3xl md:text-4xl font-extrabold mt-8 mb-10 tracking-wide text-white/90"> */}
         {role.charAt(0).toUpperCase() + role.slice(1)} Dashboard
-      </div>
+      </h1>
 
-      <div className="grid grid-cols-8 gap-1.5 md:gap-3 w-11/12 md:w-9/12 my-5 mx-auto">
-
-      <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
+      {/* Stats / Quick Actions Grid */}
+      <div className="grid grid-cols-2  md:grid-cols-4 gap-6 w-11/12 md:w-9/12 mx-auto mb-10">
+        {/* Control / My Posts / Announcement */}
+        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg hover:scale-105 transition-transform duration-300 hover:bg-white/20">
           {role === "admin" ? (
-            <Link to="/control">
-              <div className="text-center flex-col items-center justify-center">
-                <h1 className="md:text-3xl w-full mb-1 mx-auto  text-white">
-                  {" "}
-                  <MdAppSettingsAlt className="text-center mx-auto" />{" "}
-                </h1>
-                <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
-                  Controls
-                </h3>
-              </div>
+            <Link to="/control" className="flex flex-col items-center">
+              <MdAppSettingsAlt className="text-4xl text-green-400 mb-2" />
+              <h3 className="text-lg font-semibold text-orange-400">
+                Controls
+              </h3>
             </Link>
           ) : role === "coordinator" ? (
-            <Link to="/yourposts">
-              <div className="text-center flex-col justify-center">
-                <h1 className="md:text-3xl text-sm text-white">
-                  {yourPost && yourPost.length}
-                </h1>
-                <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
-                  My Posts
-                </h3>
-              </div>
+            <Link to="/yourposts" className="flex flex-col items-center">
+              <span className="text-4xl font-bold mb-2 text-white">
+                {yourPost && yourPost.length}
+              </span>
+              <h3 className="text-lg font-semibold text-orange-400">
+                My Posts
+              </h3>
             </Link>
           ) : (
-            <Link
-              to="/announcement"
-              className="text-center flex-col justify-center"
-              
-            >
-              <div className="flex items-center transition-all duration-200  justify-center">
-                <MdAnnouncement className="text-sm md:text-2xl  " />
-              <sup
-                className={`${
-                  announcement.length > 0
-                    ? "text-[10px]  w-4 h-4 flex items-center justify-center rounded-full text-white"
-                    : "text-[10px]  flex items-center justify-center rounded-full text-white"
-                } md:text-base`}
-              >
-                {announcement.length > 0 ? announcement.length : ""}
-              </sup>
+            <Link to="/announcement" className="flex flex-col items-center">
+              <div className="relative flex justify-center items-center mb-2">
+                <MdAnnouncement className="text-4xl text-green-400" />
+                {announcement.length > 0 && (
+                  <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                    {announcement.length}
+                  </span>
+                )}
               </div>
-            <h3 className="text-[10px] md:text-sm text-center lg:text-2xl font-semibold text-orange-400">
-                  Announcement
-                </h3> 
+              <h3 className="text-lg font-semibold text-orange-400">
+                Announcement
+              </h3>
             </Link>
           )}
         </div>
-        
-        <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
-          <Link to={`/bookMarkPage/${email}`}>
-            <div className="text-center flex-col justify-center">
-              {/* <h1 className="md:text-3xl text-sm text-white">{posts.length}</h1> */}
-              <h1 className="md:text-3xl w-full text-center text-sm text-white">
-                {
-                  <RiBookMarkedFill className="text-sm mb-0.5 md:text-3xl text-center mx-auto   text-[#0be881]" />
-                  // <RiBookMarkedFill />
-                }
-              </h1>
-              {/* <h1 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400"> My </h1> */}
-              <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
-                Bookmarks
-              </h3>
-            </div>
+
+        {/* Bookmarks */}
+        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg hover:scale-105 transition-transform duration-300 hover:bg-white/20">
+          <Link
+            to={`/bookMarkPage/${email}`}
+            className="flex flex-col items-center"
+          >
+            <RiBookMarkedFill className="text-4xl mb-2 text-[#0be881]" />
+            <h3 className="text-lg font-semibold text-orange-400">Bookmarks</h3>
           </Link>
         </div>
 
-
-
-        <div className="col-span-2 p-1 md:w-11/12 w-full md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
-          <Link to="/authors">
-            <div className="text-center flex-col justify-center">
-              <h1 className="md:text-3xl text-sm text-white">
-                {authors.length}
-              </h1>
-              <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
-                Authors
-              </h3>
-            </div>
+        {/* Authors */}
+        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg hover:scale-105 transition-transform duration-300 hover:bg-white/20">
+          <Link to="/authors" className="flex flex-col items-center">
+            <span className="text-4xl font-bold mb-2 text-white">
+              {authors.length}
+            </span>
+            <h3 className="text-lg font-semibold text-orange-400">Authors</h3>
           </Link>
         </div>
 
-        <div className="col-span-2 p-2 md:w-11/12 md:h-fit lg:h-36 bg-gray-800 rounded-lg shadow-xl flex items-center justify-center">
-          <Link to="/community">
-            <div className="text-center flex-col justify-center">
-              <h1 className="md:text-3xl text-sm text-white">
-                {categoryCount}
-              </h1>
-              <h3 className="text-[10px] md:text-sm lg:text-2xl font-semibold text-orange-400">
-                Tech. Domains
-              </h3>
-            </div>
+        {/* Tech Domains */}
+        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg hover:scale-105 transition-transform duration-300 hover:bg-white/20">
+          <Link to="/community" className="flex flex-col items-center">
+            <span className="text-4xl font-bold mb-2 text-white">
+              {categoryCount}
+            </span>
+            <h3 className="text-lg font-semibold text-orange-400">
+              Tech. Domains
+            </h3>
           </Link>
         </div>
-
-        
       </div>
 
-      <div className="min-h-screen h-auto">
+      {/* Blog Container */}
+      <div className="flex-grow ">
         <BlogContainer />
       </div>
 
-      {/* <div 
-      onClick={()=>{setChatbot(!chatbot)}}
-      className={`${email==='yugeshkaran01@gmail.com'?'fixed md:right-10 cursor-pointer  md:bottom-10 right-5 bottom-5':'hidden'}`}>
-        <GoCopilot   className="md:text-xl text-xl rounded-full font-bold" />
-      </div> */}
+      {/* Chatbot Overlay */}
       <div
         className={`${
           chatbot
-            ? "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+            ? "fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50"
             : "hidden"
         }`}
       >
-        <div className="flex-col w-full">
-          <MainContainer className="rounded-lg h-96 md:w-1/2 w-9/12 mx-auto bg-gradient-to-br from-gray-900 to-gray-800 md:text-lg text-xs shadow-lg">
-            <ChatContainer className="bg-gray-900 rounded-lg">
+        <div className="w-full flex flex-col items-center">
+          <MainContainer className="rounded-xl h-96 md:w-1/2 w-10/12 mx-auto bg-gray-900/90 shadow-2xl border border-gray-700">
+            <ChatContainer>
               <MessageList
                 typingIndicator={
                   isTyping && (
@@ -352,12 +487,12 @@ function HomePage() {
                     />
                   )
                 }
-                className="bg-gray-900 text-gray-200 p-4"
+                className="bg-gray-900 text-gray-200 p-4 overflow-y-auto"
               >
                 {messages.map((msg, idx) => (
                   <Message
-                    className="mb-4 text-white"
                     key={idx}
+                    className="mb-3"
                     model={{
                       message: msg.message,
                       sentTime: "just now",
@@ -371,17 +506,17 @@ function HomePage() {
               <MessageInput
                 placeholder="Type a message..."
                 onSend={handleSend}
-                className="bg-gray-800 text-white rounded-lg p-2"
+                className="bg-gray-800 text-white rounded-lg p-2 border border-gray-700"
               />
             </ChatContainer>
           </MainContainer>
 
-          <div
+          <button
             onClick={() => setChatbot(!chatbot)}
-            className="text-center mt-4 bg-orange-500 cursor-pointer w-24 mx-auto rounded-md py-1 text-sm"
+            className="mt-4 bg-gradient-to-r from-orange-500 to-pink-500 hover:opacity-90 px-5 py-2 rounded-md text-sm font-semibold transition-all duration-300"
           >
             Close
-          </div>
+          </button>
         </div>
       </div>
 

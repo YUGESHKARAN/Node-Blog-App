@@ -269,7 +269,7 @@ function SingleAuthorPosts() {
                         {" "}
                         <img
                           src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
-                          className="rounded-full w-10 h-10 mx-auto object-cover"
+                          className="rounded-full w-10 h-10 mx-auto border border-white/50 object-cover"
                           alt=""
                         />
                       </Link>

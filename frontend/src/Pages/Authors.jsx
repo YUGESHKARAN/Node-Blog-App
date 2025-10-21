@@ -17,7 +17,7 @@ function Authors() {
   const email = localStorage.getItem("email");
   const [follow, setFollow] = useState(false);
   const [recommendation, setRecommendation] = useState([]);
-  
+
   const authorsDetails = async () => {
     try {
       const response = await axiosInstance.get("/blog/author/profiles/");
@@ -166,258 +166,164 @@ function Authors() {
         </div>
       )}
 
-      <div className="w-11/12 min-h-screen h-auto mx-auto flex-col  items-center justify-center mt-12">
-      {authors.filter((author) => author.role === "coordinator").length>0  && 
-      <h2 className="w-full text-white text-center text-xl md:text-3xl font-bold">
-          Coordinators
-        </h2>
-        }
-        <div
-          className={`grid place-items-center gap-6  mt-4 md:mt-6 grid-cols-2 lg:grid-cols-5`}
-        >
-          {/* <Link to={`/viewProfile/${author.email}`}>
-              </Link>
-               */}
+      <div className="w-11/12 mx-auto min-h-screen flex flex-col items-center mt-12 text-white">
+        {/* Coordinators Section */}
+        {authors.filter((author) => author.role === "coordinator").length >
+          0 && (
+          // <h2 className="text-center text-2xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-orange-400 to-yellow-300 bg-clip-text text-transparent">
+          <h2 className="text-center text-2xl md:text-4xl font-bold mb-6 text-white">
+            Coordinators
+          </h2>
+        )}
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8">
           {authors
             .filter((author) => author.role === "coordinator")
             .map((author, index) => (
               <div
                 key={index}
-                className=" min-h-72 h-auto pb-3 w-40 md:w-full pt-5 flex-col items-center rounded-lg shadow-lg bg-[#fff]/20"
+                className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 p-5 flex flex-col items-center"
               >
-                {author.profile ? (
-                  <Link to={`/viewProfile/${author.email}`}>
-                    <img
-                      src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${author.profile}`}
-                      className="rounded-full w-20 h-20 mx-auto object-cover"
-                      alt=""
-                    />
-                  </Link>
-                ) : (
-                  <Link to={`/viewProfile/${author.email}`}>
-                    <img
-                      src={user}
-                      className="rounded-full w-20 h-20 bg-white border-2 border-black mx-auto object-cover"
-                    />
-                  </Link>
-                )}
-                <div className="md:w-11/12 md:w-11/12 mx-auto flex-col items-center justify-center">
-                  <h1 className="text-center font-semibold text-white text-wrap w-full scrollbar-hide overflow-x-auto mt-2 md:text-base">
-                    {" "}
-                    {author.authorName}
-                  </h1>
-                  <h1 className="text-center text-wrap w-full  mt-1 text-[9px] text-white md:text-xs">
-                    {" "}
-                    {author.email}
-                  </h1>
-                
-                {/* 
-                  <div className="flex md:w-11/12 mx-auto mx-auto items-center justify-between mt-1 gap-5 px-5">
-                    <span className="text-center text-yellow-500 text-xs mt-2 font-semibold">
-                      Followers
-                      <p className="text-white">{author.followers.length}</p>
-                    </span>
-                 
-                    <span className="text-center text-yellow-500  text-xs mt-2 font-semibold">
-                      Posts <p className="text-white">{author.postCount}</p>
-                    </span>
-                  </div> */}
+                <Link to={`/viewProfile/${author.email}`}>
+                  <img
+                    src={
+                      author.profile
+                        ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${author.profile}`
+                        : user
+                    }
+                    alt={author.authorName}
+                    className="rounded-full bg-white w-24 h-24 object-cover border-2 border-white shadow-md hover:shadow-lg transition-all"
+                  />
+                </Link>
 
-                    {author.community?.length > 0 && (
-              <div className="mt-2">
-                {/* <p className="text-orange-400 font-medium mb-3 text-center text-sm uppercase tracking-wide">
-                  Tech Communities
-                </p> */}
-                <div className="flex flex-wrap justify-center gap-2">
-                  {author.community.map((com, i) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1 text-[10px] bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg shadow text-white"
-                    >
-                      {com}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-              
-                  {author.profileLinks?.length > 0 && (
-                    <div className="flex w-full md:w-11/12  mx-auto items-center justify-center mt-3 gap-0.5 md:gap-5">
-                      {author.profileLinks.map((link, index) => (
-                        <div
-                          key={index}
-                          className="bg-gray-800/60 pb-1 hover:bg-gray-700/60  border-gray-700 rounded-lg p-1 transition-all duration-300 group"
-                        >
-                          <div className="flex  gap-2 items-center">
-                  
-                            {link.title === "LinkedIn" ? (
-                              <Link to={link.url} title={link.title}>
-                                {" "}
-                                <FaLinkedin className="text-sm md:text-base text-white" />{" "}
-                              </Link>
-                            ) : link.title === "GitHub" ? (
-                              <Link to={link.url} title={link.title}>
-                                {" "}
-                                <FaSquareGithub className="text-sm md:text-base text-white" />{" "}
-                              </Link>
-                            ) : link.title === "Portfolio" ? (
-                              <Link to={link.url} title={link.title}>
-                                <BsPersonSquare className="text-sm md:text-base text-white" />{" "}
-                              </Link>
-                            ) : (
-                              <Link to={link.url} title={link.title}>
-                                <PiLinkSimpleFill className="text-sm md:text-base text-white" />{" "}
-                              </Link>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                <h1 className="text-center font-semibold mt-3 text-lg truncate w-full">
+                  {author.authorName}
+                </h1>
+                <p className="text-center text-sm text-gray-300 truncate w-full">
+                  {author.email}
+                </p>
 
-                  <div className="flex items-center justify-center mt-3">
-                    {author.followers.includes(email) ? (
-                      <button
-                        onClick={() => {
-                          addFollower(author.email);
-                        }}
-                        className="w-fit mx-auto px-4 py-0.5  rounded-lg shadow-lg bg-gray-200 text-[#000]"
+                {/* Communities */}
+                {author.community?.length > 0 && (
+                  <div className="flex flex-wrap justify-center gap-2 mt-3">
+                    {author.community.map((com, i) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1 text-xs font-medium backdrop-blur-md bg-white/10 text-white rounded-full shadow-sm border border-gray-400"
                       >
-                        Following...
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          addFollower(author.email);
-                        }}
-                        className="w-fit mx-auto px-4 py-0.5 rounded-lg  bg-gray-800 text-white"
-                      >
-                        Follow +
-                      </button>
-                    )}
+                        {com}
+                      </span>
+                    ))}
                   </div>
+                )}
+
+                {/* Social Links */}
+                {author.profileLinks?.length > 0 && (
+                  <div className="flex justify-center gap-3 mt-4">
+                    {author.profileLinks.map((link, i) => (
+                      <Link
+                        key={i}
+                        to={link.url}
+                        title={link.title}
+                        target="_blank"
+                      >
+                        {link.title === "LinkedIn" ? (
+                          <FaLinkedin className="text-white text-lg hover:text-green-400 transition" />
+                        ) : link.title === "GitHub" ? (
+                          <FaSquareGithub className="text-white text-lg hover:text-green-400 transition" />
+                        ) : link.title === "Portfolio" ? (
+                          <BsPersonSquare className="text-white text-lg hover:text-green-400 transition" />
+                        ) : (
+                          <PiLinkSimpleFill className="text-white text-lg hover:text-green-400 transition" />
+                        )}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
+                {/* Follow Button */}
+                <div className="mt-4">
+                  {author.followers.includes(email) ? (
+                    <button
+                      onClick={() => addFollower(author.email)}
+                      className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-200 to-emerald-300 text-gray-800 font-medium text-sm cursor-default shadow-sm border border-white/20"
+                    >
+                      Following...
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => addFollower(author.email)}
+                      className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-300 to-green-400 text-gray-900 font-medium text-sm hover:from-emerald-400 hover:to-green-500 transition-all duration-300 shadow-sm border border-white/20"
+                    >
+                      Follow +
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
         </div>
 
-        
-         {authors.filter((author) => author.role === "student").length>0 &&
-           <h2 className="w-full text-white mt-12 text-center text-xl md:text-3xl font-bold">
-          Students
-        </h2>}
+        {/* Students Section */}
+        {authors.filter((author) => author.role === "student").length > 0 && (
+          <h2 className="text-center mt-16 text-2xl md:text-4xl font-bold text-white">
+            Students
+          </h2>
+        )}
 
-        <div
-          className={`grid place-items-center gap-6 mt-4 md:mt-6 grid-cols-2 lg:grid-cols-6`}
-        >
-          {/* <Link to={`/viewProfile/${author.email}`}>
-              </Link>
-               */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 mt-6">
           {authors
             .filter((author) => author.role === "student")
             .map((author, index) => (
               <div
                 key={index}
-                className="h-48 md:h-52 w-40 md:w-52 pt-5 pb-1  flex-col justify-center items-center rounded-lg shadow-lg bg-[#fff]/20"
+                className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 p-5 flex flex-col items-center"
               >
-                {author.profile ? (
-                  <Link to={`/viewProfile/${author.email}`}>
-                    <img
-                      src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${author.profile}`}
-                      className="rounded-full w-20 h-20 mx-auto object-cover"
-                      alt=""
-                    />
-                  </Link>
-                ) : (
-                  <Link to={`/viewProfile/${author.email}`}>
-                    <img
-                      src={user}
-                      className="rounded-full w-20 h-20 bg-white border-2 border-black mx-auto object-cover"
-                    />
-                  </Link>
-                )}
+                <Link to={`/viewProfile/${author.email}`}>
+                  <img
+                    src={
+                      author.profile
+                        ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${author.profile}`
+                        : user
+                    }
+                    alt={author.authorName}
+                    className="rounded-full w-20 bg-white h-20 object-cover border-2 border-white shadow-md hover:shadow-lg transition-all"
+                  />
+                </Link>
 
-                <div className="w-full mx-auto flex-col items-center justify-center">
-                  <h1 className="text-center font-semibold text-white text-wrap w-full scrollbar-hide overflow-x-auto mt-2 md:text-base">
-                    {" "}
-                    {author.authorName}
-                  </h1>
-                  <h1 className="text-center  mt-1 text-[9px] text-white md:text-xs">
-                    {" "}
-                    {author.email}
-                  </h1>
+                <h1 className="text-center font-semibold mt-3 text-sm md:text-base truncate w-full">
+                  {author.authorName}
+                </h1>
+                <p className="text-center text-xs text-gray-300 truncate w-full">
+                  {author.email}
+                </p>
 
-                  <div className="flex md:mt-3 mt-2  mx-auto items-center  mt-1 gap-0 w-full ">
-                    {author.profileLinks?.length > 0 && (
-                      <div className="flex w-full md:w-11/12  mx-auto items-center justify-center mt-1 gap-2 md:0.5 md:gap-3">
-                        {author.profileLinks.map((link, index) => (
-                          <div
-                            key={index}
-                            className="bg-gray-800/60 pb-1 hover:bg-gray-700/60  border-gray-700 rounded-lg p-1 transition-all duration-300 group"
-                          >
-                            <div className="flex  gap-2 items-center">
-                              {/* <a
-                                  href={link.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-400 text-sm font-normal hover:underline break-all"
-                                >
-                                  </a> */}
-
-                              {link.title === "LinkedIn" ? (
-                                <Link to={link.url} title={link.title}>
-                                  {" "}
-                                  <FaLinkedin className="text-sm md:text-base text-white" />
-                                </Link>
-                              ) : link.title === "GitHub" ? (
-                                <Link to={link.url} title={link.title}>
-                                  {" "}
-                                  <FaSquareGithub className="text-sm md:text-base text-white" />
-                                </Link>
-                              ) : link.title === "Portfolio" ? (
-                                <Link to={link.url} title={link.title}>
-                                  <BsPersonSquare className="text-sm md:text-base text-white" />
-                                </Link>
-                              ) : (
-                                <Link to={link.url} title={link.title}>
-                                  <PiLinkSimpleFill className="text-sm md:text-base text-white" />
-                                </Link>
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                {/* Social Links */}
+                {author.profileLinks?.length > 0 && (
+                  <div className="flex justify-center gap-3 mt-3">
+                    {author.profileLinks.map((link, i) => (
+                      <Link
+                        key={i}
+                        to={link.url}
+                        title={link.title}
+                        target="_blank"
+                      >
+                        {link.title === "LinkedIn" ? (
+                          <FaLinkedin className="text-white text-base hover:text-green-400 transition" />
+                        ) : link.title === "GitHub" ? (
+                          <FaSquareGithub className="text-white text-base hover:text-green-400 transition" />
+                        ) : link.title === "Portfolio" ? (
+                          <BsPersonSquare className="text-white text-base hover:text-green-400 transition" />
+                        ) : (
+                          <PiLinkSimpleFill className="text-white text-base hover:text-green-400 transition" />
+                        )}
+                      </Link>
+                    ))}
                   </div>
-
-                  {/* <div className="flex items-center justify-center mt-2">
-                    {author.followers.includes(email) ? (
-                      <button
-                        onClick={() => {
-                          addFollower(author.email);
-                        }}
-                        className="w-fit mx-auto px-4 py-0.5  rounded-lg shadow-lg bg-gray-200 text-[#000]"
-                      >
-                        Following...
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          addFollower(author.email);
-                        }}
-                        className="w-fit mx-auto px-4 py-0.5 rounded-lg  bg-gray-800 text-white"
-                      >
-                        Follow +
-                      </button>
-                    )}
-                  </div> */}
-                </div>
+                )}
               </div>
             ))}
         </div>
       </div>
-
-  
 
       <Footer />
     </div>

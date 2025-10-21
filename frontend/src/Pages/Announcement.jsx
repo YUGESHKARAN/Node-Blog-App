@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { HiOutlineUserCircle } from "react-icons/hi";
+import { IoClose } from "react-icons/io5";
 function Announcement() {
   const username = localStorage.getItem("username");
   const email = localStorage.getItem("email");
@@ -32,7 +33,7 @@ function Announcement() {
   const imageInputRef = useRef(null);
   const [password, setPassword] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
-
+  const [selectedImage, setSelectedImage] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({
     title: "",
     message: "",
@@ -195,6 +196,14 @@ function Announcement() {
       setPassword("");
     }
   };
+
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedImage(null);
+  };
   // console.log("communityOptions", communityOptions);
   // console.log("selectedCommunities", selectedCommunities);
   return (
@@ -207,7 +216,7 @@ function Announcement() {
             onClick={() => setShowConfirm(true)}
             className="text-xs cursor-pointer hover:bg-red-800 bg-red-700  text-white font-semibold rounded-md p-2"
           >
-            Delete all announcemnet
+            Delete all
           </span>
         )}
         {role !== "student" && !showAnnouncement ? (
@@ -470,24 +479,25 @@ function Announcement() {
           {reversedAnnouncements.map((announcement) => (
             <div
               key={announcement._id}
-              className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl p-5 border border-gray-100 flex flex-col gap-3"
+              // className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl p-5 border border-gray-100 flex flex-col gap-3"
+              className="bg-gray-800 border border-gray-700 rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col gap-3"
             >
               {/* Header Section */}
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900">
+                  <h3 className="text-xl font-semibold text-white">
                     {announcement.title}
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-gray-400 mt-1">
                     Posted by{" "}
-                    <span className="font-semibold text-gray-800">
+                    <span className="font-semibold text-gray-200">
                       {announcement.user}
                     </span>
                   </p>
                   {role === "admin" && (
                     <p className="text-sm text-gray-500 mt-1">
                       Delivered To{" "}
-                      <span className="font-semibold text-gray-800 uppercase">
+                      <span className="font-semibold text-gray-200 ">
                         {announcement.deliveredTo === "community"
                           ? "Tech. Community"
                           : announcement.deliveredTo}
@@ -507,17 +517,22 @@ function Announcement() {
 
               {/* Announcement Banner / Poster */}
               {announcement?.poster && announcement.poster !== "undefined" && (
-                <div className="relative rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+                // <div className="relative rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+                <div className="mt-4 w-fit mx-auto rounded-lg overflow-hidden ">
                   <img
                     src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${announcement.poster}`}
                     alt="Announcement Banner"
-                    className="w-full h-56 md:h-72 object-contain hover:scale-105 transition-transform duration-300"
+                    onClick={() =>
+                      handleImageClick(`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${announcement.poster}` )
+                    }
+                    // className="w-full h-56 md:h-72 object-contain hover:scale-105 transition-transform duration-300"
+                    className="w-full h-72 mx-auto object-contain rounded-lg cursor-pointer hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               )}
 
               {/* Message */}
-              <p className="text-gray-700 text-sm md:text-base leading-relaxed">
+              <p className="text-gray-300 text-sm md:text-base leading-relaxed">
                 {announcement.message}
               </p>
 
@@ -540,23 +555,22 @@ function Announcement() {
 
               {/* Footer - Author Profile */}
               <div className="flex items-center gap-3 mt-3">
-                      <Link to={`/viewProfile/${announcement.authorEmail}`}>
-                {announcement?.profile && announcement.profile !== "undefined" ? (
+                <Link to={`/viewProfile/${announcement.authorEmail}`}>
+                  {announcement?.profile &&
+                  announcement.profile !== "undefined" ? (
                     <img
                       src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${announcement.profile}`}
                       alt="Author"
-                      className="w-9 h-9 rounded-full object-cover border border-gray-300"
+                      className="w-9 h-9 rounded-full object-cover border border-gray-200"
                     />
-               
-                ) : (
-                  <div className="w-9 h-9 rounded-full object-cover border border-gray-300">
-                    <HiOutlineUserCircle className="text-[#786fa6] w-full h-full " />
-                  </div>
-                )}
+                  ) : (
+                    <div className="w-9 h-9 rounded-full object-cover border border-gray-300">
+                      <HiOutlineUserCircle className="text-[#786fa6] bg-white rounded-full w-full h-full " />
+                    </div>
+                  )}
+                </Link>
 
-          </Link>
-
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-gray-200">
                   <p className="font-semibold">{announcement.user}</p>
                   <p className="text-xs text-gray-400">
                     Posted{" "}
@@ -631,6 +645,24 @@ function Announcement() {
                 {loading ? "Deleting..." : "Delete"}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+          <div className="">
+            <img
+              src={selectedImage}
+              alt="Selected"
+              className="max-w-full w-11/12 mx-auto max-h-full"
+            />
+            <button
+              onClick={handleCloseModal}
+              className="absolute top-10 right-7"
+            >
+              <IoClose className="text-2xl" />
+            </button>
           </div>
         </div>
       )}
