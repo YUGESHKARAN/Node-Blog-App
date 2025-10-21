@@ -326,6 +326,11 @@ function YourPost() {
               ))
             )}
           </div>
+          {posts.length == 0 && !loader && (
+            <h1 className="text-white/50 md:text-2xl  text-center w-full">
+              Your posts section is Empty !
+            </h1>
+          )}
         </div>
 
         {/* Image Modal */}
