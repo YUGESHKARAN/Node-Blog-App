@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import blog1 from "../images/loading3.gif";
-import blog2 from "../images/blog48.jpg"; 
+// import user from "../images/blog48.jpg";
 import NavBar from "../ui/NavBar";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -11,6 +11,7 @@ import { ReactTyped } from "react-typed";
 import { IoClose } from "react-icons/io5";
 import { GlobalStateContext } from "../GlobalStateContext";
 import axiosInstance from "../instances/Axiosinstances";
+import CommentsBox from "../components/CommentsBox ";
 
 function ViewPage() {
   const user = localStorage.getItem("username");
@@ -60,8 +61,9 @@ function ViewPage() {
   }, [messages]);
 
   useEffect(() => {
-    // const newSocket = io("https://node-blog-app-x8tt.onrender.com", {
-    const newSocket = io("https://web-socket-io-pzd4.onrender.com", {
+ 
+    const socketUrl = import.meta.env.VITE_WEBSOCKET_URL;
+    const newSocket = io(`${socketUrl}`, {
       transports: ["polling"],
     });
     setSocket(newSocket);
@@ -137,7 +139,6 @@ function ViewPage() {
     ));
   };
 
-
   return (
     <div className="w-full min-h-screen h-auto relative bg-gradient-to-br from-gray-900 to-gray-800">
       <NavBar />
@@ -147,12 +148,12 @@ function ViewPage() {
           <div className="flex  justify-between w-full items-center">
             <div className="flex  justify-between gap-2 items-center">
               <Link></Link>
-               <Link to={`/viewProfile/${email}`} >
-              <img
-                src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`}
-                className="md:w-8 w-5 rounded-md"
-                alt="Author Profile"
-              />
+              <Link to={`/viewProfile/${email}`}>
+                <img
+                  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`}
+                  className="w-8 max-h-10 object-cover rounded-full border border-white/50"
+                  alt="Author Profile"
+                />
               </Link>
               <h3 className="flex flex-col items-center justify-center">
                 <p className="md:text-md text-white text-sm w-full font-bold">
@@ -234,13 +235,13 @@ function ViewPage() {
                 singlePostData.documents?.length == 0 &&
                 singlePostData.links?.length == 0
                   ? "hidden"
-                  : "block mt-6 md:text-lg text-base font-semibold text-gray-100 border-b border-gray-700 pb-2"
+                  : "block mt-6 md:text-lg text-base font-semibold text-white/90 border-b border-white/20 pb-3 tracking-wide"
               }`}
             >
               📎 Source Documents & Links
             </h1>
 
-            <div className="flex flex-col md:flex-row md:flex-wrap mb-4 mt-3 gap-3 w-full">
+            <div className="flex flex-col md:flex-row md:flex-wrap mb-4 mt-4 gap-3 w-full">
               {singlePostData.documents?.length > 0 &&
                 singlePostData.documents.map((doc, index) => (
                   <a
@@ -248,10 +249,10 @@ function ViewPage() {
                     href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group w-fit flex items-center gap-2 px-4 py-1 md:py-2 bg-gray-200 rounded-lg shadow-sm hover:bg-gray-200 transition-all duration-200 text-sm font-medium text-gray-900"
+                    className="w-fit group flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/20 transition-all duration-300 text-sm font-medium text-gray-100 hover:scale-[1.02]"
                   >
                     📄{" "}
-                    <span className=" max-w-xs">
+                    <span className="truncate max-w-xs text-white/90 group-hover:text-white">
                       {doc.split("-").slice(5).join("-")}
                     </span>
                   </a>
@@ -264,7 +265,7 @@ function ViewPage() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center w-fit gap-2 px-4 py-1 md:py-2 bg-blue-100 rounded-lg shadow-sm hover:bg-blue-200 transition-all duration-200 text-sm font-medium text-blue-900"
+                    className="w-fit group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600/30 to-blue-400/20 border border-blue-500/20 rounded-xl shadow-sm hover:from-blue-500/40 hover:to-blue-400/40 hover:border-blue-400/40 transition-all duration-300 text-sm font-medium text-blue-200 hover:text-white hover:scale-[1.02]"
                   >
                     🔗 <span className="truncate max-w-xs">{link.title}</span>
                   </a>
@@ -273,112 +274,45 @@ function ViewPage() {
           </div>
 
           {/* Comment Section */}
-          <div className="w-full mt-7 p-3 rounded-lg bg-gray-700 text-white">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold">Comments Box</h3>
+          {/* Modern Comments Section */}
+          <div className="w-full mt-8 p-5 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 shadow-lg border border-gray-700 text-white transition-all duration-300">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-3 border-b border-gray-700 pb-2">
+              <h3 className="text-xl font-semibold flex items-center gap-2">
+                💬 Comments
+                <span className="text-sm text-gray-400 font-normal">
+                  {messages.length>0 && (`(${messages.length})`)}
+                </span>
+              </h3>
               <MdOutlineInsertComment
-                onClick={() => {
-                  setViewComments(!viewComments);
-                }}
-                className="text-2xl cursor-pointer text-white"
+                onClick={() => setViewComments(!viewComments)}
+                className="text-2xl cursor-pointer hover:text-orange-400 transition-colors duration-200"
               />
-              {/* <div className="flex items-center gap-1/2">
-              <MdOutlineInsertComment
-              onClick={()=>{setViewComments(!viewComments)}}
-               className="text-2xl text-white" />  <sub className="text-[10px]">{messages.length}</sub> 
-              </div> */}
             </div>
-            <div
-              className={`${
-                viewComments
-                  ? "flex-col max-h-96 overflow-y-auto min-h-auto mb-2 items-start justify-start gap-2 mt-2"
-                  : "flex-col  overflow-y-hidden mb-2 items-start justify-start gap-2 mt-2 h-auto"
-              } scrollbar-hide`}
-            >
-              {messages.length > 0 ? (
-                viewComments ? (
-                  messages.map((msg, index) => (
-                    <div
-                      key={index}
-                      className="flex h-auto items-start justify-start gap-2 mb-5"
-                    >
-                      <img
-                        //  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`}
-                        src={
-                          msg.profile && msg.profile !== ""
-                            ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`
-                            : blog2
-                        }
-                        className="w-8 h-8 rounded-full"
-                      />
-                      <div className="flex w-full flex-col items-start justify-start">
-                        <div className="flex justify-between w-full items-center">
-                          <p className="text-[10px] text-gray-200">
-                            @{msg.user}
-                          </p>
-                          <p className="text-[7px] text-gray-200">
-                            🔘{timeStamp.slice(0, 10)}
-                          </p>
-                        </div>
-                        <p className="text-xs mt-1">{msg.message}</p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  messages.slice(0, 1).map((msg, index) => (
-                    <div
-                      key={index}
-                      className="flex h-auto items-start justify-start gap-2 mb-5"
-                    >
-                      <img
-                        //  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`}
-                        src={
-                          msg.profile && msg.profile !== ""
-                            ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`
-                            : blog2
-                        }
-                        className="w-8 h-8 rounded-full"
-                      />
-                      <div className="flex w-full flex-col items-start justify-start">
-                        <div className="flex justify-between w-full items-center">
-                          <p className="text-[10px] text-gray-200">
-                            @{msg.user}
-                          </p>
-                          <p className="text-[7px] text-gray-200">
-                            🔘{timeStamp.slice(0, 10)}
-                          </p>
-                        </div>
-                        <p className="text-xs mt-1">{msg.message}</p>
-                      </div>
-                    </div>
-                  ))
-                )
-              ) : (
-                <ReactTyped
-                  strings={["Leave a Comment"]}
-                  typeSpeed={70}
-                  backSpeed={60}
-                  className="md:text-sm  text-xs"
-                  // loop
-                />
-              )}
-            </div>
-          </div>
 
-          <div className="mt-3 flex flex-col items-end w-full justify-end">
-            <input
-              type="text"
-              onChange={(e) => setNewMessage(e.target.value)}
-              value={newMessage}
-              placeholder="Enter Comment"
-              className="w-full text-xs  border border-white  transition-all duration-200 p-2 mt-2 rounded-lg bg-gray-700 text-white"
+            {/* Comments List */}
+            <CommentsBox
+              messages={messages}
+              viewComments={viewComments}
+              timeStamp={timeStamp}
             />
-            <button
-              onClick={postComment}
-              className="bg-orange-500 hover:bg-orange-600 text-white p-1 text-xs rounded-lg px-2 py-1 mt-2"
-            >
-              Post Comment
-            </button>
+
+            {/* Comment Input */}
+            <div className="mt-4 flex flex-col w-full">
+              <input
+                type="text"
+                onChange={(e) => setNewMessage(e.target.value)}
+                value={newMessage}
+                placeholder="Write a comment..."
+                className="w-full text-sm border border-gray-600 focus:border-orange-400 focus:ring-1 focus:ring-orange-400 transition-all duration-200 p-3 rounded-lg bg-gray-800 text-white placeholder-gray-400"
+              />
+              <button
+                onClick={postComment}
+                className="self-end mt-3 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-yellow-500 text-sm font-medium text-gray-900 hover:from-orange-600 hover:to-yellow-600 shadow-md transition-all duration-300"
+              >
+                Post Comment
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -456,7 +456,7 @@ function HomePage() {
               {categoryCount}
             </span>
             <h3 className="text-lg font-semibold text-orange-400">
-              Tech. Domains
+              Domains
             </h3>
           </Link>
         </div>

@@ -61,11 +61,6 @@ function NavBar() {
     };
   }, []);
 
-  const announcementUrl =
-    role === "admin"
-      ? `/blog/author/getAllAnnouncemnet/${userEmail}`
-      : `/blog/author/${userEmail}`;
-
   // Fetch stored notifications from the server
   const fetchNotifications = async () => {
     try {

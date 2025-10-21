@@ -216,13 +216,13 @@ function Control() {
   return (
     <div className="relative w-full min-h-screen h-auto  bg-gradient-to-br from-gray-900 to-gray-700">
       <NavBar />
-      <h1 className="md:text-4xl font-bold my-5 text-white text-center text-xl w-11/12 mx-auto">
+      <h1 className="md:text-4xl text-3xl font-bold my-5 text-white text-center  w-11/12 mx-auto">
         Blog Control Panel
       </h1>
 
       {/* Search and Filter */}
       <div className="w-11/12 mx-auto flex  md:flex-row justify-between items-center gap-4 mb-6">
-        <div className="md:w-1/3 w-3/5 px-4 py-2 flex items-center gap-2 justify-center rounded-xl bg-gray-600  text-xs md:text-base text-white placeholder-gray-400">
+        <div className="md:w-1/3 w-3/5 px-4 py-2 flex items-center gap-2 justify-center rounded-md bg-gray-600 border border-white text-xs md:text-base text-white placeholder-gray-400">
           <IoSearch className="text-white" />
           <input
             type="text"
@@ -252,7 +252,7 @@ function Control() {
         <h1
         className={`${
           roleFilter === "admin" || roleFilter === ""
-            ? "text-center text-base md:text-3xl mb-6 font-bold  text-white"
+            ? "text-center text-2xl md:text-4xl mb-6 font-bold  text-white"
             : "hidden"
         }`}
       >
@@ -385,7 +385,7 @@ function Control() {
         <h1
         className={`${
           roleFilter === "coordinator" || roleFilter === ""
-            ? "text-center text-base md:text-3xl mb-6 font-bold  text-white"
+            ? "text-center text-2xl md:text-4xl mb-6 font-bold  text-white"
             : "hidden"
         }`}
       >
@@ -518,7 +518,7 @@ function Control() {
       <h1
         className={`${
           roleFilter === "student" || roleFilter === ""
-            ? "text-center text-base md:text-3xl mb-6 font-bold  text-white"
+            ? "text-center text-2xl md:text-4xl mb-6 font-bold  text-white"
             : "hidden"
         }`}
       >
