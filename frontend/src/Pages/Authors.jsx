@@ -104,7 +104,7 @@ function Authors() {
                       {" "}
                       <img
                         src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${author.profile}`}
-                        className="rounded-full w-10 h-10 mx-auto object-cover"
+                        className="rounded-full border-2 border-green-500 w-10 h-10 mx-auto object-cover"
                         alt=""
                       />
                     </Link>
@@ -144,7 +144,7 @@ function Authors() {
                     {" "}
                     {author.authorName}
                   </h1>
-                  <h1 className="text-center  mt-0.5 text-[9px] text-white md:text-xs">
+                  <h1 className="text-center  mt-0.5 text-[9px] truncate text-white md:text-xs">
                     {" "}
                     {author.email}
                   </h1>
