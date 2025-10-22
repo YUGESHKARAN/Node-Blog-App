@@ -49,7 +49,20 @@ const getAllAuthor = async (req, res) => {
 const getProfile = async (req, res) => {
   try {
     const authorsProfile = await Author.find({});
-    const data = authorsProfile.map((author) => ({
+
+     const shuffleArray = (arr) => {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    };
+
+    const shuffledAuthors = shuffleArray(authorsProfile);
+
+
+    const data = shuffledAuthors.map((author) => ({
       authorName: author.authorname,
       email: author.email,
       postCount: author.posts.length,
