@@ -18,12 +18,12 @@ function ViewSingleAuthor() {
   const role = localStorage.getItem("role");
   const [author, setAuthor] = useState({});
   const [authorName, setAuthorName] = useState("");
-  const [authorEmail, setAuthorEmail] = useState("");
+  // const [authorEmail, setAuthorEmail] = useState("");
   const [image, setImage] = useState("");
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [posts, setPosts] = useState([]);
-
+ const authorEmail = localStorage.getItem("email");
   const [profileLinks, setProfileLinks] = useState([]); // New state for profile links
 
 
@@ -32,7 +32,7 @@ function ViewSingleAuthor() {
       const response = await axiosInstance.get(`/blog/author/${email}`);
       const authorData = response.data;
       setAuthorName(authorData.authorname);
-      setAuthorEmail(authorData.email);
+      // setAuthorEmail(authorData.email);
       setAuthor(response.data);
       setImage(response.data.profile);
       setFollowers(authorData.followers);
@@ -47,6 +47,22 @@ function ViewSingleAuthor() {
     fetchAuthor();
   }, [email]);
 
+
+   const addFollower = async (userEmail) => {
+    console.log("useremail", userEmail);
+    try {
+      const response = await axiosInstance.put(
+        `/blog/author/follow/${userEmail}`,
+        { emailAuthor: authorEmail }
+      );
+      if(response.status==200){
+        // console.log(response.data);
+      fetchAuthor();
+      }
+    } catch (err) {
+      console.log("error", err);
+    }
+  };
 
   return (
     <div className="min-h-screen relative bg-gradient-to-br pb-10 md:pb-0 from-gray-900 to-gray-800 text-white">
@@ -90,7 +106,7 @@ function ViewSingleAuthor() {
               )}
                  {author.role === "coordinator" && (
               
-                  <Link to={`/singleAuthorPosts/${authorEmail}`}>  
+                  <Link to={`/singleAuthorPosts/${email}`}>  
                     <p className="text-green-400 text-sm">Posts</p>
                     <p className="text-xl font-semibold">
                      {posts.length ?? null}
@@ -126,6 +142,27 @@ function ViewSingleAuthor() {
                 </div>
               </div>
             )}
+
+             {
+              author.role==="coordinator" && 
+              <div className="mt-4">
+                  {author.followers.includes(authorEmail) ? (
+                    <button
+                      onClick={() => addFollower(email)}
+                      className="cursor-pointer px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-200 to-emerald-300 text-gray-800 font-medium text-sm cursor-default shadow-sm border border-white/20"
+                    >
+                      Following...
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => addFollower(email)}
+                      className="cursor-pointer px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-300 to-green-400 text-gray-900 font-medium text-sm hover:from-emerald-400 hover:to-green-500 transition-all duration-300 shadow-sm border border-white/20"
+                    >
+                      Follow +
+                    </button>
+                  )}
+                </div>
+             }
           </div>
 
           {/* RIGHT COLUMN — Profile Form */}
@@ -155,15 +192,15 @@ function ViewSingleAuthor() {
             {/* Author Email */}
             <div>
               <label
-                htmlFor="authorEmail"
+                htmlFor="email"
                 className="block text-gray-300 font-medium mb-1"
               >
                 Author Email
               </label>
               <input
                 type="email"
-                id="authorEmail"
-                value={authorEmail}
+                id="email"
+                value={email}
                 readOnly
                 className="mt-1 block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-400"
               />

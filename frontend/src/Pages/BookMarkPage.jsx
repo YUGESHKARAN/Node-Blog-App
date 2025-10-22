@@ -11,7 +11,7 @@ import { MagnifyingGlass } from "react-loader-spinner";
 import blog1 from "../images/img_not_found.png";
 import NavBar from "../ui/NavBar";
 import Footer from "../ui/Footer";
-import { BiLike, BiSolidLike } from "react-icons/bi";
+import { BiBookmarkAlt, BiLike, BiSolidLike } from "react-icons/bi";
 import axiosInstance from "../instances/Axiosinstances";
 import user from "../images/user.png";
 import { useParams } from "react-router-dom";
@@ -203,8 +203,9 @@ function BookMarkPage() {
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  ">
       <NavBar />
       <div className="relative min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-4">
-        <h1 className=" text-2xl  w-11/12 mx-auto md:text-3xl font-bold text-white tracking-wide">
-          <span className=" text-white">My Bookmarks </span>{" "}
+        <h1 className=" text-2xl  w-11/12 flex items-center gap-2 mx-auto md:text-3xl font-bold text-white tracking-wide">
+        <BiBookmarkAlt />
+          <span className="group text-white"> My Bookmarks </span>{" "}
         </h1>
 
         <div className="w-11/12 mt-10 mx-auto">

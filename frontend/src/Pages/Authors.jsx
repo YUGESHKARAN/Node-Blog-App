@@ -65,10 +65,12 @@ function Authors() {
         `/blog/author/follow/${userEmail}`,
         { emailAuthor: email }
       );
-      console.log(response.data);
+      if(response.status===200){
+        console.log(response.data);
       authorsDetails();
+      }
     } catch (err) {
-      console.error("error", err);
+      console.log("error", err);
     }
   };
 
@@ -123,7 +125,7 @@ function Authors() {
                         onClick={() => {
                           addFollower(author.email);
                         }}
-                        className="w-fit mx-auto px-4 py-0.5  rounded-lg shadow-lg bg-gray-200 text-[#000]"
+                        className="w-fit mx-auto px-4 py-0.5 cursor-pointer  rounded-lg shadow-lg bg-gray-200 text-[#000]"
                       >
                         Following...
                       </button>
@@ -132,7 +134,7 @@ function Authors() {
                         onClick={() => {
                           addFollower(author.email);
                         }}
-                        className="w-fit mx-auto px-4 py-0.5 rounded-lg text-xs text-nowrap bg-gray-800 text-white"
+                        className="w-fit mx-auto cursor-pointer px-4 py-0.5 rounded-lg text-xs text-nowrap bg-gray-800 text-white"
                       >
                         Follow +
                       </button>
@@ -246,14 +248,14 @@ function Authors() {
                   {author.followers.includes(email) ? (
                     <button
                       onClick={() => addFollower(author.email)}
-                      className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-200 to-emerald-300 text-gray-800 font-medium text-sm cursor-default shadow-sm border border-white/20"
+                      className="px-4 py-1.5 rounded-lg cursor-pointer bg-gradient-to-r from-emerald-200 to-emerald-300 text-gray-800 font-medium text-sm cursor-default shadow-sm border border-white/20"
                     >
                       Following...
                     </button>
                   ) : (
                     <button
                       onClick={() => addFollower(author.email)}
-                      className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-300 to-green-400 text-gray-900 font-medium text-sm hover:from-emerald-400 hover:to-green-500 transition-all duration-300 shadow-sm border border-white/20"
+                      className="px-4 py-1.5 rounded-lg cursor-pointer bg-gradient-to-r from-emerald-300 to-green-400 text-gray-900 font-medium text-sm hover:from-emerald-400 hover:to-green-500 transition-all duration-300 shadow-sm border border-white/20"
                     >
                       Follow +
                     </button>

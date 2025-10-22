@@ -89,8 +89,9 @@ function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white flex justify-center items-center">
+     {/* <div className="min-h-screen bg-black text-white flex justify-center items-center"> */}
  
-      <div className="bg-gray-800  w-11/12 max-w-md p-8 rounded-md">
+      <div className="bg-gray-900  w-11/12 max-w-md p-8 rounded">
         <h2 className="text-center text-white font-semibold text-xl">Register</h2>
         <form className="md:w-96 w-full mx-auto md:p-4" onSubmit={handleSubmit}>
           {success && <p className="text-green-500">{success}</p>}
@@ -106,7 +107,7 @@ function RegisterPage() {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               placeholder="Enter your username"
               required
             />
@@ -122,7 +123,7 @@ function RegisterPage() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               placeholder="Enter your email"
               required
             />
@@ -138,7 +139,7 @@ function RegisterPage() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               placeholder="Enter your password"
               required
             />
@@ -154,7 +155,7 @@ function RegisterPage() {
               name="password"
               value={confirmPassword}
               onChange={(e)=>{setConfirmPassword(e.target.value)}}
-              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               placeholder="Enter your password"
               required
             />
@@ -163,7 +164,7 @@ function RegisterPage() {
           <div className="mt-6">
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-md transition duration-200"
+              className="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded transition duration-200"
               disabled={loading}
             >
               {loading?'Setting up':'Register'}
@@ -172,7 +173,7 @@ function RegisterPage() {
         </form>
         <p className="mt-4 md:text-base text-xs text-gray-300">
           Already have an account?{" "}
-          <Link to="/" className="text-green-500 hover:underline">
+          <Link to="/" className="text-green-500 font-semibold hover:underline">
             Login here
           </Link>
         </p>

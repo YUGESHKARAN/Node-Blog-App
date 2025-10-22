@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../instances/Axiosinstances';
 function ChangePassword() {
     const [errors, setErrors] = useState({});
+    const email = localStorage.getItem("emailForOtp");
       const [success, setSuccess] = useState("");
       const navigate = useNavigate();
      const [formData, setFormData] = useState({
-        email: "",
+        email: email,
         newPassword: "",
         otp: "",
       });
@@ -24,6 +25,7 @@ function ChangePassword() {
           const response = await axiosInstance.post("/blog/author/reset-password", formData);
           if (response.status === 200) {
             setSuccess("Password updated successfully!");
+            localStorage.removeItem("emailForOtp");
             setTimeout(() => {
               navigate("/");
             }, 2000);
@@ -42,7 +44,7 @@ function ChangePassword() {
                   {success && <p className="text-green-500">{success}</p>}
                   {errors.apiError && <p className="text-red-500">{errors.apiError}</p>}
         
-                  <div className="m-4 w-full mx-auto">
+                  {/* <div className="m-4 w-full mx-auto">
                    
                     <input
                       type="email"
@@ -54,7 +56,7 @@ function ChangePassword() {
                       placeholder="Enter Email"
                       required
                     />
-                  </div>
+                  </div> */}
                   <div className={'m-4 w-full mx-auto'}>
                    
                     <input

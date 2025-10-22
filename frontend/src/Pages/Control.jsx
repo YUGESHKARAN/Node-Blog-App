@@ -214,10 +214,12 @@ function Control() {
 
   // console.log("authorCommusnity",authorCommunity)
   return (
-    <div className="relative w-full min-h-screen h-auto  bg-gradient-to-br from-gray-900 to-gray-700">
+    // <div className="relative w-full min-h-screen h-auto  bg-gradient-to-br from-gray-900 to-gray-700">
+    <div className="min-h-screen h-auto relative w-full   bg-gradient-to-br from-gray-900 to-gray-700">
+    
       <NavBar />
       <h1 className="md:text-4xl text-3xl font-bold my-5 text-white text-center  w-11/12 mx-auto">
-        Blog Control Panel
+        Control Panel
       </h1>
 
       {/* Search and Filter */}
@@ -642,7 +644,9 @@ function Control() {
         </div>
       )}
       <ToastContainer />
-      <Footer />
+      {filteredAuthors.length>0 &&
+       <Footer /> }
+     
     </div>
   );
 }

@@ -60,6 +60,7 @@ function LoginPage() {
     e.preventDefault();
     setLoader2(true)
   // console.log("otp email", email)
+  localStorage.setItem("emailForOtp", email);
     try {
       const response = await axiosInstance.post('/blog/author/send-otp', {
         email
@@ -88,6 +89,7 @@ function LoginPage() {
     <div className="text-md font-semibold w-full h-screen  bg-black flex justify-center items-center">
       <div className={`${loader?'hidden':'bg-gray-800 w-11/12 max-w-md p-8 rounded-md'}`}>
         <h2 className="text-center mb-6  text-white text-xl">{title}</h2>
+
         <form className={`md:w-96 w-full ${forgotPassword?'space-y-3':'space-y-8'} mx-auto md:p-4`}>
           {success && <p className="text-green-500">{success}</p>}
           {errors.apiError && <p className="text-red-500">{errors.apiError}</p>}
