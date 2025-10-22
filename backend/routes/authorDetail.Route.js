@@ -24,6 +24,7 @@ const {
   removePersonalLinks,
   deleteAuthorByAdmin,
   deleteAllAnnouncementByAdmin,
+  getAuthorsByDomain
   // getAllAnnouncements
   
 } = require("../controllers/authorDetail.Controller");
@@ -87,6 +88,7 @@ router.post('/reset-password', resetPassword);
 router.get("/", authenticateToken,getAllAuthor);
 router.get("/profiles",authenticateToken, getProfile);
 router.get("/:email",authenticateToken, getSingleAuthor);
+router.get("/getAuthorsByDomain/:category(*)", authenticateToken,getAuthorsByDomain);
 
 router.put("/:email", authenticateToken, upload.single('profile'), updateAuthor);
 router.put("/password/:email", authenticateToken, updateAPassword);

@@ -6,26 +6,30 @@ import { GrLinkedin } from "react-icons/gr";
 import Footer from "../ui/Footer";
 import user from "../images/user.png";
 import axiosInstance from "../instances/Axiosinstances";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaLinkedin } from "react-icons/fa";
 import { FaSquareGithub } from "react-icons/fa6";
 import { PiLinkSimpleFill } from "react-icons/pi";
 import { BsPersonSquare } from "react-icons/bs";
-function Authors() {
+import { useParams } from "react-router-dom";
+
+function SingleTechDomainDetails() {
+
+const {category} = useParams();
+ const decodedCategory = decodeURIComponent(category);
   const [authors, setAuthors] = useState([]);
   const email = localStorage.getItem("email");
-  const [follow, setFollow] = useState(false);
-  const [recommendation, setRecommendation] = useState([]);
+
 
   const authorsDetails = async () => {
     try {
-      const response = await axiosInstance.get("/blog/author/profiles/");
+      const response = await axiosInstance.get(`/blog/author/getAuthorsByDomain/${decodedCategory}`);
       // const response = await axiosInstance.get('http://127.0.0.1:3000/blog/author/profiles/');
-      setAuthors(response.data.filter((author) => author.email !== email));
+    //   setAuthors(response.data.filteredAuthors.filter((author) => author.email !== email));
+      setAuthors(response.data.filteredAuthors);
       // setAuthors(response.data);
     } catch (err) {
-      console.error("error", err);
+      console.log("error", err);
     }
   };
 
@@ -33,24 +37,9 @@ function Authors() {
     authorsDetails();
   }, []);
 
-  const recommendationURL = import.meta.env.VITE_RECOMMENDATION_URL;
 
-  const recommendtion_system = async () => {
-    try {
-      const response = await axios.post( `${recommendationURL}` , { email }
-      );
 
-      // console.log("recommedation data",response.data)
-      setRecommendation(response.data.remonneded_people);
-    } catch (err) {
-      console.log("error", err);
-    }
-  };
 
-  useEffect(() => {
-    recommendtion_system();
-  }, [recommendation]);
-  
   const addFollower = async (userEmail) => {
     console.log("useremail", userEmail);
     try {
@@ -67,103 +56,24 @@ function Authors() {
     }
   };
 
-  const recommendaedAutors = authors
-    .filter((author) => recommendation.includes(author.email))
-    .filter((author) => author.role === "coordinator");
 
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  ">
       <NavBar />
 
-      {recommendaedAutors.length > 0 && (
-        <div className="w-11/12  h-auto mx-auto flex-col  items-center justify-center mt-10">
-          <h2 className="w-full  text-left text-xl text-green-400 md:text-3xl font-bold">
-            Recommended
-          </h2>
-          <div
-            className={`flex justify-start w-full items-center gap-6 overflow-x-auto scrollbar-hide mt-4`}
-          >
-            {recommendaedAutors.map((author, index) => (
-              <div
-                key={index}
-                className="md:h-24 h-24 p-4 w-fit px-4 gap-1 md:w-fit items-start   flex justify-start items-center rounded-lg shadow-lg bg-[#fff]/20"
-              >
-                <div className="w-fit  flex-col items-start justify-start md:w-1/3  ">
-                  {author.profile ? (
-                    <Link to={`/viewProfile/${author.email}`}>
-                      {" "}
-                      <img
-                        src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${author.profile}`}
-                        className="rounded-full border-2 border-green-500 w-10 h-10 mx-auto object-cover"
-                        alt=""
-                      />
-                    </Link>
-                  ) : (
-                    <Link to={`/viewProfile/${author.email}`}>
-                      <img
-                        src={user}
-                        className="rounded-full w-10 h-10 bg-white border-2 border-black mx-auto object-cover"
-                      />
-                    </Link>
-                  )}
+       <h1 className="md:text-left text-center w-11/12 mx-auto text-3xl md:text-5xl font-extrabold mt-12 mb-8 bg-gradient-to-r from-blue-400 via-yellow-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg tracking-wide">
+          {decodedCategory} - Community
+        </h1>
 
-                  <div className="flex items-center justify-center mt-2">
-                    {author.followers.includes(email) ? (
-                      <button
-                        onClick={() => {
-                          addFollower(author.email);
-                        }}
-                        className="w-fit mx-auto px-4 py-0.5 cursor-pointer  rounded-lg shadow-lg bg-gray-200 text-[#000]"
-                      >
-                        Following...
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          addFollower(author.email);
-                        }}
-                        className="w-fit mx-auto cursor-pointer px-4 py-0.5 rounded-lg text-xs text-nowrap bg-gray-800 text-white"
-                      >
-                        Follow +
-                      </button>
-                    )}
-                  </div>
-                </div>
-                <div className=" md:w-2/3 w-3/5   flex-col items-start justify-start">
-                  <h1 className="text-center font-semibold text-white text-wrap w-full scrollbar-hide overflow-x-auto md:text-base">
-                    {" "}
-                    {author.authorName}
-                  </h1>
-                  <h1 className="text-center  mt-0.5 text-[9px] truncate text-white md:text-xs">
-                    {" "}
-                    {author.email}
-                  </h1>
-                  <div className="flex mx-auto items-center justify-between mt-0.5 gap-5 px-5">
-                    <span className="text-center text-green-400 text-[10px] mt-0.5 font-semibold">
-                      Followers{" "}
-                      <p className="text-white">{author.followers.length}</p>
-                    </span>
-                    {/* <span className='text-center text-[10px] mt-0.5 font-bold'>
-                           <p className='font-bold'>{author.followingCount}</p></span> */}
-                    <span className="text-center text-green-400  text-[10px] mt-0.5 font-semibold">
-                      Posts <p className="text-white">{author.postCount}</p>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       <div className="w-11/12 mx-auto min-h-screen flex flex-col items-center mt-12 text-white">
         {/* Coordinators Section */}
         {authors.filter((author) => author.role === "coordinator").length >
           0 && (
           // <h2 className="text-center text-2xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-orange-400 to-yellow-300 bg-clip-text text-transparent">
-          <h2 className="text-center text-2xl md:text-4xl font-bold mb-6 text-white">
-            Student  Coordinators 
+          <h2 className="text-center text-2xl md:text-4xl font-bold mb-6 text-white/90">
+            Coordinators {`(${authors.filter((author) => author.role === "coordinator").length })`}
           </h2>
         )}
 
@@ -195,7 +105,7 @@ function Authors() {
                 </p>
 
                 {/* Communities */}
-                {author.community?.length > 0 && (
+                {/* {author.community?.length > 0 && (
                   <div className="flex flex-wrap justify-center gap-2 mt-3">
                     {author.community.map((com, i) => (
                       <span
@@ -206,7 +116,7 @@ function Authors() {
                       </span>
                     ))}
                   </div>
-                )}
+                )} */}
 
                 {/* Social Links */}
                 {author.profileLinks?.length > 0 && (
@@ -233,6 +143,7 @@ function Authors() {
                 )}
 
                 {/* Follow Button */}
+                {author.email !== email ? 
                 <div className="mt-4">
                   {author.followers.includes(email) ? (
                     <button
@@ -249,15 +160,22 @@ function Authors() {
                       Follow +
                     </button>
                   )}
-                </div>
+                </div>:
+                    <div
+                 
+                      className="px-4 mt-4 py-1.5 font-medium rounded-lg bg-gradient-to-r from-orange-500 to-yellow-500"
+                    >
+                      Coordinating
+                    </div>
+                }
               </div>
             ))}
         </div>
 
         {/* Students Section */}
         {authors.filter((author) => author.role === "student").length > 0 && (
-          <h2 className="text-center mt-16 text-2xl md:text-4xl font-bold text-white">
-            Students
+          <h2 className="text-center mt-16 text-2xl md:text-4xl font-bold text-white/90">
+            Students  {`(${authors.filter((author) => author.role === "student").length })`}
           </h2>
         )}
 
@@ -321,4 +239,4 @@ function Authors() {
   );
 }
 
-export default Authors;
+export default SingleTechDomainDetails;

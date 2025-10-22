@@ -3,6 +3,7 @@ import NavBar from "../ui/NavBar";
 import axios from "axios";
 import Footer from "../ui/Footer";
 import axiosInstance from "../instances/Axiosinstances";
+import { Link } from "react-router-dom";
 
 function TechCommunity() {
   const [posts, setPosts] = useState([]);
@@ -134,6 +135,7 @@ function TechCommunity() {
               {/* Glow hover effect */}
               <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-yellow-400/10 to-pink-500/10 opacity-0 group-hover:opacity-100 blur-2xl transition duration-700"></div>
 
+              <Link to={`/techDomainDetails/${encodeURIComponent(item.categoryname)}`}>
               <div className="relative z-10 p-5 bg-white/10 backdrop-blur-md rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-green-400 via-blue-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg  tracking-tight">
                   {item.categoryname}
@@ -154,6 +156,7 @@ function TechCommunity() {
                   </li>
                 </ul>
               </div>
+              </Link>
 
               {/* Buttons */}
               <div className="relative z-10 mt-5 flex justify-end">

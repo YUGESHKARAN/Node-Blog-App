@@ -191,7 +191,7 @@ const getSingleAuthorPosts = async(req,res)=>{
 const getCategoryPosts = async (req, res) => {
   try {
     // const authors = await Author.find({}); // fetch all authors
-    const category = req.params.category;
+    const {category} = req.params;
     const authors = await Author.find({
       'posts.category': category
     });

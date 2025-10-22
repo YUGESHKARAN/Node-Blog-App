@@ -90,6 +90,25 @@ const getSingleAuthor = async (req, res) => {
   }
 };
 
+
+const getAuthorsByDomain = async (req, res) => {
+  try{
+      let {category} = req.params;
+     console.log("Category received:", category);
+     category = decodeURIComponent(category);
+      const authors = await Author.find({})
+      const filteredAuthors = authors.filter((author) => author.community.includes(category));
+      
+      res.status(200).json({filteredAuthors});
+  }
+  catch(err)
+  {
+
+    console.log("Error fetching authors by domain:", err.message);  
+    res.status(500).json({message:"Server error", error: err.message})
+  }
+}
+
 const addAuthor = async (req, res) => {
   const { authorname, password, email, post } = req.body;
   if (!email.endsWith("@dsuniversity.ac.in")) {
@@ -1117,6 +1136,7 @@ module.exports = {
   removePersonalLinks,
   deleteAuthorByAdmin,
   deleteAllAnnouncementByAdmin,
+  getAuthorsByDomain
   // getAllAnnouncements
   
 };
