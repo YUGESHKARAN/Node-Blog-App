@@ -92,13 +92,13 @@ const {category} = useParams();
                         ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${author.profile}`
                         : user
                     }
-                    alt={author.authorName}
+                    alt={author.authorname}
                     className="rounded-full bg-white w-24 h-24 object-cover border-2 border-white shadow-md hover:shadow-lg transition-all"
                   />
                 </Link>
 
                 <h1 className="text-center font-semibold mt-3 text-lg truncate w-full">
-                  {author.authorName}
+                  {author.authorname}
                 </h1>
                 <p className="text-center text-sm text-gray-300 truncate w-full">
                   {author.email}
@@ -194,13 +194,13 @@ const {category} = useParams();
                         ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${author.profile}`
                         : user
                     }
-                    alt={author.authorName}
+                    alt={author.authorname}
                     className="rounded-full w-20 bg-white h-20 object-cover border-2 border-white shadow-md hover:shadow-lg transition-all"
                   />
                 </Link>
 
                 <h1 className="text-center font-semibold mt-3 text-sm md:text-base truncate w-full">
-                  {author.authorName}
+                  {author.authorname}
                 </h1>
                 <p className="text-center text-xs text-gray-300 truncate w-full">
                   {author.email}

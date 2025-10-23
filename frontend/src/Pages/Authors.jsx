@@ -12,11 +12,18 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaSquareGithub } from "react-icons/fa6";
 import { PiLinkSimpleFill } from "react-icons/pi";
 import { BsPersonSquare } from "react-icons/bs";
+import { IoSearch } from "react-icons/io5";
+import { IoIosGitNetwork } from "react-icons/io";
 function Authors() {
   const [authors, setAuthors] = useState([]);
   const email = localStorage.getItem("email");
+  const [roleFilter, setRoleFilter] = useState("");
   const [follow, setFollow] = useState(false);
   const [recommendation, setRecommendation] = useState([]);
+
+  // Search query
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredAuthors, setFilteredAuthors] = useState([]);
 
   const authorsDetails = async () => {
     try {
@@ -33,12 +40,37 @@ function Authors() {
     authorsDetails();
   }, []);
 
+  // Search quary
+  useEffect(() => {
+    filterAndSearch();
+  }, [searchQuery, roleFilter, authors]);
+
+  const filterAndSearch = () => {
+    let filtered = authors;
+
+    if (searchQuery.trim() !== "") {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (author) =>
+          author.authorName?.toLowerCase().includes(query) ||
+          "" ||
+          author.email?.toLowerCase().includes(query) ||
+          ""
+      );
+    }
+
+    if (roleFilter !== "") {
+      filtered = filtered.filter((author) => author.role === roleFilter);
+    }
+
+    setFilteredAuthors(filtered);
+  };
+
   const recommendationURL = import.meta.env.VITE_RECOMMENDATION_URL;
 
   const recommendtion_system = async () => {
     try {
-      const response = await axios.post( `${recommendationURL}` , { email }
-      );
+      const response = await axios.post(`${recommendationURL}`, { email });
 
       // console.log("recommedation data",response.data)
       setRecommendation(response.data.remonneded_people);
@@ -50,7 +82,7 @@ function Authors() {
   useEffect(() => {
     recommendtion_system();
   }, [recommendation]);
-  
+
   const addFollower = async (userEmail) => {
     console.log("useremail", userEmail);
     try {
@@ -58,9 +90,9 @@ function Authors() {
         `/blog/author/follow/${userEmail}`,
         { emailAuthor: email }
       );
-      if(response.status===200){
+      if (response.status === 200) {
         console.log(response.data);
-      authorsDetails();
+        authorsDetails();
       }
     } catch (err) {
       console.log("error", err);
@@ -71,13 +103,19 @@ function Authors() {
     .filter((author) => recommendation.includes(author.email))
     .filter((author) => author.role === "coordinator");
 
-
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  ">
       <NavBar />
 
+ 
+
+      <h1 className=" text-3xl py-4  w-11/12 flex items-center gap-2 mx-auto md:text-3xl font-bold text-white tracking-wide">
+              <IoIosGitNetwork  />
+                <span className="group text-white">My Network </span>{" "}
+              </h1>
+
       {recommendaedAutors.length > 0 && (
-        <div className="w-11/12  h-auto mx-auto flex-col  items-center justify-center mt-10">
+        <div className="w-11/12  h-auto mx-auto flex-col  items-center justify-center mt-5">
           <h2 className="w-full  text-left text-xl text-green-400 md:text-3xl font-bold">
             Recommended
           </h2>
@@ -157,18 +195,43 @@ function Authors() {
         </div>
       )}
 
-      <div className="w-11/12 mx-auto min-h-screen flex flex-col items-center mt-12 text-white">
+      {/* Search and Filter */}
+      <div className="w-11/12 mx-auto flex  md:flex-row justify-between items-center gap-4 mt-10 mb-6">
+        <div className="md:w-1/3 w-3/5 px-4 py-2 flex items-center gap-2 justify-center rounded-md bg-gray-600 border border-white text-xs md:text-base text-white placeholder-gray-400">
+          <IoSearch className="text-white" />
+          <input
+            type="text"
+            placeholder="Search by name or email..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-gray-600   focus:outline-none focus:ring-0"
+          />
+        </div>
+
+        <select
+          value={roleFilter}
+          onChange={(e) => setRoleFilter(e.target.value)}
+          className=" md:w-1/4 w-1/5 md:px-4 md:py-2 px-2 py-1 rounded bg-gray-600 text-xs md:text-base text-white"
+        >
+          <option value="">All Roles</option>
+          <option value="student">Student</option>
+          <option value="coordinator">Coordinator</option>
+          {/* <option value="admin">Admin</option> */}
+        </select>
+      </div>
+
+      <div className="w-11/12 mx-auto min-h-screen flex flex-col items-center text-white">
         {/* Coordinators Section */}
-        {authors.filter((author) => author.role === "coordinator").length >
-          0 && (
+        {filteredAuthors.filter((author) => author.role === "coordinator")
+          .length > 0 && (
           // <h2 className="text-center text-2xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-orange-400 to-yellow-300 bg-clip-text text-transparent">
           <h2 className="text-center text-2xl md:text-4xl font-bold mb-6 text-white">
-            Student  Coordinators 
+            Student Coordinators
           </h2>
         )}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8">
-          {authors
+          {filteredAuthors
             .filter((author) => author.role === "coordinator")
             .map((author, index) => (
               <div
@@ -255,14 +318,15 @@ function Authors() {
         </div>
 
         {/* Students Section */}
-        {authors.filter((author) => author.role === "student").length > 0 && (
+        {filteredAuthors.filter((author) => author.role === "student").length >
+          0 && (
           <h2 className="text-center mt-16 text-2xl md:text-4xl font-bold text-white">
             Students
           </h2>
         )}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-8 mt-6">
-          {authors
+          {filteredAuthors
             .filter((author) => author.role === "student")
             .map((author, index) => (
               <div

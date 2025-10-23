@@ -17,6 +17,7 @@ import { GoCopilot } from "react-icons/go";
 import { MdAnnouncement, MdAppSettingsAlt } from "react-icons/md";
 import axiosInstance from "../instances/Axiosinstances";
 import { RiBookMarkedFill, RiUser3Line } from "react-icons/ri";
+import { IoIosGitNetwork } from "react-icons/io";
 function HomePage() {
   const username = localStorage.getItem("username");
 
@@ -276,9 +277,10 @@ function HomePage() {
         <div className="bg-white/10  border border-white/40  backdrop-blur-md rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg hover:scale-105 transition-transform duration-300 hover:bg-white/10">
           <Link to="/authors" className="flex flex-col items-center">
             <span className="text-4xl font-bold mb-2 text-white">
-              {authors.length}
+              {/* {authors.length} */}
+               <IoIosGitNetwork  />
             </span>
-            <h3 className="text-lg font-bold  bg-gradient-to-r from-blue-400 to-green-500 bg-clip-text text-transparent">Authors</h3>
+            <h3 className="text-lg font-bold  bg-gradient-to-r from-blue-400 to-green-500 bg-clip-text text-transparent">My Network</h3>
           </Link>
         </div>
 
