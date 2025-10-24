@@ -244,7 +244,7 @@ function HomePage() {
                 <BsPersonWorkspace className="text-4xl text-white mb-2" />
               </span>
               <h3 className="text-lg font-bold  bg-gradient-to-r from-blue-400 to-green-500 bg-clip-text text-transparent">
-                My Workspace
+                Workspace
               </h3>
             </Link>
           ) : (

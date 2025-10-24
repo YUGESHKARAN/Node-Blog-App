@@ -229,8 +229,9 @@ function ProfilePage() {
                 <div>
                   <p className="text-green-400 text-sm">Posts</p>
                   <p className="text-xl font-semibold">
-                    {posts.length> 0 ? posts.length: 'Not published'}
+                    {posts.length> 0 ? posts.length: 'Yet to...'}
                   </p>
+
                 </div>
               )}
               {author.role !== "admin" && (
