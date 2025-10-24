@@ -11,8 +11,9 @@ import { MagnifyingGlass } from "react-loader-spinner";
 import blog1 from "../images/img_not_found.png";
 import NavBar from "../ui/NavBar";
 import Footer from "../ui/Footer";
-import { BiLike, BiSolidLike } from "react-icons/bi";
+import { BiBookmarkAlt, BiLike, BiSolidLike } from "react-icons/bi";
 import axiosInstance from "../instances/Axiosinstances";
+import { BsPersonWorkspace } from "react-icons/bs";
 
 function YourPost() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,7 +22,7 @@ function YourPost() {
   const [loader, setLoader] = useState(false);
   const email = localStorage.getItem("email");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [authorProfile,setAuthorProfile] = useState("")
+  const [authorProfile, setAuthorProfile] = useState("");
   // Fetch posts from API
   const fetchPosts = async () => {
     setLoader(true);
@@ -150,7 +151,19 @@ function YourPost() {
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  ">
       <NavBar />
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-8">
+
+      {posts.length > 0 && (
+        <h1 className=" text-2xl  w-11/12 flex items-center gap-2 mt-4 mx-auto md:text-3xl font-bold text-white tracking-wide">
+          <BsPersonWorkspace />
+          <span className="group text-white">
+            {" "}
+            My Posts {posts.length > 0 && posts.length}{" "}
+          </span>{" "}
+        </h1>
+      )}
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 pt-4 pb-8">
+        {/* <p className="text-lg text-white w-11/12 mx-auto">Posts {posts.length>0 && posts.length}</p> */}
+
         <div className="flex w-11/12  flex-wrap justify-center h-auto mx-auto">
           <div className="flex md:max-w-5xl md:w-fit mt-4 scrollbar-hide mx-auto items-center justify-start gap-3 mb-5 overflow-x-auto">
             {/* All Button */}
@@ -332,6 +345,12 @@ function YourPost() {
             </h1>
           )}
         </div>
+
+        {posts.length == 0 && !loader && (
+          <h1 className="text-white/50 md:text-2xl  text-center w-full">
+            Your Workspace is Empty ! <br /> Start creating your posts.
+          </h1>
+        )}
 
         {/* Image Modal */}
         {selectedImage && (

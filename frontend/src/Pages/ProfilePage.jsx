@@ -229,7 +229,7 @@ function ProfilePage() {
                 <div>
                   <p className="text-green-400 text-sm">Posts</p>
                   <p className="text-xl font-semibold">
-                    {posts.length ?? null}
+                    {posts.length> 0 ? posts.length: 'Not published'}
                   </p>
                 </div>
               )}
@@ -366,16 +366,16 @@ function ProfilePage() {
                               setShowLinkBox(true);
                               setUpdateButton(true);
                             }}
-                            className="p-1 px-2 rounded-full text-sm bg-blue-600 hover:bg-blue-500 text-white transition-all duration-200"
+                            className="p-2  rounded-full text-sm bg-blue-600 hover:bg-blue-500 text-white transition-all duration-200"
                             title="Edit link"
                           >
-                            ✎
+                            <MdEdit className="text-sm md:text-lg"  />
                           </button>
 
                           <button
                             type="button"
                             onClick={() => removeLinks(authorEmail, link._id)}
-                            className="p-2 p-1  rounded-full bg-red-600 hover:bg-red-500 text-white transition-all duration-200"
+                            className="p-2  rounded-full bg-red-600 hover:bg-red-500 text-white transition-all duration-200"
                             title="Remove link"
                           >
                             <IoIosRemoveCircleOutline className="text-sm md:text-lg" />
@@ -469,9 +469,7 @@ function ProfilePage() {
                      {showLinkBox && profileLinks.map((row)=>(
                       <option value={row.title}>{row.title}</option>
                      ))}
-                     
-                    
-                   
+          
                     <option value="Others">Others</option>
                    
                    </select>

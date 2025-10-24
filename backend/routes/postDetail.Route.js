@@ -17,7 +17,8 @@ const {
   postLikes,
   getRecommendedPosts,
   addPostBookmark,
-  getBookmarkedPosts
+  getBookmarkedPosts,
+  removePostsLinks
 } = require("../controllers/postDetail.Controller");
 
 // handle authors blog post data
@@ -62,6 +63,7 @@ router.put("/views/:email/:id",authenticateToken, postView)
 router.put("/likes/:email/:id",authenticateToken, postLikes)
 
 router.delete("/:email/:postId",authenticateToken,  deletePost);
+router.delete("/links/:email/:postId",authenticateToken,  removePostsLinks);
 
 
 

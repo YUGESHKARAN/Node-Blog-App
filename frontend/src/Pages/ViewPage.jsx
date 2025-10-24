@@ -5,13 +5,15 @@ import NavBar from "../ui/NavBar";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Footer from "../ui/Footer";
-import { MdOutlineInsertComment } from "react-icons/md";
+import { MdOutlineInsertComment, MdVideoLibrary } from "react-icons/md";
 import { io } from "socket.io-client";
 import { ReactTyped } from "react-typed";
 import { IoClose } from "react-icons/io5";
 import { GlobalStateContext } from "../GlobalStateContext";
 import axiosInstance from "../instances/Axiosinstances";
 import CommentsBox from "../components/CommentsBox ";
+import { FaSquareGithub } from "react-icons/fa6";
+import { FaYoutube } from "react-icons/fa";
 
 function ViewPage() {
   const user = localStorage.getItem("username");
@@ -241,7 +243,7 @@ function ViewPage() {
               📎 Source Documents & Links
             </h1>
 
-            <div className="flex flex-col md:flex-row md:flex-wrap mb-4 mt-4 gap-3 w-full">
+            <div className="flex flex-row flex-wrap mb-4 mt-4 gap-3 w-full">
               {singlePostData.documents?.length > 0 &&
                 singlePostData.documents.map((doc, index) => (
                   <a
@@ -258,6 +260,10 @@ function ViewPage() {
                   </a>
                 ))}
 
+                </div>
+                <div className="flex flex-row flex-wrap mb-4 mt-4 gap-3 w-full">
+                
+
               {singlePostData.links?.length > 0 &&
                 singlePostData.links.map((link, index) => (
                   <a
@@ -267,7 +273,8 @@ function ViewPage() {
                     rel="noopener noreferrer"
                     className="w-fit group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600/30 to-blue-400/20 border border-blue-500/20 rounded-xl shadow-sm hover:from-blue-500/40 hover:to-blue-400/40 hover:border-blue-400/40 transition-all duration-300 text-sm font-medium text-blue-200 hover:text-white hover:scale-[1.02]"
                   >
-                    🔗 <span className="truncate max-w-xs">{link.title}</span>
+                    {/* 🔗 <span className="truncate max-w-xs">{link.title}</span> */}
+                    {link.title==='YouTube'?<FaYoutube  className="text-xl" />:link.title==='GitHub'?<FaSquareGithub  className="text-xl"/>:link.title==='Demo'?<MdVideoLibrary className="text-xl"/>:'🔗'} <span className="truncate max-w-xs">{link.title}</span>
                   </a>
                 ))}
             </div>

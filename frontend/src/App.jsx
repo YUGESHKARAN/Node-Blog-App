@@ -31,10 +31,7 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/changePassword" element={<ChangePassword />} />
             <Route path="/register" element={<Register />} />
-            {/* <Route
-            path="/viewpage/:email/:id"
-            element={<ViewPage/>}
-          /> */}
+           
 
             {/* Protected Route */}
             <Route

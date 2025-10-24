@@ -107,12 +107,10 @@ function Authors() {
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 h-auto reltive  ">
       <NavBar />
 
- 
-
       <h1 className=" text-3xl py-4  w-11/12 flex items-center gap-2 mx-auto md:text-3xl font-bold text-white tracking-wide">
-              <IoIosGitNetwork  />
-                <span className="group text-white">My Network </span>{" "}
-              </h1>
+        <IoIosGitNetwork />
+        <span className="group text-white">My Network </span>{" "}
+      </h1>
 
       {recommendaedAutors.length > 0 && (
         <div className="w-11/12  h-auto mx-auto flex-col  items-center justify-center mt-5">

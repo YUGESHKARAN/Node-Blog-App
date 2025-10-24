@@ -33,9 +33,10 @@ function BlogContainer() {
       const response = await axiosInstance.get(
         `/blog/posts/recommended/${email}`
       );
-      setPosts(
-        response.data.posts.filter((post) => post.authoremail !== email)
-      );
+      // setPosts(
+      //   response.data.posts.filter((post) => post.authoremail !== email)
+      // );
+         setPosts(response.data.posts);
     } catch (err) {
       console.error("Error fetching posts:", err);
     }

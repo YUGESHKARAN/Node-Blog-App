@@ -415,7 +415,7 @@ const updatePost = async (req, res) => {
       imageUrl = uniqueFilename;
     }
 
-    console.log("image",imageUrl)
+    // console.log("image",imageUrl)
 
     // Handle document uploads
     let documentUrls =post.documents || [];
@@ -436,31 +436,61 @@ const updatePost = async (req, res) => {
       }
     }
 
-  console.log("old link", post.links);
+  // console.log("old link", post.links);
 
-let parsedLinks = post.links;
-
+// let parsedLinks = post.links;
 // if (links && JSON.parse(links).length > 0) {
-//   parsedLinks = Array.isArray(links) ? links : JSON.parse(links);
-// }
-//  else if (post.links && post.links.length > 0) {
-//   parsedLinks = post.links;
-// }
-if (links && JSON.parse(links).length > 0) {
-  try {
-    const parsed = typeof links === "string" ? JSON.parse(links) : links;
+//   try {
+//     const parsed = typeof links === "string" ? JSON.parse(links) : links;
 
-    if (Array.isArray(parsed)) {
-      parsedLinks = parsed.map(link => ({
-        _id: new mongoose.Types.ObjectId(), // manually create if you want explicit IDs
-        title: (link.title || "").trim(),
-        url: (link.url || "").trim()
-      }));
+//     if (Array.isArray(parsed)) {
+//       parsedLinks = parsed.map(link => ({
+//         _id: new mongoose.Types.ObjectId(), // manually create if you want explicit IDs
+//         title: (link.title || "").trim(),
+//         url: (link.url || "").trim()
+//       }));
+//     }
+//   } catch (err) {
+//     console.error("Failed to parse links:", err);
+//   }
+// }
+let parsedLinks = post.links || [];
+    // --- Parse links safely ---
+    if (links && JSON.parse(links).length > 0) {
+      try {
+        const parsed = typeof links === "string" ? JSON.parse(links) : links;
+
+        if (Array.isArray(parsed)) {
+          incomingLinks = parsed.map((link) => ({
+            _id: link.id ? link.id : new mongoose.Types.ObjectId(), // manually create if you want explicit IDs
+            title: (link.title || "").trim(),
+            url: (link.url || "").trim(),
+          }));
+        }
+
+        // Replace existing links or add new ones
+        incomingLinks.forEach((newLink) => {
+          const existingIndex = parsedLinks.findIndex(
+            (existing) => existing._id.toString() === newLink._id.toString()
+          );
+
+          if (existingIndex !== -1) {
+            // Update existing link
+            parsedLinks[existingIndex] = newLink;
+          } else {
+            // Add new link (limit to 5 max)
+            if (parsedLinks.length < 5) {
+              parsedLinks.push(newLink);
+            }
+          }
+        });
+
+      
+        // console.log("Updated Personal Links:", parsedLinks);
+      } catch (err) {
+        console.error("Failed to parse links:", err);
+      }
     }
-  } catch (err) {
-    console.error("Failed to parse links:", err);
-  }
-}
 console.log("links",parsedLinks)
     // Update post details
     Object.assign(post, { 
@@ -486,6 +516,51 @@ console.log("links",parsedLinks)
     });
   }
 };
+
+const removePostsLinks = async (req, res) => {
+  try {
+    const { email, postId } = req.params;
+    const { linkId } = req.body;
+
+
+    // console.log("Remove link request:", { authorEmail, linkId });
+    if (!email || !postId || !linkId) {
+      return res
+        .status(400)
+        .json({ message: "Author email, postId and link Id are required" });
+    }
+
+    const author = await Author.findOne({ email });
+    if (!author) {
+      return res.status(404).json({ message: "Author not found" });
+    }
+
+
+    const post = author.posts.id(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "post not found" });
+    }
+
+    const initialLength = post.links.length;
+
+    post.links = post.links.filter(
+      (link) => link._id.toString() !== linkId.toString()
+    );
+    if (post.links.length === initialLength) {
+      return res.status(404).json({ message: "Link not found" });
+    }
+
+    await author.save({ validateBeforeSave: false });
+    res.status(200).json({
+      message: "Link removed successfully",
+      personalLinks: post.links,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // const deletePost = async (req, res) => {
 //   try {
 //     const { email, postId } = req.params;
@@ -830,6 +905,7 @@ module.exports = {
   postLikes,
   getRecommendedPosts,
   addPostBookmark,
-  getBookmarkedPosts
+  getBookmarkedPosts,
+  removePostsLinks
  
 };

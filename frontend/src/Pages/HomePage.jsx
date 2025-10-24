@@ -18,6 +18,7 @@ import { MdAnnouncement, MdAppSettingsAlt } from "react-icons/md";
 import axiosInstance from "../instances/Axiosinstances";
 import { RiBookMarkedFill, RiUser3Line } from "react-icons/ri";
 import { IoIosGitNetwork } from "react-icons/io";
+import { BsPersonWorkspace } from "react-icons/bs";
 function HomePage() {
   const username = localStorage.getItem("username");
 
@@ -239,10 +240,11 @@ function HomePage() {
           ) : role === "coordinator" ? (
             <Link to="/yourposts" className="flex flex-col items-center">
               <span className="text-4xl font-bold mb-2 text-white">
-                {yourPost && yourPost.length}
+                {/* {yourPost && yourPost.length} */}
+                <BsPersonWorkspace className="text-4xl text-white mb-2" />
               </span>
               <h3 className="text-lg font-bold  bg-gradient-to-r from-blue-400 to-green-500 bg-clip-text text-transparent">
-                My Posts
+                My Workspace
               </h3>
             </Link>
           ) : (

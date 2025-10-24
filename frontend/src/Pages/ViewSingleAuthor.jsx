@@ -13,8 +13,7 @@ import { BsPersonSquare } from "react-icons/bs";
 import { PiLinkSimpleFill } from "react-icons/pi";
 
 function ViewSingleAuthor() {
-  
-  const {email} = useParams();
+  const { email } = useParams();
   const role = localStorage.getItem("role");
   const [author, setAuthor] = useState({});
   const [authorName, setAuthorName] = useState("");
@@ -23,9 +22,8 @@ function ViewSingleAuthor() {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [posts, setPosts] = useState([]);
- const authorEmail = localStorage.getItem("email");
+  const authorEmail = localStorage.getItem("email");
   const [profileLinks, setProfileLinks] = useState([]); // New state for profile links
-
 
   const fetchAuthor = async () => {
     try {
@@ -47,17 +45,16 @@ function ViewSingleAuthor() {
     fetchAuthor();
   }, [email]);
 
-
-   const addFollower = async (userEmail) => {
+  const addFollower = async (userEmail) => {
     console.log("useremail", userEmail);
     try {
       const response = await axiosInstance.put(
         `/blog/author/follow/${userEmail}`,
         { emailAuthor: authorEmail }
       );
-      if(response.status==200){
+      if (response.status == 200) {
         // console.log(response.data);
-      fetchAuthor();
+        fetchAuthor();
       }
     } catch (err) {
       console.log("error", err);
@@ -70,7 +67,6 @@ function ViewSingleAuthor() {
 
       <div className="container mx-auto px-3 py-12 max-w-7xl">
         {/* Header */}
-     
 
         {/* Two Column Layout */}
         <div className="grid md:grid-cols-[350px_1fr] gap-12">
@@ -90,33 +86,44 @@ function ViewSingleAuthor() {
                 </div>
               )}
 
-              <h1 className="text-center text-xl font-bold mt-2">{authorName}</h1>
-
+              <h1 className="text-center text-xl font-bold mt-2">
+                {authorName}
+              </h1>
             </div>
 
             {/* Stats */}
-            <div className="flex justify-center gap-10 mb-6">
+            <div className="flex justify-center gap-10 md:gap-7 mb-6">
               {author.role === "coordinator" && (
                 <div>
-                  <p className="text-green-400 text-sm">Followers</p>
+                  <p className="text-green-400  mb-1 text-sm">Followers</p>
                   <p className="text-xl font-semibold">
                     {followers?.length ?? 0}
                   </p>
                 </div>
               )}
-                 {author.role === "coordinator" && (
-              
-                  <Link to={`/singleAuthorPosts/${email}`}>  
-                    <p className="text-green-400 text-sm">Posts</p>
-                    <p className="text-xl font-semibold">
-                     {posts.length ?? null}
-                    </p>
-                  </Link>
-        
+              {author.role === "coordinator" && posts.length > 0 ? (
+                <Link to={`/singleAuthorPosts/${email}`}>
+                  <p className="text-green-400 mb-1 text-sm">Content Published</p>
+                  <button
+                    className="text-sm font-semibold px-4 py-1 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 
+               text-white shadow-md group-hover:shadow-lg group-hover:scale-105 
+               transition-all duration-300"
+                  >
+                    {posts.length}
+                  </button>
+                </Link>
+              ) : (
+                author.role === "coordinator" && (
+                  <div>
+                    <p className="text-green-400  mb-1 text-sm">Content Published</p>
+                    <p className="text-xl font-medium">Yet to...</p>
+                  </div>
+                )
               )}
+
               {author.role !== "admin" && (
                 <div>
-                  <p className="text-green-400 text-sm">Following</p>
+                  <p className="text-green-400  mb-1 text-sm">Following</p>
                   <p className="text-xl font-semibold">
                     {following?.length ?? 0}
                   </p>
@@ -128,7 +135,8 @@ function ViewSingleAuthor() {
             {author.community?.length > 0 && (
               <div className="mt-6">
                 <p className="text-orange-400 font-medium mb-3 text-sm uppercase tracking-wide">
-                  Tech Communities {author.role==="coordinator"? "coordinating":"joined"}
+                  Tech Communities{" "}
+                  {author.role === "coordinator" ? "coordinating" : "joined"}
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {author.community.map((com, i) => (
@@ -143,33 +151,29 @@ function ViewSingleAuthor() {
               </div>
             )}
 
-             {
-              author.role==="coordinator" && 
+            {author.role === "coordinator" && (
               <div className="mt-4">
-                  {author.followers.includes(authorEmail) ? (
-                    <button
-                      onClick={() => addFollower(email)}
-                      className="cursor-pointer px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-200 to-emerald-300 text-gray-800 font-medium text-sm cursor-default shadow-sm border border-white/20"
-                    >
-                      Following...
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => addFollower(email)}
-                      className="cursor-pointer px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-300 to-green-400 text-gray-900 font-medium text-sm hover:from-emerald-400 hover:to-green-500 transition-all duration-300 shadow-sm border border-white/20"
-                    >
-                      Follow +
-                    </button>
-                  )}
-                </div>
-             }
+                {author.followers.includes(authorEmail) ? (
+                  <button
+                    onClick={() => addFollower(email)}
+                    className="cursor-pointer px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-200 to-emerald-300 text-gray-800 font-medium text-sm cursor-default shadow-sm border border-white/20"
+                  >
+                    Following...
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => addFollower(email)}
+                    className="cursor-pointer px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-300 to-green-400 text-gray-900 font-medium text-sm hover:from-emerald-400 hover:to-green-500 transition-all duration-300 shadow-sm border border-white/20"
+                  >
+                    Follow +
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
           {/* RIGHT COLUMN — Profile Form */}
-          <div
-         
-            className="space-y-8 bg-gray-900/60 border border-gray-700 rounded-2xl shadow-md p-4 md:p-6 backdrop-blur-md"
-          >
+          <div className="space-y-8 bg-gray-900/60 border border-gray-700 rounded-2xl shadow-md p-4 md:p-6 backdrop-blur-md">
             {/* Author Name */}
             {/* <div>
               <label
@@ -239,10 +243,18 @@ function ViewSingleAuthor() {
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                         <div className="w-full flex flex-col">
                           <div className="flex gap-2 items-center">
-                            {link.title==='LinkedIn'?<FaLinkedin className="text-xl" />:link.title==='GitHub'?<FaSquareGithub  className="text-xl"/>:link.title==='Portfolio'?<BsPersonSquare className="text-xl"/>:<PiLinkSimpleFill className="text-xl"/>}
-                             <p className="text-gray-300 text-sm font-medium mb-1">
-                               {link.title}
-                             </p>
+                            {link.title === "LinkedIn" ? (
+                              <FaLinkedin className="text-xl" />
+                            ) : link.title === "GitHub" ? (
+                              <FaSquareGithub className="text-xl" />
+                            ) : link.title === "Portfolio" ? (
+                              <BsPersonSquare className="text-xl" />
+                            ) : (
+                              <PiLinkSimpleFill className="text-xl" />
+                            )}
+                            <p className="text-gray-300 text-sm font-medium mb-1">
+                              {link.title}
+                            </p>
                           </div>
                           <a
                             href={link.url}
@@ -253,24 +265,20 @@ function ViewSingleAuthor() {
                             {authorName}/{link.title}
                           </a>
                         </div>
-
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
                 <p className="text-gray-400 text-center text-sm mt-4">
-                 
-                    No bio links available.
+                  No bio links available.
                 </p>
               )}
             </div>
-
           </div>
         </div>
       </div>
 
-     
       <ToastContainer />
       <div className="absolute bottom-0 w-full">
         {" "}
