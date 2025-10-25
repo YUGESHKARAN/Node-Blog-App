@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
-
+dotenv = require("dotenv");
+dotenv.config();
 let isConnected; // Track the connection status
-
+const mongodb_url = process.env.MONGDB_URL ;
 const connectToDatabase = async () => {
   if (isConnected) {
     console.log("Using existing database connection");
@@ -9,7 +10,7 @@ const connectToDatabase = async () => {
   }
 
   console.log("Establishing new database connection");
-  await mongoose.connect("mongodb+srv://yugeshkaran01:GEMBkFW5Ny5wi4ox@blog.adtwl.mongodb.net/Blog?retryWrites=true&w=majority&appName=blog", {
+  await mongoose.connect(mongodb_url, {
     maxPoolSize: 10, // Optional: set a pool size
     serverSelectionTimeoutMS: 5000 // Set a timeout for server selection
   });
