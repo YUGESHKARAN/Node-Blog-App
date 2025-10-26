@@ -340,17 +340,24 @@ function YourPost() {
             )}
           </div>
           {posts.length == 0 && !loader && (
-            <h1 className="text-white/50 md:text-2xl  text-center w-full">
-              Your posts section is Empty !
+            <h1 className="flex flex-col justify-center items-center gap-5 md:gap-10 ">
+              <span className="text-white/50 md:text-2xl  text-center w-full">
+                {" "}
+                Your workspace is empty! <br /> Start creating your posts.{" "}
+              </span>
+              <Link
+                to="/addPost"
+                className="text-sm md:text-lg cursor-pointer hover:bg-green-700 bg-green-600 transition-all duration-400 text-white font-medium rounded-md px-4 p-2"
+              >
+                + Create New Post
+              </Link>
+              <span className="text-white/50 md:text-2xl  text-center w-full">
+                If you already have posts and they’re not showing, please check
+                your internet connection."{" "}
+              </span>
             </h1>
           )}
         </div>
-
-        {posts.length == 0 && !loader && (
-          <h1 className="text-white/50 md:text-2xl  text-center w-full">
-            Your Workspace is Empty ! <br /> Start creating your posts.
-          </h1>
-        )}
 
         {/* Image Modal */}
         {selectedImage && (

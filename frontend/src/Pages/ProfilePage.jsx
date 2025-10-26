@@ -3,7 +3,7 @@ import NavBar from "../ui/NavBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import Footer from "../ui/Footer";
@@ -37,27 +37,28 @@ function ProfilePage() {
   const [linkId, setLinkId] = useState(null); // New state for link ID
   const [profileLinks, setProfileLinks] = useState([]); // New state for profile links
   const [showLinkBox, setShowLinkBox] = useState(false); // State to toggle link input box
-  const [ customTitle ,setCustomTitle]  = useState("");
-  const [updateButton,setUpdateButton] = useState(false);
+  const [customTitle, setCustomTitle] = useState("");
+  const [updateButton, setUpdateButton] = useState(false);
   const [posts, setPosts] = useState([]);
- const [password,setPassword] = useState("");
-
+  const [password, setPassword] = useState("");
 
   const deleteAuthor = async () => {
     setShowConfirm(true);
     setLoading(true);
 
     try {
-      const response = await axiosInstance.delete(`/blog/author/${email}`,{data:{password}});
+      const response = await axiosInstance.delete(`/blog/author/${email}`, {
+        data: { password },
+      });
       toast.success("Account deleted successfully");
       response.status === 200 && logout();
     } catch (err) {
       console.log(err);
-      toast.error('unable to delete your account')
+      toast.error("unable to delete your account");
     } finally {
       setLoading(false);
       setPassword("");
-      setShowConfirm(false)
+      setShowConfirm(false);
     }
   };
 
@@ -216,7 +217,7 @@ function ProfilePage() {
             </div>
 
             {/* Stats */}
-            <div className="flex justify-center gap-10 mb-6">
+            <div className="flex justify-center gap-10 md:gap-7 mb-6">
               {author.role === "coordinator" && (
                 <div>
                   <p className="text-green-400 text-sm">Followers</p>
@@ -225,14 +226,37 @@ function ProfilePage() {
                   </p>
                 </div>
               )}
-               {author.role === "coordinator" && (
+              {/* {author.role === "coordinator" && (
                 <div>
-                  <p className="text-green-400 text-sm">Posts</p>
+                  <p className="text-green-400 text-sm">Content Published</p>
                   <p className="text-xl font-semibold">
                     {posts.length> 0 ? posts.length: 'Yet to...'}
                   </p>
 
                 </div>
+              )} */}
+              {author.role === "coordinator" && posts.length > 0 ? (
+                <Link to={`/yourposts`}>
+                  <p className="text-green-400 mb-1 text-sm">
+                    Content Published
+                  </p>
+                  <button
+                    className="text-sm font-semibold px-4 py-1 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 
+                     text-white shadow-md group-hover:shadow-lg group-hover:scale-105 
+                     transition-all duration-300"
+                  >
+                    {posts.length}
+                  </button>
+                </Link>
+              ) : (
+                author.role === "coordinator" && (
+                  <div>
+                    <p className="text-green-400  mb-1 text-sm">
+                      Content Published
+                    </p>
+                    <p className="text-xl font-medium">Yet to...</p>
+                  </div>
+                )
               )}
               {author.role !== "admin" && (
                 <div>
@@ -281,7 +305,10 @@ function ProfilePage() {
                 type="text"
                 id="authorName"
                 value={authorName}
-                onChange={(e) =>{ setAuthorName(e.target.value); setUpdateButton(true);}}
+                onChange={(e) => {
+                  setAuthorName(e.target.value);
+                  setUpdateButton(true);
+                }}
                 className="mt-1 block w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md focus:ring-orange-500 focus:border-orange-500"
                 placeholder="Enter author name"
                 required
@@ -338,10 +365,18 @@ function ProfilePage() {
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                         <div className="w-full flex flex-col">
                           <div className="flex gap-2 items-center">
-                            {link.title==='LinkedIn'?<FaLinkedin className="text-xl" />:link.title==='GitHub'?<FaSquareGithub  className="text-xl"/>:link.title==='Portfolio'?<BsPersonSquare className="text-xl"/>:<PiLinkSimpleFill className="text-xl"/>}
-                             <p className="text-gray-300 text-sm font-medium mb-1">
-                               {link.title}
-                             </p>
+                            {link.title === "LinkedIn" ? (
+                              <FaLinkedin className="text-xl" />
+                            ) : link.title === "GitHub" ? (
+                              <FaSquareGithub className="text-xl" />
+                            ) : link.title === "Portfolio" ? (
+                              <BsPersonSquare className="text-xl" />
+                            ) : (
+                              <PiLinkSimpleFill className="text-xl" />
+                            )}
+                            <p className="text-gray-300 text-sm font-medium mb-1">
+                              {link.title}
+                            </p>
                           </div>
                           <a
                             href={link.url}
@@ -370,7 +405,7 @@ function ProfilePage() {
                             className="p-2  rounded-full text-sm bg-blue-600 hover:bg-blue-500 text-white transition-all duration-200"
                             title="Edit link"
                           >
-                            <MdEdit className="text-sm md:text-lg"  />
+                            <MdEdit className="text-sm md:text-lg" />
                           </button>
 
                           <button
@@ -388,9 +423,9 @@ function ProfilePage() {
                 </div>
               ) : (
                 <p className="text-gray-400 text-center text-sm mt-4">
-                 
-                  You can add your LinkedIn, GitHub, portfolio, or other professional profile links here.
-                  This helps people connect with you.
+                  You can add your LinkedIn, GitHub, portfolio, or other
+                  professional profile links here. This helps people connect
+                  with you.
                 </p>
               )}
             </div>
@@ -401,22 +436,30 @@ function ProfilePage() {
                 profileLinks.length >= 5 && !showLinkBox ? "hidden" : "w-full "
               }`}
             >
-             <div className="flex items-center mb-2 justify-between px-1">
+              <div className="flex items-center mb-2 justify-between px-1">
                 <label className="block font-medium text-sm md:text-base text-gray-300 ">
-                 {showLinkBox?'Edit Link': ` You can add ${5 - profileLinks.length} ${ profileLinks.length >= 1? 'more':''} profile links`}
+                  {showLinkBox
+                    ? "Edit Link"
+                    : ` You can add ${5 - profileLinks.length} ${
+                        profileLinks.length >= 1 ? "more" : ""
+                      } profile links`}
                 </label>
 
-                {currentLinkTitle.length>0 &&  <button
-                 onClick={(e)=>{
-                  e.preventDefault();
-                  setCurrentLinkTitle("");
-                  setCurrentLinkUrl("");
-                  setShowLinkBox(false);
-                 }}
-                  className="bg-red-500 md:px-3 px-2 md:text-sm text-xs py-0.5 rounded-md">Clear</button>}
-
-             </div>
-                {/* <div className="flex flex-col md:flex-row md:items-center gap-3">
+                {currentLinkTitle.length > 0 && (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCurrentLinkTitle("");
+                      setCurrentLinkUrl("");
+                      setShowLinkBox(false);
+                    }}
+                    className="bg-red-500 md:px-3 px-2 md:text-sm text-xs py-0.5 rounded-md"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+              {/* <div className="flex flex-col md:flex-row md:items-center gap-3">
                   <input
                     type="text"
                     value={currentLinkTitle}
@@ -450,75 +493,86 @@ function ProfilePage() {
                     Add
                   </button>
                 </div> */}
-                <div  className="flex  flex-col w-full  md:justify-between md:flex-row md:items-center gap-3">
-                  <div className="w-full md:w-1/3">
-                   {currentLinkTitle !== "Others" && 
-                   (  <select 
-                   value={currentLinkTitle}
-                   onChange={(e)=>{setCurrentLinkTitle(e.target.value)}}
-                   className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-sm md:text-base focus:ring-blue-500 focus:border-blue-500 text-gray-200">
-                    <option value="" disabled>Select Link Title</option>
-                    {!profileLinks.some((l) => l.title === "GitHub" && currentLinkTitle!=="GitHub") && (
-                       <option value="GitHub">GitHub</option>
-                     )}
-                     {!profileLinks.some((l) => l.title === "LinkedIn" && currentLinkTitle!=="LinkedIn") && (
-                       <option value="LinkedIn">LinkedIn</option>
-                     )}
-                     {!profileLinks.some((l) => l.title === "Portfolio"  && currentLinkTitle!=="Portfolio") && (
-                       <option value="Portfolio">Portfolio</option>
-                     )}
-                     {showLinkBox && profileLinks.map((row)=>(
-                      <option value={row.title}>{row.title}</option>
-                     ))}
-          
-                    <option value="Others">Others</option>
-                   
-                   </select>
+              <div className="flex  flex-col w-full  md:justify-between md:flex-row md:items-center gap-3">
+                <div className="w-full md:w-1/3">
+                  {currentLinkTitle !== "Others" && (
+                    <select
+                      value={currentLinkTitle}
+                      onChange={(e) => {
+                        setCurrentLinkTitle(e.target.value);
+                      }}
+                      className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-sm md:text-base focus:ring-blue-500 focus:border-blue-500 text-gray-200"
+                    >
+                      <option value="" disabled>
+                        Select Link Title
+                      </option>
+                      {!profileLinks.some(
+                        (l) =>
+                          l.title === "GitHub" && currentLinkTitle !== "GitHub"
+                      ) && <option value="GitHub">GitHub</option>}
+                      {!profileLinks.some(
+                        (l) =>
+                          l.title === "LinkedIn" &&
+                          currentLinkTitle !== "LinkedIn"
+                      ) && <option value="LinkedIn">LinkedIn</option>}
+                      {!profileLinks.some(
+                        (l) =>
+                          l.title === "Portfolio" &&
+                          currentLinkTitle !== "Portfolio"
+                      ) && <option value="Portfolio">Portfolio</option>}
+                      {showLinkBox &&
+                        profileLinks.map((row) => (
+                          <option value={row.title}>{row.title}</option>
+                        ))}
+
+                      <option value="Others">Others</option>
+                    </select>
                   )}
 
-                   {currentLinkTitle === "Others" && (
-                      <input
-                        type="text"
-                        placeholder="Enter platform name"
-                        onChange={(e) => setCustomTitle(e.target.value)}
-                        className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-sm md:text-base focus:ring-blue-500 focus:border-blue-500 text-gray-200"
-                      />
-                    )}
-                  </div>
+                  {currentLinkTitle === "Others" && (
                     <input
-                    type="url"
-                    value={currentLinkUrl}
-                    onChange={(e) => setCurrentLinkUrl(e.target.value)}
-                    placeholder="Link URL"
-                    className="w-full md:w-1/2 px-3 py-2 bg-gray-800 text-sm md:text-base border border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                  />
-
-                   <button
-                    type="button"
-                    onClick={() => {
-                      const titleToUse = currentLinkTitle === "Others" ? customTitle?.trim() : currentLinkTitle.trim();
-
-                      if (titleToUse && currentLinkUrl.trim()) {
-                        const newLink = {
-                          title: titleToUse,
-                          url: currentLinkUrl.trim(),
-                          id: linkId,
-                        };
-                        setLinks([...links, newLink]);
-                        setUpdateButton(true);
-                        setCurrentLinkTitle("");
-                        setCurrentLinkUrl("");
-                        setCustomTitle("");
-                        setLinkId(null);
-                      }
-                    }}
-                    className="md:py-2 md:px-4 px-3 py-1 bg-white text-gray-800 font-bold rounded-md hover:bg-gray-200 transition duration-200"
-                  >
-                    Add
-                  </button>
-                 
-
+                      type="text"
+                      placeholder="Enter platform name"
+                      onChange={(e) => setCustomTitle(e.target.value)}
+                      className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-sm md:text-base focus:ring-blue-500 focus:border-blue-500 text-gray-200"
+                    />
+                  )}
                 </div>
+                <input
+                  type="url"
+                  value={currentLinkUrl}
+                  onChange={(e) => setCurrentLinkUrl(e.target.value)}
+                  placeholder="Link URL"
+                  className="w-full md:w-1/2 px-3 py-2 bg-gray-800 text-sm md:text-base border border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const titleToUse =
+                      currentLinkTitle === "Others"
+                        ? customTitle?.trim()
+                        : currentLinkTitle.trim();
+
+                    if (titleToUse && currentLinkUrl.trim()) {
+                      const newLink = {
+                        title: titleToUse,
+                        url: currentLinkUrl.trim(),
+                        id: linkId,
+                      };
+                      setLinks([...links, newLink]);
+                      setUpdateButton(true);
+                      setCurrentLinkTitle("");
+                      setCurrentLinkUrl("");
+                      setCustomTitle("");
+                      setLinkId(null);
+                    }
+                  }}
+                  className="md:py-2 md:px-4 px-3 py-1 bg-white text-gray-800 font-bold rounded-md hover:bg-gray-200 transition duration-200"
+                >
+                  Add
+                </button>
+              </div>
 
               {links.length > 0 && (
                 <div className="mt-3 space-y-2">
@@ -528,9 +582,8 @@ function ProfilePage() {
                       className="flex justify-between items-center bg-gray-700/80 p-3 rounded-md"
                     >
                       <div className="text-sm md:flex md:items-center w-full break-all">
-                        
                         <span className="font-bold text-green-400">
-                           {link.title}
+                          {link.title}
                         </span>
                         <br />
                         <a
@@ -566,7 +619,7 @@ function ProfilePage() {
                 disabled={loading || !updateButton}
                 className="py-2 px-6 bg-orange-600 hover:bg-orange-700 text-sm md:text-base text-white md:font-semibold rounded-md transition duration-200"
               >
-                {loading  ? "Updating..." : "Update My Profile"}
+                {loading ? "Updating..." : "Update My Profile"}
               </button>
             </div>
           </form>
@@ -618,8 +671,6 @@ function ProfilePage() {
                placeholder-gray-400 text-gray-900"
               />
             </form>
-
-
 
             <div className="flex justify-end gap-3">
               <button
