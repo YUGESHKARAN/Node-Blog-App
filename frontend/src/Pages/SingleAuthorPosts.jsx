@@ -290,6 +290,11 @@ function SingleAuthorPosts() {
                       </p>
                     </div>
                   </div>
+                  <Link
+                          to={`/viewpage/${data.authoremail}/${data._id}`}
+                          onClick={() => postViews(data.authoremail, data._id)}
+                          // className="cursor-pointer flex items-center gap-1  hover:text-blue-300"
+                        >
                   <img
                     src={
                       data.image
@@ -306,6 +311,7 @@ function SingleAuthorPosts() {
                       )
                     }
                   />
+                  </Link>
                   <div className="min-h-28 h-auto pt-4">
                     <h2 className="md:text-xl text-lg text-white font-bold">
                       {data.title && data.title.slice(0, 20)}...

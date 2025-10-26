@@ -13,6 +13,7 @@ import { BiLike, BiSolidLike } from "react-icons/bi";
 import axiosInstance from "../instances/Axiosinstances";
 import { PiBookmarksSimpleFill, PiBookmarksSimpleLight } from "react-icons/pi";
 // import { toast } from "react-toastify";
+import user from "../images/user.png";
 import { ToastContainer, toast } from "react-toastify";
 function BlogContainer() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -257,8 +258,8 @@ function BlogContainer() {
                 <div className="flex mb-2 gap-2 items-center">
                   <Link to={`/viewProfile/${data.authoremail}`}>
                     <img
-                      src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
-                      className="w-8 max-h-10 object-cover rounded-full border border-white/50"
+                      src={data.profile?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`:user}
+                      className="w-8 max-h-10 bg-white object-cover rounded-full border border-white/50"
                       alt={data.authorname}
                     />
                   </Link>
@@ -273,7 +274,7 @@ function BlogContainer() {
                   </div>
                 </div>
 
-                {data.image && /\.(mp4|webm|ogg)$/.test(data.image) ? (
+                {/* {data.image && /\.(mp4|webm|ogg)$/.test(data.image) ? (
                   <video
                     src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`}
                     className="w-full h-36  rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
@@ -302,7 +303,32 @@ function BlogContainer() {
                       )
                     }
                   />
-                )}
+                )} */}
+
+
+  <Link
+                        to={`/viewpage/${data.authoremail}/${data._id}`}
+                        onClick={() => postViews(data.authoremail, data._id)}
+                        // className="cursor-pointer flex items-center gap-1 hover:text-blue-300"
+                      >
+                    
+                  <img
+                    src={
+                      data.image
+                        ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
+                        : blog1
+                    }
+                    className="w-full h-36  rounded-xl object-cover bg-center hover:opacity-90 transition-all duration-300"
+                    alt={data.title}
+                    // onClick={() =>
+                    //   handleImageClick(
+                    //     data.image
+                    //       ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
+                    //       : blog1
+                    //   )
+                    // }
+                  />
+                </Link>
 
                 <div className="min-h-28 h-auto pt-4">
                   <h2 className="md:text-xl text-lg text-white font-bold">
@@ -313,30 +339,7 @@ function BlogContainer() {
                   </p>
                 </div>
 
-                {/* <h1
-                className={`${
-                  data.documents?.length > 0
-                    ? "text-xs text-gray-200"
-                    : "hidden"
-                }`}
-              >
-                Source Documents & Links:
-              </h1>
-              <div className="flex-col md:flex w-full items-start mt-2 gap-2">
-      
-                {
-                 data.documents&& data.documents.map((doc, index) => (
-                    <a key={index} href={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${doc}`} className="text-xs flex justify-start items-start text-gray-200 gap-1 mb-2 md:mb-0 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center text-black hover:bg-gray-200 transition-all duration-200 justify-center"> {doc} </p> </a>
-
-                    ))
-                }
-                 {
-                 data.links&& data.links.map((link, index) => (
-                    <a key={index} href={`${link.url}`} className="text-xs flex justify-start items-start text-gray-200 mb-2 md:mb-0 gap-1 w-full" ><p className="bg-white rounded-md w-fit px-3 text-xs flex items-center text-black hover:bg-gray-200 transition-all duration-200 justify-center"> {link.title} </p> </a>
-
-                    ))
-                }
-                </div> */}
+             
 
                 <div className="flex justify-between items-center mb-2">
                   <div className="flex gap-3 items-center">

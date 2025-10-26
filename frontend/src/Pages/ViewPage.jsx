@@ -14,7 +14,7 @@ import axiosInstance from "../instances/Axiosinstances";
 import CommentsBox from "../components/CommentsBox ";
 import { FaSquareGithub } from "react-icons/fa6";
 import { FaYoutube } from "react-icons/fa";
-
+import userImg from "../images/user.png";
 function ViewPage() {
   const user = localStorage.getItem("username");
   const userEmail = localStorage.getItem("email");
@@ -141,6 +141,8 @@ function ViewPage() {
     ));
   };
 
+  // console.log("profile",profile)
+
   return (
     <div className="w-full min-h-screen h-auto relative bg-gradient-to-br from-gray-900 to-gray-800">
       <NavBar />
@@ -152,8 +154,8 @@ function ViewPage() {
               <Link></Link>
               <Link to={`/viewProfile/${email}`}>
                 <img
-                  src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`}
-                  className="w-8 max-h-10 object-cover rounded-full border border-white/50"
+                  src={profile?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${profile}`:userImg}
+                  className="w-8 max-h-10 bg-white object-cover rounded-full border border-white/50"
                   alt="Author Profile"
                 />
               </Link>

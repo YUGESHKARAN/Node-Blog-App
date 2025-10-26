@@ -9,7 +9,7 @@ import Footer from "../ui/Footer";
 import { MdEdit } from "react-icons/md";
 import axiosInstance from "../instances/Axiosinstances";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
-
+import user from "../images/user.png";
 function ViewEditPost() {
   // const username = localStorage.getItem("username");
   const email = localStorage.getItem("email");
@@ -239,7 +239,7 @@ function ViewEditPost() {
             {/* Author Info */}
             <div className="flex items-center gap-3">
               <img
-                src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`}
+                src={singlePostData.profile?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${singlePostData.profile}`:user}
                 alt="Author"
                 className="md:w-10 w-8 h-8 md:h-10 object-cover rounded-full border border-gray-600"
               />

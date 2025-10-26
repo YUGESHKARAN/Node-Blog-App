@@ -16,6 +16,7 @@ import { IoIosClose, IoMdNotifications } from "react-icons/io";
 import { GlobalStateContext } from "../GlobalStateContext";
 import { TfiAnnouncement } from "react-icons/tfi";
 import axiosInstance from "../instances/Axiosinstances";
+import user from "../images/user.png";
 
 function NavBar() {
   const { logout } = useAuth();
@@ -423,9 +424,9 @@ function NavBar() {
             >
               {/* Profile */}
               <img
-                src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
+                src={data.profile?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`:user}
                 alt="Profile"
-                className="w-7 h-7 rounded-full border-2 border-green-500 object-contain shadow-sm"
+                className="w-7 h-7 bg-white rounded-full border-2 border-green-500 object-contain shadow-sm"
               />
 
               {/* Content */}
