@@ -283,7 +283,8 @@ const addPosts = async (req, res) => {
 
     // --- Find community authors (excluding self) ---
     const communityAuthors = await Author.find({
-      community: { $in: author.community },
+      // community: { $in: author.community },
+      community: { $in: [category] },
       email: { $ne: author.email }
     }).select('email');
 
