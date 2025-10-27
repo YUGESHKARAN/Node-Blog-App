@@ -207,7 +207,7 @@ function ViewPage() {
           <div className="w-full  mt-2  text-xs  text-gray-300 text-md">
             {singlePostData.description && showContent ? (
               <>
-                <span className="md:text-base leading-relaxed  text-sm ">
+                <span className="md:text-base leading-relaxed text-wrap  break-words whitespace-normal  text-sm ">
                   {renderTextWithHashtags(singlePostData.description)}
                 </span>
                 <span
@@ -221,7 +221,7 @@ function ViewPage() {
               <>
                 {" "}
                 {singlePostData.description && (
-                  <span className="md:text-base leading-relaxed truncate text-wrap text-sm">
+                  <span className="md:text-base leading-relaxed break-words whitespace-normal truncate text-wrap text-sm">
                     {renderTextWithHashtags(
                       singlePostData.description.slice(0, 80)
                     )}
