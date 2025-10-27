@@ -21,7 +21,7 @@ function YourPost() {
   const [postCategory, setPostCategory] = useState("");
   const [loader, setLoader] = useState(false);
   const email = localStorage.getItem("email");
-  const [selectedImage, setSelectedImage] = useState(null);
+ 
   const [authorProfile, setAuthorProfile] = useState("");
   // Fetch posts from API
   const fetchPosts = async () => {
@@ -112,16 +112,6 @@ function YourPost() {
       post.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedImage(null);
-  };
-
-  // console.log("local email", email);
-  // console.log("your post",filterdPost)
 
   const renderTextWithHashtags = (text) => {
     if (!text) return null;
@@ -239,11 +229,11 @@ function YourPost() {
                     <img
                       src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${authorProfile}`}
                       className="w-8 max-h-10 object-cover rounded-full border border-gray-600"
-                      alt={data.authorname}
+                      alt={data.authorName}
                     />
                     <div className="flex flex-col">
                       <p className="text-sm text-white font-semibold">
-                        {data.authorname}
+                        {data.authorName}
                       </p>
                       <p className="text-xs text-gray-500">
                         {data.timestamp.slice(0, 10)}
@@ -367,24 +357,7 @@ function YourPost() {
           )}
         </div>
 
-        {/* Image Modal */}
-        {selectedImage && (
-          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-            <div className="">
-              <img
-                src={selectedImage}
-                alt="Selected"
-                className="max-w-full w-11/12 mx-auto max-h-full"
-              />
-              <button
-                onClick={handleCloseModal}
-                className="absolute top-10 right-7"
-              >
-                <IoClose className="text-2xl text-white" />
-              </button>
-            </div>
-          </div>
-        )}
+    
       </div>
       <Footer />
     </div>

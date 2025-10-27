@@ -6,7 +6,7 @@ import {
   IoClose,
   IoShareSocial,
 } from "react-icons/io5";
-import { MdEdit } from "react-icons/md";
+import getTimeAgo from "../components/DateCovertion.jsx";
 import { MagnifyingGlass } from "react-loader-spinner";
 import blog1 from "../images/img_not_found.png";
 import { BiLike, BiSolidLike } from "react-icons/bi";
@@ -21,7 +21,6 @@ function BlogContainer() {
   const [postCategory, setPostCategory] = useState("");
   const [loader, setLoader] = useState(false);
   const email = localStorage.getItem("email");
-  const [selectedImage, setSelectedImage] = useState(null);
   const [bookMarkId, setBookMarkId] = useState([]);
 
   useEffect(() => {
@@ -37,7 +36,7 @@ function BlogContainer() {
       // setPosts(
       //   response.data.posts.filter((post) => post.authoremail !== email)
       // );
-         setPosts(response.data.posts);
+      setPosts(response.data.posts);
     } catch (err) {
       console.error("Error fetching posts:", err);
     }
@@ -110,14 +109,9 @@ function BlogContainer() {
       post.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
-  };
 
-  const handleCloseModal = () => {
-    setSelectedImage(null);
-  };
 
+ 
   const renderTextWithHashtags = (text) => {
     if (!text) return null;
 
@@ -258,7 +252,11 @@ function BlogContainer() {
                 <div className="flex mb-2 gap-2 items-center">
                   <Link to={`/viewProfile/${data.authoremail}`}>
                     <img
-                      src={data.profile?`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`:user}
+                      src={
+                        data.profile
+                          ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`
+                          : user
+                      }
                       className="w-8 max-h-10 bg-white object-cover rounded-full border border-white/50"
                       alt={data.authorname}
                     />
@@ -269,7 +267,9 @@ function BlogContainer() {
                       {data.authorname}
                     </p>
                     <p className="text-xs text-gray-500">
-                      {data.timestamp.slice(0, 10)}
+                      {/* {data.timestamp.slice(0, 10)}
+                       */}
+                      {getTimeAgo(data.timestamp)}
                     </p>
                   </div>
                 </div>
@@ -305,13 +305,11 @@ function BlogContainer() {
                   />
                 )} */}
 
-
-  <Link
-                        to={`/viewpage/${data.authoremail}/${data._id}`}
-                        onClick={() => postViews(data.authoremail, data._id)}
-                        // className="cursor-pointer flex items-center gap-1 hover:text-blue-300"
-                      >
-                    
+                <Link
+                  to={`/viewpage/${data.authoremail}/${data._id}`}
+                  onClick={() => postViews(data.authoremail, data._id)}
+                  // className="cursor-pointer flex items-center gap-1 hover:text-blue-300"
+                >
                   <img
                     src={
                       data.image
@@ -338,8 +336,6 @@ function BlogContainer() {
                     {renderTextWithHashtags(data.description.slice(0, 50))}...
                   </p>
                 </div>
-
-             
 
                 <div className="flex justify-between items-center mb-2">
                   <div className="flex gap-3 items-center">
@@ -408,24 +404,7 @@ function BlogContainer() {
           )}
         </div>
       </div>
-      {/* Image Modal */}
-      {selectedImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className="">
-            <img
-              src={selectedImage}
-              alt="Selected"
-              className="max-w-full w-11/12 mx-auto max-h-full"
-            />
-            <button
-              onClick={handleCloseModal}
-              className="absolute top-10 right-7"
-            >
-              <IoClose className="text-2xl" />
-            </button>
-          </div>
-        </div>
-      )}
+   
 
       <ToastContainer />
     </div>

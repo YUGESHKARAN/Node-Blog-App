@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import blog1 from "../images/loading3.gif";
 // import user from "../images/blog48.jpg";
 import NavBar from "../ui/NavBar";
+import getTimeAgo from "../components/DateCovertion.jsx";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Footer from "../ui/Footer";
@@ -147,7 +148,7 @@ function ViewPage() {
     <div className="w-full min-h-screen h-auto relative bg-gradient-to-br from-gray-900 to-gray-800">
       <NavBar />
 
-      <div className="md:min-h-screen  h-auto md:pb-40 md:w-3/6 w-full pb-20 p-2 md:p-10 flex flex-col justify-center items-center m-auto md:mt-10">
+      <div className="md:min-h-screen  h-auto md:pb-40 md:w-3/6 w-full pb-20 p-1 md:p-10 flex flex-col justify-center items-center m-auto md:mt-10">
         <div className="w-full flex bg-gray-800 flex-col p-3 h-auto items-center">
           <div className="flex  justify-between w-full items-center">
             <div className="flex  justify-between gap-2 items-center">
@@ -165,7 +166,9 @@ function ViewPage() {
                 </p>
                 <p className="md:text-sm w-full text-xs font-semibold text-gray-400">
                   {singlePostData.timestamp
-                    ? singlePostData.timestamp.slice(0, 10)
+                    ? 
+                    // singlePostData.timestamp.slice(0, 10)
+                    getTimeAgo(singlePostData.timestamp)
                     : "null"}
                 </p>
               </h3>
@@ -201,10 +204,10 @@ function ViewPage() {
             }
           />
 
-          <div className="w-full text-justify mt-2  text-xs leading-relaxed text-gray-300 text-md">
+          <div className="w-full  mt-2  text-xs  text-gray-300 text-md">
             {singlePostData.description && showContent ? (
               <>
-                <span className="text-base leading-relaxed">
+                <span className="md:text-base leading-relaxed  text-sm ">
                   {renderTextWithHashtags(singlePostData.description)}
                 </span>
                 <span
@@ -218,9 +221,9 @@ function ViewPage() {
               <>
                 {" "}
                 {singlePostData.description && (
-                  <span className="text-base leading-relaxed">
+                  <span className="md:text-base leading-relaxed truncate text-wrap text-sm">
                     {renderTextWithHashtags(
-                      singlePostData.description.slice(0, 100)
+                      singlePostData.description.slice(0, 80)
                     )}
                   </span>
                 )}
@@ -303,7 +306,7 @@ function ViewPage() {
             <CommentsBox
               messages={messages}
               viewComments={viewComments}
-              timeStamp={timeStamp}
+              // timeStamp={timeStamp}
             />
 
             {/* Comment Input */}

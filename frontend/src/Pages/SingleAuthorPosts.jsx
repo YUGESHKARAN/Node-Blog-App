@@ -22,7 +22,6 @@ function SingleAuthorPosts() {
   const [loader, setLoader] = useState(false);
   const [authorName, setAuthorName] = useState("");
   const [authorProfile, setAuthorProfile] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
   const { email } = useParams();
 
   // Fetch posts from API
@@ -112,13 +111,7 @@ function SingleAuthorPosts() {
       post.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedImage(null);
-  };
+ 
 
   // console.log("local email", email);
   // console.log("your post",filterdPost)
@@ -303,13 +296,13 @@ function SingleAuthorPosts() {
                     }
                     className="w-full h-36  rounded-xl object-cover bg-center  hover:opacity-90 transition-all duration-300"
                     alt={data.title}
-                    onClick={() =>
-                      handleImageClick(
-                        data.image
-                          ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
-                          : blog1
-                      )
-                    }
+                    // onClick={() =>
+                    //   handleImageClick(
+                    //     data.image
+                    //       ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
+                    //       : blog1
+                    //   )
+                    // }
                   />
                   </Link>
                   <div className="min-h-28 h-auto pt-4">
@@ -378,24 +371,6 @@ function SingleAuthorPosts() {
           </div>
         </div>
 
-        {/* Image Modal */}
-        {selectedImage && (
-          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-            <div className="">
-              <img
-                src={selectedImage}
-                alt="Selected"
-                className="max-w-full w-11/12 mx-auto max-h-full"
-              />
-              <button
-                onClick={handleCloseModal}
-                className="absolute top-10 right-7"
-              >
-                <IoClose className="text-2xl text-white" />
-              </button>
-            </div>
-          </div>
-        )}
       </div>
       <Footer />
     </div>

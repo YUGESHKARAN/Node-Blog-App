@@ -244,15 +244,7 @@ function NavBar() {
           </sup>
         </div>
       </div>
-      {/* <div className='transition-all ml-2 duration-200 hover:text-white'>
-                <div className='flex items-center '>
-                    <Link to="/announcement" className='flex items-center hover:text-gray-400 transition-all duration-200  justify-start'>
-                            <MdAnnouncement className='text-lg text-white mr-1'/> 
-                            <sup className={`${announcement.length>0?'text-[10px] bg-green-600 w-4 h-4 flex items-center justify-center rounded-full text-white':'text-[10px]  flex items-center justify-center rounded-full text-white'}`}>{announcement.length>0?announcement.length:''}</sup>
-                        </Link>
-                </div>
-                
-            </div> */}
+  
 
       <button onClick={toggleSidebar} className="lg:hidden ml-2 text-white">
         ☰
@@ -356,43 +348,7 @@ function NavBar() {
       </div>
 
       {/* notification */}
-      {/* <div className={`${note.length>0&&showNotefication?'fixed top-14 flex-col right-2  justify-center rounded-md bg-gray-700 p-1 pb-4 z-30 md:w-72 scrollbar-hide w-44  overflow-y-scroll h-fit max-h-60':'hidden'}`}>
-           
-                <div className='relative flex-col  justify-start items-start h-auto w-full'>
-                    <div className='w-full sticky right-0 top-0 z-30 flex'>
-                         <button 
-                         onClick={()=>{deleteAllNotification(userEmail)}}
-                         className='text-[10px] px-2   rounded-md text-black bg-white'>Clear All</button>
-                    </div>
-            
-                   {[...note].reverse().map((data,index)=>(
-                    <div 
-                    key={index}
-                    
-                    className='flex relative mt-4 border-b pb-1 border-b-gray-300 w-full mx-auto justify-start pl-2 gap-2 items-center'>
- 
-                         <img 
-                         src={`https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.profile}`}
-                          className='w-8 h-8 border border-green-500 rounded-full' alt="" />
- 
-                         <Link 
-                         to={data.url}
-                         className='flex-col items-start justify-center'>
-                           <p className='text-xs text-white font-semibold '>{data.user}</p>
-                           <p className='text-[10px] text-gray-200'>{data.message?data.message:'got notification'}...</p>
-                         </Link>
- 
-                         <div
-                         onClick={()=>{deleteSigleNotification(userEmail,data._id)}}
-                         className='text-white cursor-pointer absolute right-1 top-0'>
-                           <IoIosClose/>
-                         </div>
-                    </div>
-                   ))}
-
-                   
-                </div>
-            </div> */}
+  
 
       <div
         ref={notificationRef}
@@ -416,7 +372,7 @@ function NavBar() {
         </div>
 
         {/* Notification List */}
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-2 md:space-y-4">
           {[...note].reverse().map((data, index) => (
             <div
               key={index}

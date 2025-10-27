@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-
+// import { formatDistanceToNow } from "date-fns";
+import getTimeAgo from "../components/DateCovertion.jsx";
 import userProfile from "../images/user.png";
-const CommentsBox = ({ messages, viewComments, timeStamp }) => {
+const CommentsBox = ({ messages, viewComments }) => {
   const commentBoxRef = useRef(null);
   const [isUserScrolling, setIsUserScrolling] = useState(false);
 
@@ -35,6 +36,9 @@ const CommentsBox = ({ messages, viewComments, timeStamp }) => {
     }
   }, [messages, viewComments, isUserScrolling]);
 
+  
+
+
   return (
     <div
       ref={commentBoxRef}
@@ -48,7 +52,7 @@ const CommentsBox = ({ messages, viewComments, timeStamp }) => {
         (viewComments ? messages : messages.slice(0, 1)).map((msg, index) => (
           <div
             key={index}
-            className="flex items-start gap-3 mb-4 bg-gray-700/50 hover:bg-gray-700/70 rounded-lg p-3 transition-all duration-200"
+            className="flex items-start gap-3 mb-2 md:mb-4 bg-gray-700/50 hover:bg-gray-700/70 rounded-lg p-3 transition-all duration-200"
           >
             <img
               src={
@@ -56,14 +60,16 @@ const CommentsBox = ({ messages, viewComments, timeStamp }) => {
                   ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${msg.profile}`
                   : userProfile
               }
-              className="w-10 h-10 rounded-full bg-white border border-gray-600 object-cover"
+              className="w-10 h-10 border rounded-full bg-white border border-gray-200 object-cover"
               alt="User Avatar"
             />
             <div className="flex flex-col w-full">
               <div className="flex justify-between items-center">
                 <p className="text-sm font-semibold text-white">@{msg.user}</p>
                 <p className="text-[10px] text-gray-400">
-                  {timeStamp.slice(0, 10)}
+                  {/* {msg.timestamp.slice(0, 10)} */}
+                  {getTimeAgo(msg.timestamp)}
+                   {/* {formatDistanceToNow(new Date(msg.timestamp), { addSuffix: true })} */}
                 </p>
               </div>
               <p className="text-sm mt-1 text-gray-200">{msg.message}</p>
