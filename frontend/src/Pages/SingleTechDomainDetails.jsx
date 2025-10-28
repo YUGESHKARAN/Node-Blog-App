@@ -12,15 +12,15 @@ import { FaSquareGithub } from "react-icons/fa6";
 import { PiLinkSimpleFill } from "react-icons/pi";
 import { BsPersonSquare } from "react-icons/bs";
 import { useParams } from "react-router-dom";
-
+import useAuthorCommunity from "../hooks/useAuthorCommunity";
 function SingleTechDomainDetails() {
 
 const {category} = useParams();
  const decodedCategory = decodeURIComponent(category);
   const [authors, setAuthors] = useState([]);
   const email = localStorage.getItem("email");
-
-
+  const { authorCommunity, getAuthorCommunity } = useAuthorCommunity(email);
+  const role = localStorage.getItem("role");
   const authorsDetails = async () => {
     try {
       const response = await axiosInstance.get(`/blog/author/getAuthorsByDomain/${decodedCategory}`);
@@ -56,6 +56,26 @@ const {category} = useParams();
     }
   };
 
+  
+
+   const updateCommunity = async (email, techCommunity) => {
+    try {
+      const response = await axiosInstance.put(
+        "/blog/author/control/updateCommunity",
+        {
+          email: email,
+          techcommunity: techCommunity,
+        }
+      );
+      if (response.status === 201) {
+        await authorsDetails();
+        await getAuthorCommunity();
+        // window.location.reload();
+      }
+    } catch (err) {
+      console.log("error", err);
+    }
+  };
 
 
   return (
@@ -65,6 +85,39 @@ const {category} = useParams();
        <h1 className="md:text-left text-center w-11/12 mx-auto text-3xl md:text-5xl font-extrabold mt-12 mb-8 bg-gradient-to-r from-blue-400 via-yellow-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg tracking-wide">
           {decodedCategory} - Community
         </h1>
+
+         <div className="flex justify-center md:justify-start w-11/12 mx-auto mb-8">
+                {role === "coordinator" || role === "admin" ? (
+                  <button
+                    type="button"
+                    className={`${
+                      authorCommunity.includes(decodedCategory)
+                        ? "bg-gradient-to-r md:text-xl from-orange-500 to-yellow-400 text-black font-semibold px-5 py-2 rounded-lg shadow-lg hover:opacity-90 transition-all duration-300"
+                        : "hidden"
+                    }`}
+                  >
+                    {authorCommunity.includes(decodedCategory) &&
+                      "Coordinator"}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => updateCommunity(email, decodedCategory)}
+                    type="button"
+                    className={`font-semibold px-5 py-2 rounded-lg shadow-md transition-all duration-300
+                ${
+                  authorCommunity.includes(decodedCategory)
+                    ? "bg-gradient-to-r from-green-500 to-emerald-400 text-black hover:opacity-90"
+                    : "bg-gradient-to-r from-gray-200 to-white text-gray-800 hover:from-gray-300 hover:to-white"
+                } md:text-xl`}
+                  >
+                    {authorCommunity.includes(decodedCategory)
+                      ? "Joined"
+                      : "Join"}
+                  </button>
+                )}
+              </div>
+
+        
 
 
       <div className="w-11/12 mx-auto min-h-screen flex flex-col items-center mt-12 text-white">

@@ -8,6 +8,7 @@ import {
 } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MagnifyingGlass } from "react-loader-spinner";
+import getTimeAgo from "../components/DateCovertion.jsx";
 import blog1 from "../images/img_not_found.png";
 import NavBar from "../ui/NavBar";
 import Footer from "../ui/Footer";
@@ -307,7 +308,8 @@ function BookMarkPage() {
                         {data.authorname}
                       </p>
                       <p className="text-xs text-gray-500">
-                        {data.timestamp.slice(0, 10)}
+                        {/* {data.timestamp.slice(0, 10)} */}
+                        {getTimeAgo(data.timestamp)}
                       </p>
                     </div>
                   </div>
