@@ -125,8 +125,8 @@ function TechCommunity() {
       <NavBar />
 
       <div className="flex-grow">
-        <h1 className="text-center text-3xl md:text-5xl font-extrabold mt-12 mb-8 bg-gradient-to-r from-orange-400 via-yellow-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg tracking-wide">
-          Tech Communities
+        <h1 className="text-center text-3xl md:text-5xl font-extrabold mt-12 mb-8 bg-gradient-to-r from-pink-500 via-blue-400 to-yellow-400 bg-clip-text text-transparent drop-shadow-lg tracking-wide">
+          Tech. Communities
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 pb-16">

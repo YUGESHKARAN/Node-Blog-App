@@ -313,6 +313,11 @@ function BookMarkPage() {
                       </p>
                     </div>
                   </div>
+                   <Link
+                                    to={`/viewpage/${data.authoremail}/${data._id}`}
+                                    onClick={() => postViews(data.authoremail, data._id)}
+                                    // className="cursor-pointer flex items-center gap-1 hover:text-blue-300"
+                                  >
                   <img
                     src={
                       data.image
@@ -321,14 +326,16 @@ function BookMarkPage() {
                     }
                     className="w-full h-36  rounded-xl object-cover bg-center  hover:opacity-90 transition-all duration-300"
                     alt={data.title}
-                    onClick={() =>
-                      handleImageClick(
-                        data.image
-                          ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
-                          : blog1
-                      )
-                    }
+                    // onClick={() =>
+                    //   handleImageClick(
+                    //     data.image
+                    //       ? `https://open-access-blog-image.s3.us-east-1.amazonaws.com/${data.image}`
+                    //       : blog1
+                    //   )
+                    // }
                   />
+
+                  </Link>
                   <div className="min-h-28 h-auto pt-4">
                     <h2 className="md:text-xl text-lg text-white font-bold">
                       {data.title && data.title.slice(0, 20)}...

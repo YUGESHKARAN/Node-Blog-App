@@ -21,6 +21,19 @@ function LoginPage() {
   const [loader2, setLoader2] = useState(false)
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if(!formData.email && !formData.password){
+      return setErrors({ apiError: "Email and Password are required" });
+    }
+
+    if(!formData.email){
+       return setErrors({ apiError: "Email is required" });
+    }
+
+    if(!formData.password){
+      return setErrors({ apiError: "Password is required" });
+    }
+
     
      setLoader2(true)
 

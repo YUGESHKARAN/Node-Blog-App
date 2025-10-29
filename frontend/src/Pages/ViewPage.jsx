@@ -150,6 +150,7 @@ function ViewPage() {
 
       <div className="md:min-h-screen  h-auto md:pb-40 md:w-3/6 w-full pb-20 p-1 md:p-10 flex flex-col justify-center items-center m-auto md:mt-10">
         <div className="w-full flex bg-gray-800 flex-col p-3 h-auto items-center">
+      
           <div className="flex  justify-between w-full items-center">
             <div className="flex  justify-between gap-2 items-center">
               <Link></Link>
