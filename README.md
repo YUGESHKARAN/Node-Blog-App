@@ -54,8 +54,8 @@ Both backend and frontend are organized for modularity and scalability:
 
 ```
 Node-Blog-App/
-├── backend/    # Node.js + Express + MongoDB API
-├── frontend/   # React.js + Tailwind CSS client
+├── backend/    # Node.js + Express + AWS -S3 + MongoDB 
+├── frontend/   # React.js + Tailwind CSS 
 ├── README.md
 └── ...
 ```
