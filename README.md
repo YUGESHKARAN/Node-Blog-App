@@ -1,4 +1,4 @@
-# 📝 Node Blog App
+# 📝 Tech. Community App
 
 
 [![License: MIT](https://img.shields.io/github/license/YUGESHKARAN/Node-Blog-App)](./LICENSE)
@@ -9,7 +9,7 @@
 [![Pull Requests](https://img.shields.io/github/issues-pr/YUGESHKARAN/Node-Blog-App)](https://github.com/YUGESHKARAN/Node-Blog-App/pulls)
 [![Contributors](https://img.shields.io/github/contributors/YUGESHKARAN/Node-Blog-App)](https://github.com/YUGESHKARAN/Node-Blog-App/graphs/contributors)
 
-**Welcome to the Node Blog App!**
+**Welcome to the Tech. Community App!**
 
 A modern, full-stack E-Learning platform **specifically designed for universities and colleges**, focusing on knowledge sharing and community building. This app empowers students and developers to connect, collaborate, and engage through technical content and discussions, all within their institution. Users can interact, clarify doubts, and grow together via a robust post and comment system. The platform features three interfaces: Student, Coordinator, and Admin.
 
